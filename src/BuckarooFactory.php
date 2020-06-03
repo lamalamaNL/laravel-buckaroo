@@ -10,13 +10,13 @@ use LamaLama\Buckaroo\Subscriptions;
 class BuckarooFactory
 {
     /**
-     * [$debug description]
+     * $debug
      * @var [type]
      */
     protected $debug;
 
     /**
-     * [$httpClient description]
+     * $httpClient
      * @var [type]
      */
     protected $httpClient;
@@ -33,64 +33,19 @@ class BuckarooFactory
     }
 
     /**
-     * [invoices description]
-     * @return [type] [description]
+     * subscriptions
+     * @return LamaLama\Buckaroo\Subscriptions
      */
-    public function invoices()
+    public function subscriptions()
     {
-        return new Invoice();
+        return new Subscriptions();
     }
 
     /**
-     * [labels description]
-     * @return [type] [description]
-     */
-    public function labels()
-    {
-        return new Label();
-    }
-
-    /**
-     * [parcels description]
-     * @return [type] [description]
-     */
-    public function parcels()
-    {
-        return new Parcel();
-    }
-
-    /**
-     * [parcelStatus description]
-     * @return [type] [description]
-     */
-    public function parcelStatus()
-    {
-        return new ParcelStatu();
-    }
-
-    /**
-     * [shippingMethods description]
-     * @return [type] [description]
-     */
-    public function shippingMethods()
-    {
-        return new ShippingMethod();
-    }
-
-    /**
-     * [users description]
-     * @return [type] [description]
-     */
-    public function users()
-    {
-        return new User();
-    }
-
-    /**
-     * [getRequest description]
-     * @param  string $method [description]
-     * @param  string $body   [description]
-     * @return array         [description]
+     * getRequest
+     * @param  string $method
+     * @param  string $body
+     * @return array
      */
     public function getRequest(string $method, string $body = '')
     {
@@ -98,10 +53,10 @@ class BuckarooFactory
     }
 
     /**
-     * [postRequest description]
-     * @param  string $method [description]
-     * @param  string $body   [description]
-     * @return array         [description]
+     * postRequest
+     * @param  string $method
+     * @param  string $body
+     * @return array
      */
     public function postRequest(string $method, string $body = '')
     {
@@ -109,10 +64,10 @@ class BuckarooFactory
     }
 
     /**
-     * [putRequest description]
-     * @param  string $method [description]
-     * @param  string $body   [description]
-     * @return array         [description]
+     * putRequest
+     * @param  string $method
+     * @param  string $body
+     * @return array
      */
     public function putRequest(string $method, string $body = '')
     {
@@ -120,10 +75,10 @@ class BuckarooFactory
     }
 
     /**
-     * [patchRequest description]
-     * @param  string $method [description]
-     * @param  string $body   [description]
-     * @return array         [description]
+     * patchRequest
+     * @param  string $method
+     * @param  string $body
+     * @return array
      */
     public function patchRequest(string $method, string $body = '')
     {
@@ -131,10 +86,10 @@ class BuckarooFactory
     }
 
     /**
-     * [deleteRequest description]
-     * @param  string $method [description]
-     * @param  string $body   [description]
-     * @return array         [description]
+     * deleteRequest
+     * @param  string $method
+     * @param  string $body
+     * @return array
      */
     public function deleteRequest(string $method, string $body = '')
     {
@@ -142,11 +97,11 @@ class BuckarooFactory
     }
 
     /**
-     * [apiRequest description]
-     * @param  string $requestMethod [description]
-     * @param  string $method [description]
-     * @param  string $body   [description]
-     * @return array         [description]
+     * apiRequest
+     * @param  string $requestMethod
+     * @param  string $method
+     * @param  string $body
+     * @return array
      */
     public function apiRequest(string $requestMethod, string $method, string $body = '')
     {
@@ -167,7 +122,7 @@ class BuckarooFactory
     }
 
     /**
-     * [downloadRequest description]
+     * downloadRequest
      * @param  string $requestMethod [url]
      */
     public function downloadRequest(string $url)
