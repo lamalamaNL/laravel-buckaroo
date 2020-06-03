@@ -1,0 +1,42 @@
+{
+  "name": "lamalama/laravel-buckaroo",
+  "description": "Buckaroo for Laravel",
+  "keywords": ["laravel", "buckaroo"],
+  "type": "library",
+  "homepage": "https://github.com/lamalamaNL/laravel-buckaroo",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Lama Lama BV",
+      "email": "info@lamalama.nl"
+    },
+    {
+      "name": "Mark de Vries",
+      "email": "mark@lamalama.nl"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "LamaLama\\Buckaroo\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "LamaLama\\Buckaroo\\Tests\\": "tests"
+    }
+  },
+  "require-dev": {
+  },
+  "extra": {
+    "laravel": {
+        "providers": [
+            "LamaLama\\Buckaroo\\BuckarooServiceProvider"
+        ],
+        "aliases": {
+            "Buckaroo": "LamaLama\\Buckaroo\\Facades\\Buckaroo"
+        }
+    }
+  }
+}
