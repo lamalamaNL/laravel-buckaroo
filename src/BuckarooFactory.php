@@ -11,13 +11,13 @@ class BuckarooFactory
 {
     /**
      * $debug
-     * @var [type]
+     * @var boolean
      */
     protected $debug;
 
     /**
      * $httpClient
-     * @var [type]
+     * @var GuzzleHttp\Client
      */
     protected $httpClient;
 
@@ -27,9 +27,7 @@ class BuckarooFactory
     public function __construct()
     {
         $this->debug = env('BUCKAROO_DEBUG');
-
-        $connection = new Connection();
-        $this->httpClient = $connection->httpClient;
+        $this->httpClient = (new Connection())->httpClient;
     }
 
     /**
@@ -45,7 +43,7 @@ class BuckarooFactory
      * getRequest
      * @param  string $method
      * @param  string $body
-     * @return array
+     * @return xxx
      */
     public function getRequest(string $method, string $body = '')
     {
@@ -56,7 +54,7 @@ class BuckarooFactory
      * postRequest
      * @param  string $method
      * @param  string $body
-     * @return array
+     * @return xxx
      */
     public function postRequest(string $method, string $body = '')
     {
@@ -67,7 +65,7 @@ class BuckarooFactory
      * putRequest
      * @param  string $method
      * @param  string $body
-     * @return array
+     * @return xxx
      */
     public function putRequest(string $method, string $body = '')
     {
@@ -78,7 +76,7 @@ class BuckarooFactory
      * patchRequest
      * @param  string $method
      * @param  string $body
-     * @return array
+     * @return xxx
      */
     public function patchRequest(string $method, string $body = '')
     {
@@ -89,7 +87,7 @@ class BuckarooFactory
      * deleteRequest
      * @param  string $method
      * @param  string $body
-     * @return array
+     * @return xxx
      */
     public function deleteRequest(string $method, string $body = '')
     {
@@ -101,7 +99,7 @@ class BuckarooFactory
      * @param  string $requestMethod
      * @param  string $method
      * @param  string $body
-     * @return array
+     * @return xxx
      */
     public function apiRequest(string $requestMethod, string $method, string $body = '')
     {
