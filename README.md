@@ -7,7 +7,7 @@
 
 > :warning: **This package is in a preliminary development phase and not stable**: Do not use in production!
 
-Make your Eloquent models wishlistable.
+Buckaroo for Laravel.
 
 ## Install
 
@@ -22,7 +22,7 @@ You can publish the migration with:
 php artisan vendor:publish --provider="LamaLama\Buckaroo\BuckarooServiceProvider" --tag="migrations"
 ```
 
-After publishing the migration you can create the `wishlist` table by running the migrations:
+After publishing the migration you can create the `subscriptions` table by running the migrations:
 
 ```bash
 php artisan migrate
