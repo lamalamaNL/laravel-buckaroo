@@ -1,17 +1,17 @@
 {
-    "name": "spatie/laravel-buckaroo-ed",
+    "name": "lamalamanl/laravel-buckaroo",
     "description": "",
     "keywords": [
-        "spatie",
+        "lamalamanl",
         "laravel-buckaroo-ed"
     ],
-    "homepage": "https://github.com/spatie/laravel-buckaroo-ed",
+    "homepage": "https://github.com/lamalamanl/laravel-buckaroo",
     "license": "MIT",
     "authors": [
         {
             "name": "LamaLama",
             "email": "info@lamalama.nl",
-            "homepage": "https://spatie.be",
+            "homepage": "https://lamalama.nl",
             "role": "Developer"
         }
     ],
