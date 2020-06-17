@@ -1,5 +1,7 @@
 # Changelog
 
-## 0.0.1 - 2020-06-03
+All notable changes to `laravel-buckaroo-ed` will be documented in this file
 
-* Initialization of the package
+## 1.0.0 - 202X-XX-XX
+
+- initial release

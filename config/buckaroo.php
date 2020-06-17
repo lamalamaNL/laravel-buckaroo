@@ -1,8 +1,8 @@
 <?php
 
+
 return [
-    /*
-     * Default subscription interval
-     */
-    'default_interval' => 'monthly',
+    'endpoint' =>  env('BUCKAROO_API_ENDPOINT', 'https://testcheckout.buckaroo.nl'),
+    'key' =>  env('BUCKAROO_API_KEY',),
+    'secret' =>  env('BUCKAROO_API_SECRET'),
 ];

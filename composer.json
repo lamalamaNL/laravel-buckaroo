@@ -1,42 +1,60 @@
 {
-  "name": "lamalama/laravel-buckaroo",
-  "description": "Buckaroo for Laravel",
-  "keywords": ["laravel", "buckaroo"],
-  "type": "library",
-  "homepage": "https://github.com/lamalamaNL/laravel-buckaroo",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Lama Lama BV",
-      "email": "info@lamalama.nl"
-    },
-    {
-      "name": "Mark de Vries",
-      "email": "mark@lamalama.nl"
-    }
-  ],
-  "require": {
-  },
-  "autoload": {
-    "psr-4": {
-      "LamaLama\\Buckaroo\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "LamaLama\\Buckaroo\\Tests\\": "tests"
-    }
-  },
-  "require-dev": {
-  },
-  "extra": {
-    "laravel": {
-        "providers": [
-            "LamaLama\\Buckaroo\\BuckarooServiceProvider"
-        ],
-        "aliases": {
-            "Buckaroo": "LamaLama\\Buckaroo\\Facades\\Buckaroo"
+    "name": "spatie/laravel-buckaroo-ed",
+    "description": "",
+    "keywords": [
+        "spatie",
+        "laravel-buckaroo-ed"
+    ],
+    "homepage": "https://github.com/spatie/laravel-buckaroo-ed",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "LamaLama",
+            "email": "info@lamalama.nl",
+            "homepage": "https://spatie.be",
+            "role": "Developer"
         }
-    }
-  }
+    ],
+    "require": {
+        "php": "^7.4",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "orchestra/testbench": "^5.0",
+        "phpunit/phpunit": "^9.0",
+        "psalm/plugin-laravel": "^1.2",
+        "vimeo/psalm": "^3.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "LamaLama\\LaravelBuckaroo\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LamaLama\\LaravelBuckaroo\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "psalm": "vendor/bin/psalm",
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Spatie\\Skeleton\\SkeletonServiceProvider"
+            ],
+            "aliases": {
+                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

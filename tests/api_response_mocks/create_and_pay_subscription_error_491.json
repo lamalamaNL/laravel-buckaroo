@@ -1,0 +1,46 @@
+{
+  "Key": "669E3DD0B5494438B647242FD2FF68DC",
+  "Status": {
+    "Code": {
+      "Code": 491,
+      "Description": "Validation failure"
+    },
+    "SubCode": null,
+    "DateTime": "2020-06-17T19:21:45"
+  },
+  "RequiredAction": null,
+  "Services": null,
+  "CustomParameters": null,
+  "AdditionalParameters": null,
+  "RequestErrors": {
+    "ChannelErrors": [],
+    "ServiceErrors": [],
+    "ActionErrors": [],
+    "ParameterErrors": [
+      {
+        "Service": "Subscriptions",
+        "Action": "Pay",
+        "Name": "ConfigurationCode",
+        "Error": "ParameterInvalid",
+        "ErrorMessage": "Invalid ConfigurationCode"
+      }
+    ],
+    "CustomParameterErrors": []
+  },
+  "Invoice": "testsub1",
+  "ServiceCode": null,
+  "IsTest": true,
+  "Currency": "EUR",
+  "AmountDebit": 10.0,
+  "TransactionType": null,
+  "MutationType": 0,
+  "RelatedTransactions": null,
+  "ConsumerMessage": null,
+  "Order": null,
+  "IssuingCountry": null,
+  "StartRecurrent": true,
+  "Recurring": false,
+  "CustomerName": null,
+  "PayerHash": null,
+  "PaymentKey": null
+}

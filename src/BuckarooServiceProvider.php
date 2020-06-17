@@ -1,36 +1,44 @@
 <?php
 
-namespace LamaLama\Buckaroo;
+namespace LamaLama\LaravelBuckaroo;
 
 use Illuminate\Support\ServiceProvider;
-use LamaLama\Buckaroo\BuckarooFactory;
+use LamaLama\LaravelBuckaroo\Commands\SkeletonCommand;
 
 class BuckarooServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->registerPublishables();
+        /*
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/skeleton.php' => config_path('skeleton.php'),
+            ], 'config');
+
+            $this->publishes([
+                __DIR__.'/../resources/views' => base_path('resources/views/vendor/skeleton'),
+            ], 'views');
+
+            if (! class_exists('CreatePackageTable')) {
+                $this->publishes([
+                    __DIR__ . '/../database/migrations/create_skeleton_table.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_skeleton_table.php'),
+                ], 'migrations');
+            }
+
+            $this->commands([
+                SkeletonCommand::class,
+            ]);
+        }
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
+        */
     }
 
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/buckaroo.php', 'buckaroo');
-
-        $this->app->bind('buckaroo', function () {
-            return new BuckarooFactory();
+        $this->app->bind(Buckaroo::class, function () {
+            return new Buckaroo($this->app->make(ApiClient::class));
         });
-    }
-
-    protected function registerPublishables(): void
-    {
-        $this->publishes([
-            __DIR__.'/../config/buckaroo.php' => config_path('buckaroo.php'),
-        ], 'config');
-
-        if (! class_exists('CreateSubscriptionsTable')) {
-            $this->publishes([
-                __DIR__.'/../database/migrations/create_subscriptions_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_subscriptions_table.php'),
-            ], 'migrations');
-        }
     }
 }

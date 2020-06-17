@@ -1,56 +1,93 @@
-# Laravel Buckaroo
+# 
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/lamalama/laravel-buckaroo.svg?style=flat-square)](https://packagist.org/packages/lamalama/laravel-buckaroo)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![StyleCI](https://github.styleci.io/repos/268217938/shield?branch=master)](https://github.styleci.io/repos/268217938)
-[![Total Downloads](https://img.shields.io/packagist/dt/lamalama/laravel-buckaroo.svg?style=flat-square)](https://packagist.org/packages/lamalama/laravel-buckaroo)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-buckaroo-ed.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-buckaroo-ed)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-buckaroo-ed/run-tests?label=tests)](https://github.com/spatie/laravel-buckaroo-ed/actions?query=workflow%3Arun-tests+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-buckaroo-ed.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-buckaroo-ed)
 
-> :warning: **This package is in a preliminary development phase and not stable**: Do not use in production!
 
-Buckaroo for Laravel.
+## Exception handling
+The package will throw a BuckarooApiException when things 
+go wrong with API calls to buckaroo. If not catched an json 
+reponse will be rendered. If your application is in debug 
+mode the full response from the Buckaroo will be 
+rendered (hopefully indication whats going wrong).
+```
+Todo: Add error example
+``` 
 
-## Install
+## Object you should know
+``LamaLama\LaravelBuckaroo\Api\Action``: The result of an
+buckaroo API request. 
 
-Via Composer
 
-``` bash
-$ composer require lamalama/laravel-buckaroo
+This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+
+## Support us
+
+Learn how to create a package like this one, by watching our premium video course:
+
+[![Laravel Package training](https://spatie.be/github/package-training.jpg)](https://laravelpackage.training)
+
+We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+
+We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require spatie/package-skeleton-laravel
 ```
 
-You can publish the migration with:
-```bash
-php artisan vendor:publish --provider="LamaLama\Buckaroo\BuckarooServiceProvider" --tag="migrations"
-```
-
-After publishing the migration you can create the `subscriptions` table by running the migrations:
+You can publish and run the migrations with:
 
 ```bash
+php artisan vendor:publish --provider="LamaLama\LaravelBuckaroo\SkeletonServiceProvider" --tag="migrations"
 php artisan migrate
 ```
 
-You can optionally publish the config file with:
+You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="LamaLama\Buckaroo\BuckarooServiceProvider" --tag="config"
+php artisan vendor:publish --provider="LamaLama\LaravelBuckaroo\SkeletonServiceProvider" --tag="config"
 ```
 
-## Use
-
-Create a subscription:
+This is the contents of the published config file:
 
 ```php
-Buckaroo::subscriptions()->create([
-    'amount' => '10.00',
-    'interval' => 'monthly'
-]);
+return [
+];
 ```
 
-## Change log
+## Usage
+
+``` php
+$skeleton = new LamaLama\LaravelBuckaroo();
+echo $skeleton->echoPhrase('Hello, Spatie!');
+```
+
+## Testing
+
+``` bash
+composer test
+```
+
+## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## Security
+
+If you discover any security related issues, please email freek@spatie.be instead of using the issue tracker.
+
 ## Credits
 
-- [Mark de Vries](https://github.com/lamalamaMark)
+- [LamaLama](https://github.com/LamaLamaNL)
+- [All Contributors](../../contributors)
 
 ## License
 
