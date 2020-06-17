@@ -2,8 +2,8 @@
 
 namespace LamaLama\LaravelBuckaroo\Tests;
 
-use Orchestra\Testbench\TestCase as Orchestra;
 use LamaLama\LaravelBuckaroo\BuckarooServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {

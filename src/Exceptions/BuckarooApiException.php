@@ -1,11 +1,8 @@
 <?php namespace LamaLama\LaravelBuckaroo\Exceptions;
 
-
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Config;
-use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 class BuckarooApiException extends \Exception
@@ -17,7 +14,8 @@ class BuckarooApiException extends \Exception
      * BuckarooApiException constructor.
      * @param $statuscode
      */
-    public function __construct(string $message = "Unsucccesfull response from PSP", int $code = 5000, Throwable $previous = null) {
+    public function __construct(string $message = "Unsucccesfull response from PSP", int $code = 5000, Throwable $previous = null)
+    {
         parent::__construct($message, $code, $previous);
     }
 
@@ -29,6 +27,7 @@ class BuckarooApiException extends \Exception
         $exception = new static();
         $exception->statuscode = $response->getStatusCode();
         $exception->apiResponseBody = (string) $response->getBody();
+
         return $exception;
     }
 
@@ -42,6 +41,7 @@ class BuckarooApiException extends \Exception
             $data['response_from_buckaroo'] = $this->apiResponseBody;
         }
         $response = new JsonResponse($data, $this->statuscode);
+
         return $response;
     }
 
@@ -56,6 +56,7 @@ class BuckarooApiException extends \Exception
     public function setApiResponseBody($apiResponseBody) : BuckarooApiException
     {
         $this->apiResponseBody = $apiResponseBody;
+
         return $this;
     }
 
@@ -79,6 +80,7 @@ class BuckarooApiException extends \Exception
     public function setStatuscode(int $statuscode): BuckarooApiException
     {
         $this->statuscode = $statuscode;
+
         return $this;
     }
 }

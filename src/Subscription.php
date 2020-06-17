@@ -1,6 +1,5 @@
 <?php namespace LamaLama\LaravelBuckaroo;
 
-
 class Subscription
 {
     /**
@@ -29,6 +28,4 @@ class Subscription
         $this->ratePlanCode = $ratePlanCode;
         $this->configurationCode = $configurationCode;
     }
-
-
 }

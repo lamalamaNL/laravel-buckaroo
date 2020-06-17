@@ -1,6 +1,5 @@
 <?php namespace LamaLama\LaravelBuckaroo\Tests\Unit;
 
-
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -23,7 +22,6 @@ class BackarooApiExceptionTest extends TestCase
         $exception = $this->createException($statusCode);
         $buckarooException = BuckarooApiException::createFromException($exception);
         $this->assertEquals($statusCode, $buckarooException->toResponse()->getStatusCode());
-
     }
 
     /** @test */
@@ -34,7 +32,6 @@ class BackarooApiExceptionTest extends TestCase
         $buckarooException = BuckarooApiException::createFromException($exception);
         $body = json_decode($buckarooException->toResponse()->getContent(), true);
         $this->assertArrayNotHasKey('response_from_buckaroo', $body);
-
     }
 
     /** @test */
@@ -47,23 +44,22 @@ class BackarooApiExceptionTest extends TestCase
         $body = json_decode($buckarooException->toResponse()->getContent(), true);
         $this->assertArrayHasKey('response_from_buckaroo', $body);
         $this->assertEquals(json_encode($buckApiMessage, true), $body['response_from_buckaroo']);
-
     }
 
 
     private function createException($statusCode = 500, $message = 'Something went wrong', $body = [
             'status' => 'failed',
-            'reason' => 'testing'
+            'reason' => 'testing',
         ]) : BadResponseException
     {
         $request = new Request('POST', 'http://test.com/test');
         $response = new Response($statusCode, [
             'headers' => [
-                'Content-type' => 'application/json'
-            ]
+                'Content-type' => 'application/json',
+            ],
         ], json_encode($body));
         $testResponse = new BadResponseException($message, $request, $response);
+
         return $testResponse;
     }
-
 }

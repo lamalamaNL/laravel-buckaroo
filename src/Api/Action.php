@@ -1,6 +1,5 @@
 <?php namespace LamaLama\LaravelBuckaroo\Api;
 
-
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 
 class Action
@@ -12,7 +11,8 @@ class Action
     protected $throwExceptionAtParseError = false;
 
 
-    public function __construct(string $rawResponse, bool $trhowExceptionAtParseError = false) {
+    public function __construct(string $rawResponse, bool $trhowExceptionAtParseError = false)
+    {
         $this->throwExceptionAtParseError = $trhowExceptionAtParseError;
         $this->parseRawResponse($rawResponse);
     }
@@ -23,6 +23,7 @@ class Action
         $this->status = $this->getFromResponse('Status.Code.Code');
         if (in_array($this->status, $this->failedStatuses)) {
             $reason = $this->getFromResponse('Status.Code.Description', true);
+
             throw (new BuckarooApiException("Unsuccesfull PSP api call, status $this->status: $reason"))
                     ->setApiResponseBody($this->rawResponse)
                     ->setStatuscode($this->status);
@@ -34,10 +35,11 @@ class Action
         try {
             return $this->getNestedValueFromArray($this->rawResponse, $key);
         } catch (\Exception $e) {
-            if($this->throwExceptionAtParseError) {
-                if(!is_null($throwExceptionOverride) && $throwExceptionOverride === true) {
+            if ($this->throwExceptionAtParseError) {
+                if (! is_null($throwExceptionOverride) && $throwExceptionOverride === true) {
                     return null;
                 }
+
                 throw (new BuckarooApiException("Can not get $key from PSP response"))
                     ->setApiResponseBody($this->rawResponse);
             }
@@ -54,8 +56,7 @@ class Action
             return $result;
         }
 
-        return $this->getNestedValueFromArray($result, $key, $level+1);
-
+        return $this->getNestedValueFromArray($result, $key, $level + 1);
     }
 
 
@@ -66,6 +67,4 @@ class Action
     {
         return $this->status;
     }
-
-
 }
