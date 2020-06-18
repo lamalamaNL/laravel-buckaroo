@@ -17,7 +17,7 @@ class Buckaroo
     }
 
 
-    public function subscribeAndPay(Subscription $subscription, Payment $payment, $customer)
+    public function subscribeAndPay(Subscription $subscription, Payment $payment, $customer = null)
     {
         // TODO: Create Subscription model + migration
         // TODO: Create Payment model + migration
