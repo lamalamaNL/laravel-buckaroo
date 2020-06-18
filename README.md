@@ -5,6 +5,12 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-buckaroo-ed.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-buckaroo-ed)
 
 
+## Running tests
+```
+composer test
+```
+
+
 ## Exception handling
 The package will throw a BuckarooApiException when things 
 go wrong with API calls to buckaroo. If not catched an json 
@@ -19,6 +25,18 @@ Todo: Add error example
 ``LamaLama\LaravelBuckaroo\Api\Action``: The result of an
 buckaroo API request. 
 
+
+
+
+
+
+
+
+-------
+-------
+-------
+-------
+# Needs an updating
 
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
