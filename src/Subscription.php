@@ -3,8 +3,6 @@
 namespace LamaLama\LaravelBuckaroo;
 
 use Illuminate\Database\Eloquent\Model;
-use LamaLama\LaravelBuckaroo\Customer;
-use LamaLama\LaravelBuckaroo\Payment;
 
 class Subscription extends Model
 {

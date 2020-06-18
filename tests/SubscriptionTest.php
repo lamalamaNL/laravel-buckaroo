@@ -5,10 +5,10 @@ namespace LamaLama\LaravelBuckaroo\Tests;
 use GuzzleHttp\Psr7\Response;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
+use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
-use LamaLama\LaravelBuckaroo\Customer;
 
 class SubscriptionTest extends TestCase
 {
@@ -61,7 +61,7 @@ class SubscriptionTest extends TestCase
             'zipcode' => '0000AA',
             'city' => 'Amsterdam',
             'culture' => 'nl-NL',
-            'country' => 'NL'
+            'country' => 'NL',
         ];
         $customer = new Customer($fillable);
 
@@ -72,7 +72,7 @@ class SubscriptionTest extends TestCase
             'ratePlanCode' => 'u24atwfd',
             'configurationCode' => 'ea2pvc5w',
             'code' => 'AapjeTest',
-            'SubscriptionGuid' => null
+            'SubscriptionGuid' => null,
         ];
         $sub = new Subscription($fillable);
 
@@ -83,7 +83,7 @@ class SubscriptionTest extends TestCase
             'status' => 'open',
             'service' => 'ideal',
             'issuer' => 'RABO',
-            'transactionId' => null
+            'transactionId' => null,
         ];
         $payment = new Payment($fillable);
         $this->expectException(BuckarooApiException::class);

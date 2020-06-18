@@ -4,10 +4,6 @@ namespace LamaLama\LaravelBuckaroo;
 
 use Carbon\Carbon;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
-use LamaLama\LaravelBuckaroo\Payment;
-use LamaLama\LaravelBuckaroo\Subscription;
-use LamaLama\LaravelBuckaroo\Customer;
-use LamaLama\LaravelBuckaroo\BuckarooResponse;
 
 class Buckaroo
 {
@@ -27,9 +23,9 @@ class Buckaroo
     {
         $payload = $this->getTestPayload($customer, $subscription, $payment);
         // try {
-            $result = $this->api->fetch('POST', 'json/Transaction', $payload);
+        $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         // } catch (BuckarooApiException $e) {
-           // dd($e);
+        // dd($e);
         // }
         $result = ['status' => 200, 'redirectUrl' => 'www.wwwdotcom.com'];
 
