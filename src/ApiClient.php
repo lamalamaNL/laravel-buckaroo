@@ -1,12 +1,9 @@
 <?php namespace LamaLama\LaravelBuckaroo;
 
-
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
-use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use LamaLama\LaravelBuckaroo\Api\Action;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
@@ -26,14 +23,14 @@ class ApiClient
         $this->apiSecret = config('buckaroo.secret');
 
         $config = [
-            'headers'  => [
-                'Accept'       => 'application/json',
-                'Content-type' => 'application/json'
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-type' => 'application/json',
             ],
-            'debug' => false
+            'debug' => false,
         ];
-        if (!is_null($mocks)) {
-           $config['handler'] = $this->createMockResponses($mocks);
+        if (! is_null($mocks)) {
+            $config['handler'] = $this->createMockResponses($mocks);
         }
 
 
@@ -43,7 +40,7 @@ class ApiClient
 
     public function fetch(string $method, string $path, array $payload = []) : Action
     {
-        $hasPayload = !in_array(strtoupper($method), $this->requestWithoutPayload);
+        $hasPayload = ! in_array(strtoupper($method), $this->requestWithoutPayload);
         $md5 = md5(json_encode($payload), true);
         $hmacPost = $hasPayload ? base64_encode($md5) : '';
         $uri = strtolower(urlencode($this->getUri($path, true)));
@@ -56,12 +53,13 @@ class ApiClient
 
         $options = [
             'headers' => [
-                'Authorization' => $authHeader
-            ]
+                'Authorization' => $authHeader,
+            ],
         ];
-        if($hasPayload) {
+        if ($hasPayload) {
             $options['json'] = $payload;
         }
+
         try {
             $response = $this->httpClient->request($method, $this->getUri($path), $options);
             $action = new Action((string) $response->getBody(), true);
@@ -82,6 +80,7 @@ class ApiClient
             if (count($parts) > 0) {
                 return $parts[1];
             }
+
             return $uri;
         }
 
@@ -96,6 +95,7 @@ class ApiClient
     private function createMockResponses($mocks) : HandlerStack
     {
         $mock = new MockHandler($mocks);
+
         return HandlerStack::create($mock);
     }
 }

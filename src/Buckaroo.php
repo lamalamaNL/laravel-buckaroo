@@ -1,6 +1,5 @@
 <?php namespace LamaLama\LaravelBuckaroo;
 
-
 use Carbon\Carbon;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 
@@ -12,7 +11,8 @@ class Buckaroo
      * Buckaroo constructor.
      * @param $api
      */
-    public function __construct(ApiClient $api) {
+    public function __construct(ApiClient $api)
+    {
         $this->api = $api;
     }
 
@@ -25,7 +25,7 @@ class Buckaroo
         // TODO: Refactor getTestPayload() to use real values from objects
         $payload = $this->getTestPayload();
         //try {
-            $result = $this->api->fetch('POST', 'json/Transaction', $payload);
+        $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         //} catch (BuckarooApiException $e) {
         //    dd($e);
         //}
@@ -57,13 +57,13 @@ class Buckaroo
                             [
                                 'Name' => 'issuer',
                                 'Value' => 'ABNANL2A',
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                     [
                         'Name' => 'Subscriptions',
                         'Action' => 'CreateCombinedSubscription',
-                        'Parameters' =>[
+                        'Parameters' => [
                             [
                                 'Name' => 'StartDate',
                                 'GroupType' => 'AddRatePlan',
@@ -159,15 +159,13 @@ class Buckaroo
                                 'GroupType' => 'Phone',
                                 'GroupID' => '',
                                 'Value' => '0612345678',
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         return $params;
     }
-
-
 }

@@ -37,13 +37,12 @@ class SubscriptionTest extends TestCase
     /** @test */
     public function it_will_throw_a_491_error_when_using_incorrect_paramenters()
     {
-
         if ($this->mockApi) {
-            $this->app->bind(ApiClient::class, function() {
+            $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
                     new Response(200, [
-                        'Content-Type' => 'application/json'
-                    ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_error_491.json'))
+                        'Content-Type' => 'application/json',
+                    ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_error_491.json')),
                 ]);
             });
         }
@@ -55,8 +54,6 @@ class SubscriptionTest extends TestCase
         $buckaroo->subscribeAndPay($sub, $payment);
 
         // TODO: Check for 419 status
-
-
     }
 
 
@@ -68,4 +65,3 @@ class SubscriptionTest extends TestCase
         $this->assertTrue(true);
     }
 }
-
