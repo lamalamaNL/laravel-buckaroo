@@ -1,7 +1,13 @@
-<?php namespace LamaLama\LaravelBuckaroo;
+<?php
+
+namespace LamaLama\LaravelBuckaroo;
 
 use Carbon\Carbon;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
+use LamaLama\LaravelBuckaroo\Payment;
+use LamaLama\LaravelBuckaroo\Subscription;
+use LamaLama\LaravelBuckaroo\Customer;
+use LamaLama\LaravelBuckaroo\BuckarooResponse;
 
 class Buckaroo
 {
@@ -17,20 +23,17 @@ class Buckaroo
     }
 
 
-    public function subscribeAndPay(Subscription $subscription, Payment $payment, $customer = null)
+    public function subscribeAndPay(Customer $customer, Subscription $subscription, Payment $payment): BuckarooResponse
     {
-        // TODO: Create Subscription model + migration
-        // TODO: Create Payment model + migration
-        // TODO: Create Customer model + migration
-        // TODO: Refactor getTestPayload() to use real values from objects
-        $payload = $this->getTestPayload();
-        //try {
-        $result = $this->api->fetch('POST', 'json/Transaction', $payload);
-        //} catch (BuckarooApiException $e) {
-        //    dd($e);
-        //}
+        $payload = $this->getTestPayload($customer, $subscription, $payment);
+        // try {
+            $result = $this->api->fetch('POST', 'json/Transaction', $payload);
+        // } catch (BuckarooApiException $e) {
+           // dd($e);
+        // }
+        $result = ['status' => 200, 'redirectUrl' => 'www.wwwdotcom.com'];
 
-        // TODO: Create and return a new response object that contains, redirectUrl, rawResponse from Buckaroo, $subscription, $payment, $customer, more essential info from buckaroo response
+        return new BuckarooResponse($result['redirectUrl'], $result['status'], $result, $customer, $subscription, $payment);
     }
 
     public function getPaymentOptions()
@@ -41,22 +44,22 @@ class Buckaroo
     }
 
 
-    private function getTestPayload()
+    private function getTestPayload(Customer $customer, Subscription $subscription, Payment $payment)
     {
         $params = [
-            'Currency' => 'EUR',
+            'Currency' => $payment->currency,
             'StartRecurrent' => 'true',
-            'AmountDebit' => 10,
+            'AmountDebit' => $payment->amount,
             'Invoice' => 'testsub1',
             'Services' => [
                 'ServiceList' => [
                     [
-                        'Name' => 'ideal',
+                        'Name' => $payment->service,
                         'Action' => 'Pay',
                         'Parameters' => [
                             [
                                 'Name' => 'issuer',
-                                'Value' => 'ABNANL2A',
+                                'Value' => $payment->issuer,
                             ],
                         ],
                     ],
@@ -68,97 +71,96 @@ class Buckaroo
                                 'Name' => 'StartDate',
                                 'GroupType' => 'AddRatePlan',
                                 'GroupID' => '',
-                                //'Value' => '03-08-2017',
-                                'Value' => Carbon::now()->format('d-m-Y'),
+                                'Value' => Carbon::parse($subscription->startDate)->format('d-m-Y'),
                             ],
                             [
                                 'Name' => 'RatePlanCode',
                                 'GroupType' => 'AddRatePlan',
                                 'GroupID' => '',
-                                'Value' => 'u24atwfd',
+                                'Value' => $subscription->ratePlanCode,
                             ],
                             [
                                 'Name' => 'ConfigurationCode',
-                                'Value' => 'ea2pvc5w',
+                                'Value' => $subscription->configurationCode,
                             ],
                             [
                                 'Name' => 'Code',
                                 'GroupType' => 'Debtor',
                                 'GroupID' => '',
-                                'Value' => 'AapjeTest',
+                                'Value' => $subscription->code,
                             ],
                             [
                                 'Name' => 'FirstName',
                                 'GroupType' => 'Person',
                                 'GroupID' => '',
-                                'Value' => 'Aapje',
+                                'Value' => $customer->firstName,
                             ],
                             [
                                 'Name' => 'LastName',
                                 'GroupType' => 'Person',
                                 'GroupID' => '',
-                                'Value' => 'de Tester',
+                                'Value' => $customer->lastName,
                             ],
                             [
                                 'Name' => 'Gender',
                                 'GroupType' => 'Person',
                                 'GroupID' => '',
-                                'Value' => '1',
+                                'Value' => $customer->gender,
                             ],
                             [
                                 'Name' => 'Culture',
                                 'GroupType' => 'Person',
                                 'GroupID' => '',
-                                'Value' => 'nl-NL',
+                                'Value' => $customer->culture,
                             ],
                             [
                                 'Name' => 'BirthDate',
                                 'GroupType' => 'Person',
                                 'GroupID' => '',
-                                'Value' => '01-01-1990',
+                                'Value' => Carbon::parse($customer->birthDate)->format('d-m-Y'),
                             ],
                             [
                                 'Name' => 'Street',
                                 'GroupType' => 'Address',
                                 'GroupID' => '',
-                                'Value' => 'Hoofdstraat',
+                                'Value' => $customer->street,
                             ],
                             [
                                 'Name' => 'HouseNumber',
                                 'GroupType' => 'Address',
                                 'GroupID' => '',
-                                'Value' => '90',
+                                'Value' => $customer->houseNumber,
                             ],
                             [
                                 'Name' => 'ZipCode',
                                 'GroupType' => 'Address',
                                 'GroupID' => '',
-                                'Value' => '8441ER',
+                                'Value' => $customer->zipcode,
                             ],
 
                             [
                                 'Name' => 'City',
                                 'GroupType' => 'Address',
                                 'GroupID' => '',
-                                'Value' => 'Heerenveen',
+                                'Value' => $customer->city,
                             ],
                             [
                                 'Name' => 'Country',
                                 'GroupType' => 'Address',
                                 'GroupID' => '',
-                                'Value' => 'NL',
+                                'Value' => $customer->country,
                             ],
                             [
                                 'Name' => 'Email',
                                 'GroupType' => 'Email',
                                 'GroupID' => '',
-                                'Value' => 'xxx@xxx.nl',
+                                'Value' => $customer->email,
                             ],
                             [
                                 'Name' => 'Mobile',
                                 'GroupType' => 'Phone',
                                 'GroupID' => '',
-                                'Value' => '0612345678',
+                                'Value' => $customer->phone,
                             ],
                         ],
                     ],

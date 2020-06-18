@@ -1,4 +1,6 @@
-<?php namespace LamaLama\LaravelBuckaroo\Tests\Unit;
+<?php 
+
+namespace LamaLama\LaravelBuckaroo\Tests\Unit;
 
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;

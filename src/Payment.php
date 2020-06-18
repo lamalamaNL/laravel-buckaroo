@@ -1,18 +1,16 @@
-<?php namespace LamaLama\LaravelBuckaroo;
+<?php
 
-class Payment
+namespace LamaLama\LaravelBuckaroo;
+
+use Illuminate\Database\Eloquent\Model;
+use LamaLama\LaravelBuckaroo\Subscription;
+
+class Payment extends Model
 {
-    /**
-     * @var string
-     */
-    protected $method;
-
-    /**
-     * Payment constructor.
-     * @param string $method
-     */
-    public function __construct(string $method)
+    protected $fillable = ['subscription_id', 'amount', 'currency', 'status', 'service', 'issuer', 'transactionId'];
+    
+    public function subscription()
     {
-        $this->method = $method;
+        return $this->belongsTo(Subscription::class);
     }
 }

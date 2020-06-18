@@ -8,6 +8,7 @@ use LamaLama\LaravelBuckaroo\Buckaroo;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
+use LamaLama\LaravelBuckaroo\Customer;
 
 class SubscriptionTest extends TestCase
 {
@@ -20,9 +21,9 @@ class SubscriptionTest extends TestCase
         if ($this->mockApi) {
             $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
-                    new Response(200, [
-                        'Content-Type' => 'application/json',
-                    ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_error_491.json')),
+                new Response(200, [
+                    'Content-Type' => 'application/json',
+                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_error_491.json')),
                 ]);
             });
         }
@@ -39,19 +40,55 @@ class SubscriptionTest extends TestCase
         if ($this->mockApi) {
             $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
-                    new Response(200, [
-                        'Content-Type' => 'application/json',
-                    ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_error_491.json')),
+                new Response(200, [
+                'Content-Type' => 'application/json',
+                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_error_491.json')),
                 ]);
             });
         }
 
+        // TODO mode fillables to json files
         $buckaroo = $this->app->make(Buckaroo::class);
-        $sub = new Subscription(new \DateTime(), 'u24atwfd', '????');
-        $payment = new Payment('ideal');
-        $this->expectException(BuckarooApiException::class);
-        $buckaroo->subscribeAndPay($sub, $payment);
+        $fillable = [
+            'email' => 'john_smith@lamalama.nl',
+            'phone' => '06-555555555',
+            'firstName' => 'john',
+            'lastName' => 'smith',
+            'gender' => '1',
+            'birthDate' => '01-01-2000',
+            'street' => 'bara straat',
+            'houseNumber' => '5',
+            'zipcode' => '0000AA',
+            'city' => 'Amsterdam',
+            'culture' => 'nl-NL',
+            'country' => 'NL'
+        ];
+        $customer = new Customer($fillable);
 
+        $fillable = [
+            'customer_id' => $customer->id,
+            'includeTransaction' => '????',
+            'startDate' => new \DateTime(),
+            'ratePlanCode' => 'u24atwfd',
+            'configurationCode' => 'ea2pvc5w',
+            'code' => 'AapjeTest',
+            'SubscriptionGuid' => null
+        ];
+        $sub = new Subscription($fillable);
+
+        $fillable = [
+            'subscription_id' => $sub->id,
+            'amount' => 10,
+            'currency' => 'EUR',
+            'status' => 'open',
+            'service' => 'ideal',
+            'issuer' => 'RABO',
+            'transactionId' => null
+        ];
+        $payment = new Payment($fillable);
+        $this->expectException(BuckarooApiException::class);
+        $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
+        dd($buckarooResponse);
         // TODO: Check for 419 status
     }
 

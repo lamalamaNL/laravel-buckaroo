@@ -1,31 +1,22 @@
-<?php namespace LamaLama\LaravelBuckaroo;
+<?php
 
-class Subscription
+namespace LamaLama\LaravelBuckaroo;
+
+use Illuminate\Database\Eloquent\Model;
+use LamaLama\LaravelBuckaroo\Customer;
+use LamaLama\LaravelBuckaroo\Payment;
+
+class Subscription extends Model
 {
-    /**
-     * @var \DateTime
-     */
-    protected $startdate;
-    /**
-     * @var string
-     */
-    protected $ratePlanCode;
-    /**
-     * @var string
-     */
-    protected $configurationCode;
-
-
-    /**
-     * Subscription constructor.
-     * @param \DateTime $startdate
-     * @param string $ratePlanCode
-     * @param string $configurationCode
-     */
-    public function __construct(\DateTime $startdate, string $ratePlanCode, string $configurationCode)
+    protected $fillable = ['customer_id', 'includeTransaction', 'startDate', 'ratePlanCode', 'configurationCode', 'code', 'SubscriptionGuid'];
+    
+    public function customer()
     {
-        $this->startdate = $startdate;
-        $this->ratePlanCode = $ratePlanCode;
-        $this->configurationCode = $configurationCode;
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace LamaLama\LaravelBuckaroo;
+<?php
+
+namespace LamaLama\LaravelBuckaroo;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;

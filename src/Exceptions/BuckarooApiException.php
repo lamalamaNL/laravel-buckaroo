@@ -1,4 +1,6 @@
-<?php namespace LamaLama\LaravelBuckaroo\Exceptions;
+<?php
+
+namespace LamaLama\LaravelBuckaroo\Exceptions;
 
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\JsonResponse;
