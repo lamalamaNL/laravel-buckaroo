@@ -17,14 +17,20 @@ class Buckaroo
     }
 
 
-    public function subscribeAndPay(Subscription $subscription, Payment $payment)
+    public function subscribeAndPay(Subscription $subscription, Payment $payment, $customer)
     {
+        // TODO: Create Subscription model + migration
+        // TODO: Create Payment model + migration
+        // TODO: Create Customer model + migration
+        // TODO: Refactor getTestPayload() to use real values from objects
         $payload = $this->getTestPayload();
         //try {
             $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         //} catch (BuckarooApiException $e) {
         //    dd($e);
         //}
+
+        // TODO: Create and return a new response object that contains, redirectUrl, rawResponse from Buckaroo, $subscription, $payment, $customer, more essential info from buckaroo response
     }
 
     public function getPaymentOptions()
