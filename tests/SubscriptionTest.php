@@ -18,11 +18,11 @@ class SubscriptionTest extends TestCase
     {
         // TODO: Change mock response to: https://dev.buckaroo.nl/AdditionalServices/Description/subscriptions#createcombinedsubscription (response)
         if ($this->mockApi) {
-            $this->app->bind(ApiClient::class, function() {
+            $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
                     new Response(200, [
-                        'Content-Type' => 'application/json'
-                    ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_error_491.json'))
+                        'Content-Type' => 'application/json',
+                    ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_error_491.json')),
                 ]);
             });
         }
@@ -31,7 +31,6 @@ class SubscriptionTest extends TestCase
     public function it_will_handle_the_webhook_and_update_internal_status()
     {
         // TODO: Change mock response to: https://dev.buckaroo.nl/AdditionalServices/Description/subscriptions#createcombinedsubscription (push)
-
     }
 
     /** @test */
