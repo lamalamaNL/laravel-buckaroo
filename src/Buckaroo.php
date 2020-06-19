@@ -3,7 +3,6 @@
 namespace LamaLama\LaravelBuckaroo;
 
 use Carbon\Carbon;
-use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 
 class Buckaroo
@@ -23,8 +22,8 @@ class Buckaroo
     {
         $payload = $this->getTestPayload($customer, $subscription, $payment);
         // try {
-            $result = $this->api->fetch('POST', 'json/Transaction', $payload);
-            $rawResponse = $result->getRawResponse();
+        $result = $this->api->fetch('POST', 'json/Transaction', $payload);
+        $rawResponse = $result->getRawResponse();
         // } catch (BuckarooApiException $e) {
         //     dd($e);
         // }
@@ -49,6 +48,7 @@ class Buckaroo
         $payment->save();
 
         $redirectUrl = isset($rawResponse['RequiredAction']['RedirectURL']) ? $rawResponse['RequiredAction']['RedirectURL'] : null;
+
         return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, $subscription, $payment);
     }
 
@@ -63,8 +63,8 @@ class Buckaroo
     public function handleWebhook()
     {
         // try {
-            $result = $this->api->fetch('POST', 'json/Transaction');
-            $rawResponse = $result->getRawResponse();
+        $result = $this->api->fetch('POST', 'json/Transaction');
+        $rawResponse = $result->getRawResponse();
         // } catch (BuckarooApiException $e) {
         //     dd($e);
         // }
@@ -78,14 +78,14 @@ class Buckaroo
 
     private function getTestPayload(Customer $customer, Subscription $subscription, Payment $payment)
     {
-        if (!$subscription) {
+        if (! $subscription) {
             $params = [
               "Currency" => $payment->currency,
               "AmountDebit" => $payment->amount,
               "Invoice" => "testPayment 10",
               "ClientIP" => [
                   "Type" => 0,
-                  "Address" => "0.0.0.0"
+                  "Address" => "0.0.0.0",
                ],
               "Services" => [
                 "ServiceList" => [
@@ -95,13 +95,14 @@ class Buckaroo
                     "Parameters" => [
                       [
                         "Name" => "issuer",
-                        "Value" => $payment->issuer
-                      ]
-                    ]
-                  ]
-                ]
-              ]
+                        "Value" => $payment->issuer,
+                      ],
+                    ],
+                  ],
+                ],
+              ],
             ];
+
             return $params;
         }
 
