@@ -1,0 +1,78 @@
+{
+  "Key": "723AE30D9C234A0B869E1E881832xxxx",
+  "Status": {
+    "Code": {
+      "Code": 791,
+      "Description": "Pending processing"
+    },
+    "SubCode": {
+      "Code": "S002",
+      "Description": "An additional action is required: RedirectToIdeal"
+    },
+    "DateTime": "2017-08-03T10:27:49"
+  },
+  "RequiredAction": {
+    "RedirectURL": "https://testcheckout.buckaroo.nl/html/redirect.ashx?r=7918A7BB505A48C684A5BF0A76B2xxxx",
+    "RequestedInformation": null,
+    "PayRemainderDetails": null,
+    "Name": "Redirect",
+    "TypeDeprecated": 0
+  },
+  "Services": [
+    {
+      "Name": "Subscriptions",
+      "Action": null,
+      "Parameters": [
+        {
+          "Name": "SubscriptionGuid",
+          "Value": "7E1B40A25F194D7CA0358A05B83Dxxxx"
+        },
+        {
+          "Name": "Subscription_RatePlanGuid_gvn1fxxx",
+          "Value": "CBC6ECF6BD9843D39A347E46C8CBxxxx"
+        },
+        {
+          "Name": "Subscription_RatePlanChargeGuid_at4hbxxx",
+          "Value": "AC941EE042684F5882AA5563720Exxxx"
+        },
+        {
+          "Name": "Subscription_RatePlanChargeGuid_trwhhxxx",
+          "Value": "6E759FAB0F2A40439B03B2A43314xxxx"
+        }
+      ]
+    },
+    {
+      "Name": "ideal",
+      "Action": null,
+      "Parameters": [
+        {
+          "Name": "consumerIssuer",
+          "Value": "ABN Amro"
+        },
+        {
+          "Name": "transactionId",
+          "Value": "0000000000000001"
+        }
+      ]
+    }
+  ],
+  "CustomParameters": null,
+  "AdditionalParameters": null,
+  "RequestErrors": null,
+  "Invoice": "testsub1",
+  "ServiceCode": "ideal",
+  "IsTest": true,
+  "Currency": "EUR",
+  "AmountDebit": 10,
+  "TransactionType": "C021",
+  "MutationType": 1,
+  "RelatedTransactions": null,
+  "ConsumerMessage": null,
+  "Order": null,
+  "IssuingCountry": null,
+  "StartRecurrent": true,
+  "Recurring": false,
+  "CustomerName": null,
+  "PayerHash": null,
+  "PaymentKey": "B42F96DD9E9A473495171B0E9201xxxx"
+}

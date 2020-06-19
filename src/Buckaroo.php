@@ -27,8 +27,8 @@ class Buckaroo
         // } catch (BuckarooApiException $e) {
         // dd($e);
         // }
-        $result = ['status' => 200, 'redirectUrl' => 'www.wwwdotcom.com'];
-
+        //$result = ['status' => 200, 'redirectUrl' => 'www.wwwdotcom.com'];
+        // TODO: get redirecut and status from response
         return new BuckarooResponse($result['redirectUrl'], $result['status'], $result, $customer, $subscription, $payment);
     }
 
