@@ -69,8 +69,6 @@ class SubscriptionTest extends TestCase
         $payment = new Payment($fillable);
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
         dd($buckarooResponse);
-
-
     }
 
     public function it_will_handle_the_webhook_and_update_internal_status()
