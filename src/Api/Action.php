@@ -1,4 +1,6 @@
-<?php namespace LamaLama\LaravelBuckaroo\Api;
+<?php
+
+namespace LamaLama\LaravelBuckaroo\Api;
 
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 
@@ -11,18 +13,23 @@ class Action
     protected $throwExceptionAtParseError = false;
 
 
-    public function __construct(string $rawResponse, bool $trhowExceptionAtParseError = false)
+    public function __construct(string $rawResponse, bool $throwExceptionAtParseError = false)
     {
-        $this->throwExceptionAtParseError = $trhowExceptionAtParseError;
+        $this->throwExceptionAtParseError = $throwExceptionAtParseError;
         $this->parseRawResponse($rawResponse);
     }
 
     public function parseRawResponse(string $rawResponse)
     {
         $this->rawResponse = json_decode($rawResponse, true);
-        $this->status = $this->getFromResponse('Status.Code.Code');
+
+        $nestedValue = 'Status.Code';
+        if (isset($this->rawResponse['Transaction']['Status']['Code'])) {
+            $nestedValue = 'Transaction.Status.Code';
+        }
+        $this->status = $this->getFromResponse($nestedValue . '.Code');
         if (in_array($this->status, $this->failedStatuses)) {
-            $reason = $this->getFromResponse('Status.Code.Description', true);
+            $reason = $this->getFromResponse($nestedValue . '.Description', true);
 
             throw (new BuckarooApiException("Unsuccesfull PSP api call, status $this->status: $reason"))
                     ->setApiResponseBody($this->rawResponse)
@@ -30,7 +37,7 @@ class Action
         }
     }
 
-    private function getFromResponse(string $key,  $throwExceptionOverride = null)
+    private function getFromResponse(string $key, $throwExceptionOverride = null)
     {
         try {
             return $this->getNestedValueFromArray($this->rawResponse, $key);
@@ -66,5 +73,13 @@ class Action
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @return null
+     */
+    public function getRawResponse()
+    {
+        return $this->rawResponse;
     }
 }

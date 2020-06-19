@@ -8,8 +8,8 @@ class Payment extends Model
 {
     protected $fillable = ['subscription_id', 'amount', 'currency', 'status', 'service', 'issuer', 'transactionId'];
     
-    public function subscription()
+    public function customer()
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->belongsTo(Customer::class);
     }
 }

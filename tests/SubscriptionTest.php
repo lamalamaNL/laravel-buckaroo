@@ -14,16 +14,14 @@ class SubscriptionTest extends TestCase
 {
     protected $mockApi = true;
 
-    /** @test */
     public function it_will_create_succesfully_create_a_subscription_with_payment()
     {
-        // TODO: Change mock response to: https://dev.buckaroo.nl/AdditionalServices/Description/subscriptions#createcombinedsubscription (response)
         if ($this->mockApi) {
             $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
                 new Response(200, [
-                    'Content-Type' => 'application/json',
-                ], file_get_contents(__DIR__ . '/api_response_mocks/test.json')),
+                'Content-Type' => 'application/json',
+                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_pending_791.json')),
                 ]);
             });
         }
@@ -68,12 +66,23 @@ class SubscriptionTest extends TestCase
         ];
         $payment = new Payment($fillable);
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
-        dd($buckarooResponse);
     }
 
+    /** @test */
     public function it_will_handle_the_webhook_and_update_internal_status()
     {
-        // TODO: Change mock response to: https://dev.buckaroo.nl/AdditionalServices/Description/subscriptions#createcombinedsubscription (push)
+        if ($this->mockApi) {
+            $this->app->bind(ApiClient::class, function () {
+                return new ApiClient([
+                new Response(200, [
+                'Content-Type' => 'application/json',
+                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_success_190.json')),
+                ]);
+            });
+        }
+
+        $buckaroo = $this->app->make(Buckaroo::class);
+        $buckarooResponse = $buckaroo->handleWebhook();
     }
 
 
@@ -130,7 +139,6 @@ class SubscriptionTest extends TestCase
         $payment = new Payment($fillable);
         $this->expectException(BuckarooApiException::class);
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
-        dd($buckarooResponse);
         // TODO: Check for 419 status
     }
 

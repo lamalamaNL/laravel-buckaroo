@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.3",
         "guzzlehttp/guzzle": "^6.5"
     },
     "require-dev": {
@@ -48,11 +48,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
-            }
+                "LamaLama\\LaravelBuckaroo\\BuckarooServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",

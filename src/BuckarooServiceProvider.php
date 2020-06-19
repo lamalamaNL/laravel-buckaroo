@@ -3,7 +3,8 @@
 namespace LamaLama\LaravelBuckaroo;
 
 use Illuminate\Support\ServiceProvider;
-use LamaLama\LaravelBuckaroo\Commands\SkeletonCommand;
+
+// use LamaLama\LaravelBuckaroo\Commands\SkeletonCommand;
 
 class BuckarooServiceProvider extends ServiceProvider
 {
