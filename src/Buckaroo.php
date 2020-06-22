@@ -83,7 +83,7 @@ class Buckaroo
     }
 
 
-    private function getPayload(Customer $customer, Subscription $subscription, Payment $payment)
+    private function getPayload(Customer $customer, ?Subscription $subscription, Payment $payment)
     {
         $params = [
           "Currency" => $payment->currency,
@@ -125,116 +125,122 @@ class Buckaroo
                 break;
         }
         
-
-        $params = array_merge($params, [
-            'StartRecurrent' => 'true',
-            'Services' => [
-                'ServiceList' => [
-                    [
-                        'Name' => 'Subscriptions',
-                        'Action' => 'CreateCombinedSubscription',
-                        'Parameters' => [
-                            [
-                                'Name' => 'StartDate',
-                                'GroupType' => 'AddRatePlan',
-                                'GroupID' => '',
-                                'Value' => Carbon::parse($subscription->startDate)->format('d-m-Y'),
-                            ],
-                            [
-                                'Name' => 'RatePlanCode',
-                                'GroupType' => 'AddRatePlan',
-                                'GroupID' => '',
-                                'Value' => $subscription->ratePlanCode,
-                            ],
-                            [
-                                'Name' => 'ConfigurationCode',
-                                'Value' => $subscription->configurationCode,
-                            ],
-                            [
-                                'Name' => 'Code',
-                                'GroupType' => 'Debtor',
-                                'GroupID' => '',
-                                'Value' => $subscription->code,
-                            ],
-                            [
-                                'Name' => 'FirstName',
-                                'GroupType' => 'Person',
-                                'GroupID' => '',
-                                'Value' => $customer->firstName,
-                            ],
-                            [
-                                'Name' => 'LastName',
-                                'GroupType' => 'Person',
-                                'GroupID' => '',
-                                'Value' => $customer->lastName,
-                            ],
-                            [
-                                'Name' => 'Gender',
-                                'GroupType' => 'Person',
-                                'GroupID' => '',
-                                'Value' => $gender,
-                            ],
-                            [
-                                'Name' => 'Culture',
-                                'GroupType' => 'Person',
-                                'GroupID' => '',
-                                'Value' => $customer->culture,
-                            ],
-                            [
-                                'Name' => 'BirthDate',
-                                'GroupType' => 'Person',
-                                'GroupID' => '',
-                                'Value' => Carbon::parse($customer->birthDate)->format('d-m-Y'),
-                            ],
-                            [
-                                'Name' => 'Street',
-                                'GroupType' => 'Address',
-                                'GroupID' => '',
-                                'Value' => $customer->street,
-                            ],
-                            [
-                                'Name' => 'HouseNumber',
-                                'GroupType' => 'Address',
-                                'GroupID' => '',
-                                'Value' => $customer->houseNumber,
-                            ],
-                            [
-                                'Name' => 'ZipCode',
-                                'GroupType' => 'Address',
-                                'GroupID' => '',
-                                'Value' => $customer->zipcode,
-                            ],
-
-                            [
-                                'Name' => 'City',
-                                'GroupType' => 'Address',
-                                'GroupID' => '',
-                                'Value' => $customer->city,
-                            ],
-                            [
-                                'Name' => 'Country',
-                                'GroupType' => 'Address',
-                                'GroupID' => '',
-                                'Value' => $customer->country, // countryCode
-                            ],
-                            [
-                                'Name' => 'Email',
-                                'GroupType' => 'Email',
-                                'GroupID' => '',
-                                'Value' => $customer->email,
-                            ],
-                            [
-                                'Name' => 'Mobile',
-                                'GroupType' => 'Phone',
-                                'GroupID' => '',
-                                'Value' => $customer->phone,
-                            ],
-                        ],
-                    ],
+        $params['StartRecurrent'] = true;
+        $params['Services'] = [
+            'ServiceList' => [
+                [
+                    "Name" => $payment->service,
+                    "Action" => "Pay",
+                    "Parameters" => [
+                        [
+                            "Name" => "issuer",
+                            "Value" => isset($payment->issuer) ? $payment->issuer : null
+                        ]
+                    ]
                 ],
+                [
+                    'Name' => 'Subscriptions',
+                    'Action' => 'CreateCombinedSubscription',
+                    'Parameters' => [
+                        [
+                            'Name' => 'StartDate',
+                            'GroupType' => 'AddRatePlan',
+                            'GroupID' => '',
+                            'Value' => Carbon::parse($subscription->startDate)->format('d-m-Y'),
+                        ],
+                        [
+                            'Name' => 'RatePlanCode',
+                            'GroupType' => 'AddRatePlan',
+                            'GroupID' => '',
+                            'Value' => $subscription->ratePlanCode,
+                        ],
+                        [
+                            'Name' => 'ConfigurationCode',
+                            'Value' => $subscription->configurationCode,
+                        ],
+                        [
+                            'Name' => 'Code',
+                            'GroupType' => 'Debtor',
+                            'GroupID' => '',
+                            'Value' => $subscription->code,
+                        ],
+                        [
+                            'Name' => 'FirstName',
+                            'GroupType' => 'Person',
+                            'GroupID' => '',
+                            'Value' => $customer->firstName,
+                        ],
+                        [
+                            'Name' => 'LastName',
+                            'GroupType' => 'Person',
+                            'GroupID' => '',
+                            'Value' => $customer->lastName,
+                        ],
+                        [
+                            'Name' => 'Gender',
+                            'GroupType' => 'Person',
+                            'GroupID' => '',
+                            'Value' => $gender,
+                        ],
+                        [
+                            'Name' => 'Culture',
+                            'GroupType' => 'Person',
+                            'GroupID' => '',
+                            'Value' => $customer->culture,
+                        ],
+                        [
+                            'Name' => 'BirthDate',
+                            'GroupType' => 'Person',
+                            'GroupID' => '',
+                            'Value' => Carbon::parse($customer->birthDate)->format('d-m-Y'),
+                        ],
+                        [
+                            'Name' => 'Street',
+                            'GroupType' => 'Address',
+                            'GroupID' => '',
+                            'Value' => $customer->street,
+                        ],
+                        [
+                            'Name' => 'HouseNumber',
+                            'GroupType' => 'Address',
+                            'GroupID' => '',
+                            'Value' => $customer->houseNumber,
+                        ],
+                        [
+                            'Name' => 'ZipCode',
+                            'GroupType' => 'Address',
+                            'GroupID' => '',
+                            'Value' => $customer->zipcode,
+                        ],
+
+                        [
+                            'Name' => 'City',
+                            'GroupType' => 'Address',
+                            'GroupID' => '',
+                            'Value' => $customer->city,
+                        ],
+                        [
+                            'Name' => 'Country',
+                            'GroupType' => 'Address',
+                            'GroupID' => '',
+                            'Value' => $customer->country, // countryCode
+                        ],
+                        [
+                            'Name' => 'Email',
+                            'GroupType' => 'Email',
+                            'GroupID' => '',
+                            'Value' => $customer->email,
+                        ],
+                        [
+                            'Name' => 'Mobile',
+                            'GroupType' => 'Phone',
+                            'GroupID' => '',
+                            'Value' => $customer->phone,
+                        ],
+                      ],
+                      ],
             ],
-        ]);
- 
+        ];
         return $params;
     }
 }

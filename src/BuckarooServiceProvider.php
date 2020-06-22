@@ -10,6 +10,8 @@ class BuckarooServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        
+        $this->app->register(EventServiceProvider::class);
         /*
         if ($this->app->runningInConsole()) {
             $this->publishes([
