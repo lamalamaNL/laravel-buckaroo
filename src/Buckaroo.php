@@ -137,9 +137,9 @@ class Buckaroo
                     "Parameters" => [
                         [
                             "Name" => "issuer",
-                            "Value" => isset($payment->issuer) ? $payment->issuer : null
-                        ]
-                    ]
+                            "Value" => isset($payment->issuer) ? $payment->issuer : null,
+                        ],
+                    ],
                 ],
                 [
                     'Name' => 'Subscriptions',
@@ -244,6 +244,7 @@ class Buckaroo
                       ],
             ],
         ];
+
         return $params;
     }
 }
