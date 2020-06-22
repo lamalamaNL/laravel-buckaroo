@@ -5,8 +5,8 @@ namespace LamaLama\LaravelBuckaroo\Tests;
 use GuzzleHttp\Psr7\Response;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
-use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 use LamaLama\LaravelBuckaroo\Customer;
+use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
 

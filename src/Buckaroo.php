@@ -3,8 +3,6 @@
 namespace LamaLama\LaravelBuckaroo;
 
 use Carbon\Carbon;
-use LamaLama\LaravelBuckaroo\Payment;
-use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 
 class Buckaroo
 {
@@ -30,6 +28,7 @@ class Buckaroo
         $payment->save();
 
         $redirectUrl = isset($rawResponse['RequiredAction']['RedirectURL']) ? $rawResponse['RequiredAction']['RedirectURL'] : null;
+
         return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, $subscription, $payment);
     }
 
@@ -44,6 +43,7 @@ class Buckaroo
         $payment->save();
 
         $redirectUrl = isset($rawResponse['RequiredAction']['RedirectURL']) ? $rawResponse['RequiredAction']['RedirectURL'] : null;
+
         return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, $subscription, $payment);
     }
 
@@ -76,7 +76,7 @@ class Buckaroo
         if (isset($rawResponse['Transaction']['Status']['Code']['Code'])) {
             $statusCode = $rawResponse['Transaction']['Status']['Code']['Code'];
         }
-        $payment->status =  isset($statusCodeList[$statusCode]) ? $statusCodeList[$statusCode] : 'Unknown';
+        $payment->status = isset($statusCodeList[$statusCode]) ? $statusCodeList[$statusCode] : 'Unknown';
         $payment->save();
 
         return $payment;
@@ -91,7 +91,7 @@ class Buckaroo
           "Invoice" => config('buckaroo.invoiceTitle'),
           "ClientIP" => [
               "Type" => 0,
-              "Address" => $customer->ip
+              "Address" => $customer->ip,
            ],
           "Services" => [
             "ServiceList" => [
@@ -101,27 +101,30 @@ class Buckaroo
                 "Parameters" => [
                   [
                     "Name" => "issuer",
-                    "Value" => isset($payment->issuer) ? $payment->issuer : null
-                  ]
-                ]
-              ]
-            ]
-          ]
+                    "Value" => isset($payment->issuer) ? $payment->issuer : null,
+                  ],
+                ],
+              ],
+            ],
+          ],
         ];
 
-        if (!$subscription) {
+        if (! $subscription) {
             return $params;
         }
 
         switch ($customer->gender) {
             case 'male':
                 $gender = 1;
+
                 break;
             case 'female':
                 $gender = 1;
+
                 break;
             default:
                 $gender = 0;
+
                 break;
         }
         
