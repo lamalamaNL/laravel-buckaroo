@@ -234,7 +234,7 @@ class Buckaroo
                 ],
             ],
         ]);
-
+ 
         return $params;
     }
 }
