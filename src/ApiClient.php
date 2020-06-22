@@ -68,6 +68,7 @@ class ApiClient
         if ($hasPayload) {
             $options['json'] = $payload;
         }
+
         try {
             $response = $this->httpClient->request($method, $this->getUri($path), $options);
             $action = new Action((string) $response->getBody(), true);
