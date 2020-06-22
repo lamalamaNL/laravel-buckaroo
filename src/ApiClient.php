@@ -16,6 +16,7 @@ class ApiClient
     protected $apiKey;
     protected $apiSecret;
     protected $httpClient;
+    protected $apiReturnURL;
     protected $requestWithoutPayload = ['GET', 'DELETE'];
 
     public function __construct($mocks = null)
@@ -23,6 +24,11 @@ class ApiClient
         $this->apiEndpoint = config('buckaroo.endpoint');
         $this->apiKey = config('buckaroo.key');
         $this->apiSecret = config('buckaroo.secret');
+
+        $this->apiReturnURL['ReturnURL'] = config('buckaroo.returnURL');
+        $this->apiReturnURL['ReturnURLCancel'] = config('buckaroo.returnURLCancel');
+        $this->apiReturnURL['ReturnURLError'] = config('buckaroo.returnURLError');
+        $this->apiReturnURL['ReturnURLReject'] = config('buckaroo.returnURLReject');
 
         $config = [
             'headers' => [
@@ -43,6 +49,7 @@ class ApiClient
     public function fetch(string $method, string $path, array $payload = []) : Action
     {
         $hasPayload = ! in_array(strtoupper($method), $this->requestWithoutPayload);
+        $payload = array_merge($payload, $this->apiReturnURL);
         $md5 = md5(json_encode($payload), true);
         $hmacPost = $hasPayload ? base64_encode($md5) : '';
         $uri = strtolower(urlencode($this->getUri($path, true)));
@@ -61,7 +68,6 @@ class ApiClient
         if ($hasPayload) {
             $options['json'] = $payload;
         }
-
         try {
             $response = $this->httpClient->request($method, $this->getUri($path), $options);
             $action = new Action((string) $response->getBody(), true);

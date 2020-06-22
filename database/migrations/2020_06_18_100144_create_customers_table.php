@@ -19,7 +19,7 @@ class CreateCustomersTable extends Migration
             $table->string('phone');
             $table->string('firstName');
             $table->string('lastName');
-            $table->string('gender'); // response value: [1,2]
+            $table->enum('gender', ['male', 'female']);
             $table->date('birthDate');
             $table->string('street');
             $table->string('houseNumber');
@@ -27,6 +27,7 @@ class CreateCustomersTable extends Migration
             $table->string('city');
             $table->string('country');
             $table->string('culture');
+            $table->string('ip');
             $table->timestamps();
         });
     }

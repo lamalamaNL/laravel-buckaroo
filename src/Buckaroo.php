@@ -21,26 +21,21 @@ class Buckaroo
 
     public function subscribeAndPay(Customer $customer, Subscription $subscription, Payment $payment): BuckarooResponse
     {
-        $payload = $this->getTestPayload($customer, $subscription, $payment);
-        // try {
-            $result = $this->api->fetch('POST', 'json/Transaction', $payload);
-            $rawResponse = $result->getRawResponse();
-        // } catch (BuckarooApiException $e) {
-        //     dd($e);
-        // }
-        //
-        $redirectUrl = isset($rawResponse['RequiredAction']['RedirectURL']) ? $rawResponse['RequiredAction']['RedirectURL'] : null;
+        $payload = $this->getPayload($customer, $subscription, $payment);
+        $result = $this->api->fetch('POST', 'json/Transaction', $payload);
+        $rawResponse = $result->getRawResponse();
 
         $transactionKey = isset($rawResponse['Key']) ? $rawResponse['Key'] : null;
         $payment->transactionKey = $transactionKey;
         $payment->save();
 
+        $redirectUrl = isset($rawResponse['RequiredAction']['RedirectURL']) ? $rawResponse['RequiredAction']['RedirectURL'] : null;
         return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, $subscription, $payment);
     }
 
     public function oneTimePayment(Customer $customer, Payment $payment): BuckarooResponse
     {
-        $payload = $this->getTestPayload($customer, null, $payment);
+        $payload = $this->getPayload($customer, null, $payment);
         $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         $rawResponse = $result->getRawResponse();
 
@@ -59,69 +54,82 @@ class Buckaroo
         return $result;
     }
 
-    // TODO: handleHook
-    public function handleWebhook()
+    public function handleWebhook($rawResponse)
     {
-        // try {
-            $result = $this->api->fetch('POST', 'json/Transaction');
-            $rawResponse = $result->getRawResponse();
-        // } catch (BuckarooApiException $e) {
-        //     dd($e);
-        // }
+        $statusCodeList = [
+            1 => 'Error',
+            190 => 'success',
+            490 => 'Failed',
+            491 => 'Validation Failure',
+            492 => 'Technical Failure',
+            890 => 'Cancelled',
+            891 => 'Cancelled (Merchant)',
+            690 => 'Rejected',
+            790 => 'Pending',
+            791 => 'Processing',
+            792 => 'Awaiting Consumer',
+        ];
+
+
         $payment = Payment::where('transactionKey', $rawResponse['Transaction']['Key'])->first();
-        $payment->status = isset($rawResponse['Transaction']['Status']['Code']['Description']) ? $rawResponse['Transaction']['Status']['Code']['Description'] : 'Pending';
+        $statusCode = 1;
+        if (isset($rawResponse['Transaction']['Status']['Code']['Code'])) {
+            $statusCode = $rawResponse['Transaction']['Status']['Code']['Code'];
+        }
+        $payment->status =  isset($statusCodeList[$statusCode]) ? $statusCodeList[$statusCode] : 'Unknown';
         $payment->save();
 
-        return $result;
+        return $payment;
     }
 
 
-    private function getTestPayload(Customer $customer, Subscription $subscription, Payment $payment)
+    private function getPayload(Customer $customer, Subscription $subscription, Payment $payment)
     {
-        if (!$subscription) {
-            $params = [
-              "Currency" => $payment->currency,
-              "AmountDebit" => $payment->amount,
-              "Invoice" => "testPayment 10",
-              "ClientIP" => [
-                  "Type" => 0,
-                  "Address" => "0.0.0.0"
-               ],
-              "Services" => [
-                "ServiceList" => [
+        $params = [
+          "Currency" => $payment->currency,
+          "AmountDebit" => $payment->amount,
+          "Invoice" => config('buckaroo.invoiceTitle'),
+          "ClientIP" => [
+              "Type" => 0,
+              "Address" => $customer->ip
+           ],
+          "Services" => [
+            "ServiceList" => [
+              [
+                "Name" => $payment->service,
+                "Action" => "Pay",
+                "Parameters" => [
                   [
-                    "Name" => $payment->service,
-                    "Action" => "Pay",
-                    "Parameters" => [
-                      [
-                        "Name" => "issuer",
-                        "Value" => $payment->issuer
-                      ]
-                    ]
+                    "Name" => "issuer",
+                    "Value" => isset($payment->issuer) ? $payment->issuer : null
                   ]
                 ]
               ]
-            ];
+            ]
+          ]
+        ];
+
+        if (!$subscription) {
             return $params;
         }
 
-        $params = [
-            'Currency' => $payment->currency,
+        switch ($customer->gender) {
+            case 'male':
+                $gender = 1;
+                break;
+            case 'female':
+                $gender = 1;
+                break;
+            default:
+                $gender = 0;
+                break;
+        }
+        
+
+        $params = array_merge($params, [
             'StartRecurrent' => 'true',
-            'AmountDebit' => $payment->amount,
-            'Invoice' => 'testsub1',
             'Services' => [
                 'ServiceList' => [
-                    [
-                        'Name' => $payment->service,
-                        'Action' => 'Pay',
-                        'Parameters' => [
-                            [
-                                'Name' => 'issuer',
-                                'Value' => $payment->issuer,
-                            ],
-                        ],
-                    ],
                     [
                         'Name' => 'Subscriptions',
                         'Action' => 'CreateCombinedSubscription',
@@ -164,7 +172,7 @@ class Buckaroo
                                 'Name' => 'Gender',
                                 'GroupType' => 'Person',
                                 'GroupID' => '',
-                                'Value' => $customer->gender,
+                                'Value' => $gender,
                             ],
                             [
                                 'Name' => 'Culture',
@@ -207,7 +215,7 @@ class Buckaroo
                                 'Name' => 'Country',
                                 'GroupType' => 'Address',
                                 'GroupID' => '',
-                                'Value' => $customer->country,
+                                'Value' => $customer->country, // countryCode
                             ],
                             [
                                 'Name' => 'Email',
@@ -225,7 +233,7 @@ class Buckaroo
                     ],
                 ],
             ],
-        ];
+        ]);
 
         return $params;
     }

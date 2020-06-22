@@ -22,18 +22,25 @@ class Action
     public function parseRawResponse(string $rawResponse)
     {
         $this->rawResponse = json_decode($rawResponse, true);
-
-        $nestedValue = 'Status.Code';
+        $nestedValue = '';
         if (isset($this->rawResponse['Transaction']['Status']['Code'])) {
             $nestedValue = 'Transaction.Status.Code';
         }
-        $this->status = $this->getFromResponse($nestedValue . '.Code');
-        if (in_array($this->status, $this->failedStatuses)) {
-            $reason = $this->getFromResponse($nestedValue . '.Description', true);
+        if (isset($this->rawResponse['Status']['Code'])) {
+            $nestedValue = 'Status.Code';
+        }
 
-            throw (new BuckarooApiException("Unsuccesfull PSP api call, status $this->status: $reason"))
-                    ->setApiResponseBody($this->rawResponse)
-                    ->setStatuscode($this->status);
+        if ($nestedValue !== '') {
+            $this->status = $this->getFromResponse($nestedValue . '.Code');
+            if (in_array($this->status, $this->failedStatuses)) {
+                $reason = $this->getFromResponse($nestedValue . '.Description', true);
+
+                throw (new BuckarooApiException("Unsuccesfull PSP api call, status $this->status: $reason"))
+                        ->setApiResponseBody($this->rawResponse)
+                        ->setStatuscode($this->status);
+            }
+        } else {
+            $this->status = 200;
         }
     }
 

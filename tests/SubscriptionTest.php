@@ -5,8 +5,8 @@ namespace LamaLama\LaravelBuckaroo\Tests;
 use GuzzleHttp\Psr7\Response;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
-use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
+use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
 
@@ -33,7 +33,7 @@ class SubscriptionTest extends TestCase
             'phone' => '06-555555555',
             'firstName' => 'john',
             'lastName' => 'smith',
-            'gender' => '1',
+            'gender' => 'male',
             'birthDate' => '01-01-2000',
             'street' => 'bara straat',
             'houseNumber' => '5',
@@ -56,7 +56,7 @@ class SubscriptionTest extends TestCase
         $sub = new Subscription($fillable);
 
         $fillable = [
-            'subscription_id' => $sub->id,
+            'customer_id' => $customer->id,
             'amount' => 10,
             'currency' => 'EUR',
             'status' => 'open',
@@ -82,7 +82,8 @@ class SubscriptionTest extends TestCase
         }
 
         $buckaroo = $this->app->make(Buckaroo::class);
-        $buckarooResponse = $buckaroo->handleWebhook();
+
+        $buckarooResponse = $buckaroo->handleWebhook(json_decode(file_get_contents(__DIR__ . '/api_response_mocks/webhook_success_response.json'), true));
     }
 
 
@@ -113,6 +114,7 @@ class SubscriptionTest extends TestCase
             'city' => 'Amsterdam',
             'culture' => 'nl-NL',
             'country' => 'NL',
+            'ip' => '0.0.0.0',
         ];
         $customer = new Customer($fillable);
 
@@ -128,7 +130,7 @@ class SubscriptionTest extends TestCase
         $sub = new Subscription($fillable);
 
         $fillable = [
-            'subscription_id' => $sub->id,
+            'customer_id' => $customer->id,
             'amount' => 10,
             'currency' => 'EUR',
             'status' => 'open',
