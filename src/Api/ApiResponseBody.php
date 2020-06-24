@@ -4,12 +4,13 @@ namespace LamaLama\LaravelBuckaroo\Api;
 
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 
-class Action
+class ApiResponseBody
 {
     protected $status = null;
 
     protected $failedStatuses = [490, 491, 492];
     protected $rawResponse = null;
+    protected $rawResponseAsString = null;
     protected $throwExceptionAtParseError = false;
 
 
@@ -22,6 +23,7 @@ class Action
     public function parseRawResponse(string $rawResponse)
     {
         $this->rawResponse = json_decode($rawResponse, true);
+        $this->rawResponseAsString = $rawResponse;
         $nestedValue = '';
         if (isset($this->rawResponse['Transaction']['Status']['Code'])) {
             $nestedValue = 'Transaction.Status.Code';
@@ -44,7 +46,7 @@ class Action
         }
     }
 
-    private function getFromResponse(string $key, $throwExceptionOverride = null)
+    public function getFromResponse(string $key, $throwExceptionOverride = null)
     {
         try {
             return $this->getNestedValueFromArray($this->rawResponse, $key);
@@ -88,5 +90,13 @@ class Action
     public function getRawResponse()
     {
         return $this->rawResponse;
+    }
+
+    /**
+     * @return null
+     */
+    public function getRawResponseAsString()
+    {
+        return $this->rawResponseAsString;
     }
 }

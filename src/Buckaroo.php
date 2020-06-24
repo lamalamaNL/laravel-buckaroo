@@ -3,6 +3,8 @@
 namespace LamaLama\LaravelBuckaroo;
 
 use Carbon\Carbon;
+use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
+use LamaLama\LaravelBuckaroo\Api\ApiResponseBody;
 
 class Buckaroo
 {
@@ -53,12 +55,24 @@ class Buckaroo
         return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, $subscription, $payment);
     }
 
-    public function getPaymentOptions()
+    public function fetchPaymentMethods() : PaymentMethods
     {
-        $result = $this->api->fetch('GET', 'json/Transaction/Specification/ideal');
-        // TODO: return BuckarooPayment object
 
-        return $result;
+        // TODO: return BuckarooPayment object
+        $paymentOptions = new PaymentMethods();
+        if (array_key_exists('ideal', $paymentOptions->toArray())) {
+            $buckarooResponse = cache()->remember(
+                'buckaroo_ideal_issuers_cache',
+                config('buckaroo.cache.paymentOptionsCachePeriode'),
+                function() {
+                    return  $this->api->fetch('GET', 'json/Transaction/Specification/ideal');
+                });
+            $paymentOptions->parseIdealPaymentMethod($buckarooResponse);
+        }
+
+
+
+        return $paymentOptions;
     }
 
     public function handleWebhook($rawResponse)

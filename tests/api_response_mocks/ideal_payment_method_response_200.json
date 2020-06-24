@@ -1,0 +1,340 @@
+{
+  "SupportedCurrencies": [
+    {
+      "IsoNumber": 978,
+      "Code": "EUR",
+      "Name": "Euro"
+    }
+  ],
+  "Actions": [
+    {
+      "Name": "Pay",
+      "Type": 0,
+      "Default": true,
+      "Description": "Pay",
+      "RequestParameters": [
+        {
+          "ListItemDescriptions": [
+            {
+              "Value": "ABNANL2A",
+              "Description": "ABN AMRO",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "ASNBNL21",
+              "Description": "ASN Bank",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "BUNQNL2A",
+              "Description": "bunq",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "HANDNL2A",
+              "Description": "Handelsbanken",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "INGBNL2A",
+              "Description": "ING",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "KNABNL2H",
+              "Description": "Knab",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "MOYONL21",
+              "Description": "Moneyou",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "RABONL2U",
+              "Description": "Rabobank",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "RBRBNL21",
+              "Description": "RegioBank",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "SNSBNL2A",
+              "Description": "SNS",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "TRIONL2U",
+              "Description": "Triodos Bank",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "FVLBNL22",
+              "Description": "Van Lanschot",
+              "GroupName": "Nederland"
+            }
+          ],
+          "isRequestParameter": true,
+          "Name": "issuer",
+          "DataType": 0,
+          "List": 1,
+          "MaxOccurs": 1,
+          "Required": true,
+          "Global": false,
+          "Group": null,
+          "Description": "Choose your bank. In the next step of the payment process you will be sent directly to the website of this bank. Keep your login data at hand.",
+          "DisplayName": "Your bank",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        }
+      ],
+      "ResponseParameters": [
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": false,
+          "Name": "consumerBIC",
+          "DataType": 0,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Description": null,
+          "DisplayName": "BIC Code",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        },
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": false,
+          "Name": "consumerName",
+          "DataType": 0,
+          "MaxLength": 255,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Description": null,
+          "DisplayName": "Account holder name",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        },
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": false,
+          "Name": "consumerIssuer",
+          "DataType": 0,
+          "MaxLength": 255,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Description": null,
+          "DisplayName": "Issuer (Bank)",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        },
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": false,
+          "Name": "consumerIBAN",
+          "DataType": 0,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Description": null,
+          "DisplayName": "IBAN number",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        }
+      ],
+      "OriginalTransactionReferenceDescriptions": null
+    },
+    {
+      "Name": "Refund",
+      "Type": 0,
+      "Default": false,
+      "Description": "Refund",
+      "RequestParameters": [
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": true,
+          "Name": "customeraccountname",
+          "DataType": 0,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Global": false,
+          "Group": null,
+          "Description": null,
+          "DisplayName": "Name",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        },
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": true,
+          "Name": "customerbic",
+          "DataType": 0,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Global": true,
+          "Group": null,
+          "Description": null,
+          "DisplayName": "BIC Code",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        },
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": true,
+          "Name": "customeriban",
+          "DataType": 0,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Global": false,
+          "Group": null,
+          "Description": null,
+          "DisplayName": "IBAN number",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        }
+      ],
+      "ResponseParameters": null,
+      "OriginalTransactionReferenceDescriptions": null
+    },
+    {
+      "Name": "PayRemainder",
+      "Type": 0,
+      "Default": false,
+      "Description": "PayRemainder",
+      "RequestParameters": [
+        {
+          "ListItemDescriptions": [
+            {
+              "Value": "ABNANL2A",
+              "Description": "ABN AMRO",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "ASNBNL21",
+              "Description": "ASN Bank",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "BUNQNL2A",
+              "Description": "bunq",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "HANDNL2A",
+              "Description": "Handelsbanken",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "INGBNL2A",
+              "Description": "ING",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "KNABNL2H",
+              "Description": "Knab",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "MOYONL21",
+              "Description": "Moneyou",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "RABONL2U",
+              "Description": "Rabobank",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "RBRBNL21",
+              "Description": "RegioBank",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "SNSBNL2A",
+              "Description": "SNS",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "TRIONL2U",
+              "Description": "Triodos Bank",
+              "GroupName": "Nederland"
+            },
+            {
+              "Value": "FVLBNL22",
+              "Description": "Van Lanschot",
+              "GroupName": "Nederland"
+            }
+          ],
+          "isRequestParameter": true,
+          "Name": "issuer",
+          "DataType": 0,
+          "List": 1,
+          "MaxOccurs": 1,
+          "Required": true,
+          "Global": false,
+          "Group": null,
+          "Description": "Choose your bank. In the next step of the payment process you will be sent directly to the website of this bank. Keep your login data at hand.",
+          "DisplayName": "Your bank",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        }
+      ],
+      "ResponseParameters": [
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": false,
+          "Name": "consumerIBAN",
+          "DataType": 0,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Description": null,
+          "DisplayName": "IBAN number",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        },
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": false,
+          "Name": "consumerBIC",
+          "DataType": 0,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Description": null,
+          "DisplayName": "BIC Code",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        },
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": false,
+          "Name": "consumerName",
+          "DataType": 0,
+          "MaxLength": 255,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Description": null,
+          "DisplayName": "Account holder name",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        },
+        {
+          "ListItemDescriptions": null,
+          "isRequestParameter": false,
+          "Name": "consumerIssuer",
+          "DataType": 0,
+          "MaxLength": 255,
+          "MaxOccurs": 1,
+          "Required": false,
+          "Description": null,
+          "DisplayName": "Issuer (Bank)",
+          "InputPattern": null,
+          "AutoCompleteType": null
+        }
+      ],
+      "OriginalTransactionReferenceDescriptions": null
+    }
+  ],
+  "Name": "ideal",
+  "Version": 2,
+  "Description": "iDEAL"
+}

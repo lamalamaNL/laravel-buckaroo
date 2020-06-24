@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use Illuminate\Support\Str;
-use LamaLama\LaravelBuckaroo\Api\Action;
+use LamaLama\LaravelBuckaroo\Api\ApiResponseBody;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 
 class ApiClient
@@ -46,7 +46,7 @@ class ApiClient
     }
 
 
-    public function fetch(string $method, string $path, array $payload = []) : Action
+    public function fetch(string $method, string $path, array $payload = []) : ApiResponseBody
     {
         $hasPayload = ! in_array(strtoupper($method), $this->requestWithoutPayload);
         $payload = array_merge($payload, $this->apiReturnURL);
@@ -71,14 +71,14 @@ class ApiClient
 
         try {
             $response = $this->httpClient->request($method, $this->getUri($path), $options);
-            $action = new Action((string) $response->getBody(), true);
+            $responseBody = new ApiResponseBody((string) $response->getBody(), true);
         } catch (BuckarooApiException $e) {
             throw $e;
         } catch (RequestException $e) {
             throw BuckarooApiException::createFromException($e);
         }
 
-        return $action;
+        return $responseBody;
     }
 
     private function getUri(string $url, bool $stripScheme = false): string

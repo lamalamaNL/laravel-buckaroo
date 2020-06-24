@@ -16,8 +16,6 @@ class SubscriptionTest extends TestCase
 {
     use DatabaseMigrations;
 
-    protected $mockApi = false;
-
     /** @test */
     public function it_will_create_succesfully_create_a_subscription_with_payment()
     {
@@ -165,15 +163,5 @@ class SubscriptionTest extends TestCase
         $this->expectException(BuckarooApiException::class);
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
         // TODO: Check for 419 status
-    }
-
-    /** @test */
-    public function fetching_payment_options()
-    {
-        $buckaroo = $this->app->make(Buckaroo::class);
-        $paymentOptions = $buckaroo->getPaymentOptions();
-        dd($paymentOptions);
-
-        $this->assertTrue(true);
     }
 }
