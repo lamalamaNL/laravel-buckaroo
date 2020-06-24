@@ -3,6 +3,7 @@
 namespace LamaLama\LaravelBuckaroo\Tests;
 
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Str;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
 use LamaLama\LaravelBuckaroo\Customer;
@@ -47,30 +48,34 @@ class SubscriptionTest extends TestCase
             'city' => 'Amsterdam',
             'culture' => 'nl-NL',
             'country' => 'NL',
-            'ip' => '0.0.0.0',
+            'ip' => '213.127.75.72',
         ];
         $customer = new Customer($customerFillable);
 
         $subFillable = [
             'includeTransaction' => '????',
             'startDate' => new \DateTime(),
-            'ratePlanCode' => 'u24atwfd',
+            'ratePlanCode' => 'donation_eur5_monthly',
             'configurationCode' => 'ea2pvc5w',
-            'code' => 'AapjeTest',
+            'code' => Str::random(24),
             'SubscriptionGuid' => null,
         ];
         $sub = new Subscription($subFillable);
 
         $payFillable = [
-            'amount' => 10,
+            'amount' => 5,
             'currency' => 'EUR',
             'status' => 'open',
             'service' => 'ideal',
-            'issuer' => 'RABO',
+            'issuer' => 'ABNANL2A',
             'transactionId' => null,
         ];
         $payment = new Payment($payFillable);
-        $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
+        try {
+            $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
+        } catch (\Exception $e) {
+            dd($e);
+        }
         /*
          * Are models stored in DB
          */
@@ -162,11 +167,12 @@ class SubscriptionTest extends TestCase
         // TODO: Check for 419 status
     }
 
-
+    /** @test */
     public function fetching_payment_options()
     {
         $buckaroo = $this->app->make(Buckaroo::class);
-        $buckaroo->getPaymentOptions();
+        $paymentOptions = $buckaroo->getPaymentOptions();
+        dd($paymentOptions);
 
         $this->assertTrue(true);
     }

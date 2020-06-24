@@ -56,6 +56,7 @@ class Buckaroo
     public function getPaymentOptions()
     {
         $result = $this->api->fetch('GET', 'json/Transaction/Specification/ideal');
+        // TODO: return BuckarooPayment object
 
         return $result;
     }
