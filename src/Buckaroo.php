@@ -19,6 +19,12 @@ class Buckaroo
 
     public function subscribeAndPay(Customer $customer, Subscription $subscription, Payment $payment): BuckarooResponse
     {
+
+        $customer->save();
+        $subscription->customer_id = $customer->id;
+        $subscription->save();
+        $payment->customer_id = $customer->id;
+        $payment->save();
         $payload = $this->getPayload($customer, $subscription, $payment);
         $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         $rawResponse = $result->getRawResponse();
