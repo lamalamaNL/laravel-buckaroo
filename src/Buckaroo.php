@@ -4,7 +4,6 @@ namespace LamaLama\LaravelBuckaroo;
 
 use Carbon\Carbon;
 use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
-use LamaLama\LaravelBuckaroo\Api\ApiResponseBody;
 
 class Buckaroo
 {
@@ -21,7 +20,6 @@ class Buckaroo
 
     public function subscribeAndPay(Customer $customer, Subscription $subscription, Payment $payment): BuckarooResponse
     {
-
         $customer->save();
         $subscription->customer_id = $customer->id;
         $subscription->save();
@@ -64,9 +62,10 @@ class Buckaroo
             $buckarooResponse = cache()->remember(
                 'buckaroo_ideal_issuers_cache',
                 config('buckaroo.cache.paymentOptionsCachePeriode'),
-                function() {
+                function () {
                     return  $this->api->fetch('GET', 'json/Transaction/Specification/ideal');
-                });
+                }
+            );
             $paymentOptions->parseIdealPaymentMethod($buckarooResponse);
         }
 

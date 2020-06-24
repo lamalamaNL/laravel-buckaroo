@@ -1,14 +1,11 @@
 <?php namespace LamaLama\LaravelBuckaroo\Acknowledgments;
 
-
 use Illuminate\Support\Str;
 use LamaLama\LaravelBuckaroo\Api\ApiResponseBody;
-use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 
 class PaymentMethods implements AcknowledgmentInterface
 {
-
     protected $availableMethods;
 
     /**
@@ -21,13 +18,12 @@ class PaymentMethods implements AcknowledgmentInterface
         $configMethods = config('buckaroo.paymentMethods', []);
         foreach ($configMethods as $configMethod) {
             $methods[$configMethod] = [
-                'key'     => $configMethod,
-                'name'    => Str::title($configMethod),
-                'options' => []
+                'key' => $configMethod,
+                'name' => Str::title($configMethod),
+                'options' => [],
             ];
         }
         $this->availableMethods = $methods;
-
     }
 
 
@@ -46,18 +42,18 @@ class PaymentMethods implements AcknowledgmentInterface
                 if (isset($action['Name']) && $action['Name'] === 'Pay') {
                     foreach ($action['RequestParameters'] as $requestParameter) {
                         if (isset($requestParameter['ListItemDescriptions'])) {
-                           $issuers = $requestParameter['ListItemDescriptions'];
-                           break;
+                            $issuers = $requestParameter['ListItemDescriptions'];
+
+                            break;
                         }
                     }
-
                 }
             }
 
             $result = [];
             foreach ($issuers as $issuer) {
                 $result[$issuer['Value']] = [
-                    'key'  => $issuer['Value'],
+                    'key' => $issuer['Value'],
                     'name' => $issuer['Description'],
                 ];
             }
@@ -65,7 +61,6 @@ class PaymentMethods implements AcknowledgmentInterface
         } catch (\Exception $e) {
             throw new BuckarooApiException('Error parsing ideal issuers', 5001, $e);
         }
-
     }
 
     public function parseBuckarooResponse(): void
