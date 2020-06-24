@@ -34,6 +34,7 @@ class BuckarooServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'skeleton');
         */
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     public function register()

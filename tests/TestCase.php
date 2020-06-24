@@ -10,7 +10,6 @@ abstract class TestCase extends Orchestra
     public function setUp(): void
     {
         parent::setUp();
-
         $this->withFactories(__DIR__.'/database/factories');
     }
 
@@ -29,10 +28,5 @@ abstract class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix' => '',
         ]);
-
-        /*
-        include_once __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
-        (new \CreatePackageTable())->up();
-        */
     }
 }

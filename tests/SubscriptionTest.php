@@ -9,13 +9,18 @@ use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class SubscriptionTest extends TestCase
 {
-    protected $mockApi = true;
+    use DatabaseMigrations;
 
+    protected $mockApi = false;
+
+    /** @test */
     public function it_will_create_succesfully_create_a_subscription_with_payment()
     {
+
         if ($this->mockApi) {
             $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
@@ -26,9 +31,10 @@ class SubscriptionTest extends TestCase
             });
         }
 
-        // TODO mode fillables to json files
+
+        /** @var Buckaroo $buckaroo */
         $buckaroo = $this->app->make(Buckaroo::class);
-        $fillable = [
+        $customerFillable = [
             'email' => 'john_smith@lamalama.nl',
             'phone' => '06-555555555',
             'firstName' => 'john',
@@ -41,11 +47,11 @@ class SubscriptionTest extends TestCase
             'city' => 'Amsterdam',
             'culture' => 'nl-NL',
             'country' => 'NL',
+            'ip' => '0.0.0.0',
         ];
-        $customer = new Customer($fillable);
+        $customer = new Customer($customerFillable);
 
-        $fillable = [
-            'customer_id' => $customer->id,
+        $subFillable = [
             'includeTransaction' => '????',
             'startDate' => new \DateTime(),
             'ratePlanCode' => 'u24atwfd',
@@ -53,10 +59,9 @@ class SubscriptionTest extends TestCase
             'code' => 'AapjeTest',
             'SubscriptionGuid' => null,
         ];
-        $sub = new Subscription($fillable);
+        $sub = new Subscription($subFillable);
 
-        $fillable = [
-            'customer_id' => $customer->id,
+        $payFillable = [
             'amount' => 10,
             'currency' => 'EUR',
             'status' => 'open',
@@ -64,11 +69,24 @@ class SubscriptionTest extends TestCase
             'issuer' => 'RABO',
             'transactionId' => null,
         ];
-        $payment = new Payment($fillable);
+        $payment = new Payment($payFillable);
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
+        /*
+         * Are models stored in DB
+         */
+        $this->assertDatabaseHas('customers', ['email' => $customerFillable['email']]);
+        $this->assertDatabaseHas('subscriptions', ['includeTransaction' => $subFillable['includeTransaction']]);
+        $this->assertDatabaseHas('subscriptions', ['includeTransaction' => $subFillable['includeTransaction']]);
+        $this->assertDatabaseHas('payments', ['amount' => $payFillable['amount'], 'service' => $payFillable['service']]);
+
+        /*
+         * Check on the response
+         */
+        $this->assertObjectHasAttribute('redirectUrl', $buckarooResponse);
+        $this->assertNotNull($buckarooResponse->getPayment()->transactionKey);
     }
 
-    /** @test */
+
     public function it_will_handle_the_webhook_and_update_internal_status()
     {
         if ($this->mockApi) {
