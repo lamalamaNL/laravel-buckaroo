@@ -42,7 +42,11 @@ class Buckaroo
 
     public function oneTimePayment(Customer $customer, Payment $payment): BuckarooResponse
     {
+        $customer->save();
+        $payment->customer_id = $customer->id;
+        $payment->save();
         $payload = $this->getPayload($customer, null, $payment);
+        //dd($payload);
         $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         $rawResponse = $result->getRawResponse();
 
@@ -52,7 +56,7 @@ class Buckaroo
 
         $redirectUrl = isset($rawResponse['RequiredAction']['RedirectURL']) ? $rawResponse['RequiredAction']['RedirectURL'] : null;
 
-        return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, $subscription, $payment);
+        return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, null, $payment);
     }
 
     public function fetchPaymentMethods() : PaymentMethods

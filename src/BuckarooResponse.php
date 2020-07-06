@@ -48,8 +48,8 @@ class BuckarooResponse
         String $status,
         $rawResponse,
         Customer $customer,
-        Subscription $subscription,
-        Payment $payment
+        ?Subscription $subscription = null,
+        ?Payment $payment = null
     ) {
         $this->setRedirectUrl($redirectUrl);
         $this->setStatus($status);
@@ -99,7 +99,7 @@ class BuckarooResponse
         return $this->customer;
     }
 
-    public function setSubscription(Subscription $subscription)
+    public function setSubscription(?Subscription $subscription)
     {
         $this->subscription = $subscription;
     }
@@ -109,7 +109,7 @@ class BuckarooResponse
         return $this->subscription;
     }
 
-    public function setPayment(Payment $payment)
+    public function setPayment(?Payment $payment)
     {
         $this->payment = $payment;
     }

@@ -11,6 +11,7 @@ use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use LamaLama\LaravelBuckaroo\Tests\helpers\MockData;
 
 class SubscriptionTest extends TestCase
 {
@@ -33,41 +34,24 @@ class SubscriptionTest extends TestCase
 
         /** @var Buckaroo $buckaroo */
         $buckaroo = $this->app->make(Buckaroo::class);
-        $customerFillable = [
-            'email' => 'john_smith@lamalama.nl',
-            'phone' => '06-555555555',
-            'firstName' => 'john',
-            'lastName' => 'smith',
-            'gender' => 'male',
-            'birthDate' => '01-01-2000',
-            'street' => 'bara straat',
-            'houseNumber' => '5',
-            'zipcode' => '0000AA',
-            'city' => 'Amsterdam',
-            'culture' => 'nl-NL',
-            'country' => 'NL',
-            'ip' => '213.127.75.72',
-        ];
+        $customerFillable = MockData::$customerProps;
         $customer = new Customer($customerFillable);
 
+        $date = new \DateTime();
+        $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
+
         $subFillable = [
-            'includeTransaction' => '????',
-            'startDate' => new \DateTime(),
-            'ratePlanCode' => 'donation_eur5_monthly',
+            'includeTransaction' => false,
+            'startDate' => $date,
+            'ratePlanCode' => 'u24atwfd',
+            //'ratePlanCode' => 'donation_eur5_monthly',
             'configurationCode' => 'ea2pvc5w',
             'code' => Str::random(24),
             'SubscriptionGuid' => null,
         ];
         $sub = new Subscription($subFillable);
 
-        $payFillable = [
-            'amount' => 5,
-            'currency' => 'EUR',
-            'status' => 'open',
-            'service' => 'ideal',
-            'issuer' => 'ABNANL2A',
-            'transactionId' => null,
-        ];
+        $payFillable = MockData::getPaymentData(5);
         $payment = new Payment($payFillable);
         try {
             $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
@@ -123,15 +107,15 @@ class SubscriptionTest extends TestCase
         // TODO mode fillables to json files
         $buckaroo = $this->app->make(Buckaroo::class);
         $fillable = [
-            'email' => 'john_smith@lamalama.nl',
-            'phone' => '06-555555555',
-            'firstName' => 'john',
-            'lastName' => 'smith',
+            'email' => 'test@lamalama.nl',
+            'phone' => '06555555555',
+            'firstName' => 'Test',
+            'lastName' => 'Testerma',
             'gender' => '1',
-            'birthDate' => '01-01-2000',
-            'street' => 'bara straat',
-            'houseNumber' => '5',
-            'zipcode' => '0000AA',
+            'birthDate' => '01-01-1981',
+            'street' => 'RJH Foruynstraat',
+            'houseNumber' => '111',
+            'zipcode' => '1019WK',
             'city' => 'Amsterdam',
             'culture' => 'nl-NL',
             'country' => 'NL',
