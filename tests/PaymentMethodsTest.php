@@ -1,6 +1,5 @@
 <?php namespace LamaLama\LaravelBuckaroo\Tests;
 
-
 use GuzzleHttp\Psr7\Response;
 use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
 use LamaLama\LaravelBuckaroo\ApiClient;
@@ -15,13 +14,12 @@ class PaymentMethodsTest extends TestCase
         $paymentMethodsConfig = config('buckaroo.paymentMethods');
         foreach ($paymentMethodsConfig as $paymentMethod) {
             $this->assertArrayHasKey($paymentMethod, $paymentMethods->toArray());
-
         }
     }
     
     /** @test */
-    public function it_will_fetch_ideal_issuers_and_add_them_to__the_payment_methods() {
-    
+    public function it_will_fetch_ideal_issuers_and_add_them_to__the_payment_methods()
+    {
         if ($this->mockApi) {
             $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
@@ -38,8 +36,5 @@ class PaymentMethodsTest extends TestCase
         $this->assertArrayHasKey('options', $paymentMethods->toArray()['ideal']);
         $this->assertArrayHasKey('issuers', $paymentMethods->toArray()['ideal']['options']);
         $this->assertGreaterThan(0, count($paymentMethods->toArray()['ideal']['options']));
-
-
-        
     }
 }
