@@ -1,9 +1,7 @@
 <?php namespace LamaLama\LaravelBuckaroo\Tests;
 
-
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
 use LamaLama\LaravelBuckaroo\Customer;
@@ -17,7 +15,6 @@ class PaymentTest extends TestCase
     ///** @test */
     public function it_will_create_a_new_payment()
     {
-
         if ($this->mockApi) {
             $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([

@@ -1,6 +1,5 @@
 <?php namespace LamaLama\LaravelBuckaroo\Tests\helpers;
 
-
 class MockData
 {
     public static $customerProps = [

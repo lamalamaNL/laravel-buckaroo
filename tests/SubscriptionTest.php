@@ -3,6 +3,7 @@
 namespace LamaLama\LaravelBuckaroo\Tests;
 
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Str;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
@@ -10,7 +11,6 @@ use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use LamaLama\LaravelBuckaroo\Tests\helpers\MockData;
 
 class SubscriptionTest extends TestCase
@@ -20,7 +20,6 @@ class SubscriptionTest extends TestCase
     /** @test */
     public function it_will_create_succesfully_create_a_subscription_with_payment()
     {
-
         if ($this->mockApi) {
             $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
@@ -53,6 +52,7 @@ class SubscriptionTest extends TestCase
 
         $payFillable = MockData::getPaymentData(5);
         $payment = new Payment($payFillable);
+
         try {
             $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
         } catch (\Exception $e) {
