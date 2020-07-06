@@ -41,6 +41,5 @@ class PaymentMethodsTest extends TestCase
 
     public function it_will_use_cache_for_payment_options_requests()
     {
-        
     }
 }

@@ -151,7 +151,6 @@ class SubscriptionTest extends TestCase
 
     public function it_will_update_payment_status_when_webhook_called()
     {
-
     }
 
 
@@ -160,5 +159,4 @@ class SubscriptionTest extends TestCase
         // TODO: @Delano: 4 test van maken 4 alle 4 de reidrect url's van buckaroo
         // TODO: @Delano: Moeten hier voor de zekerheid de status van de order checken?
     }
-
 }

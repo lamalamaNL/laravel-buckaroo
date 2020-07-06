@@ -42,7 +42,6 @@ class PaymentTest extends TestCase
 
     public function it_will_update_payment_status_when_webhook_called()
     {
-        
     }
 
 
