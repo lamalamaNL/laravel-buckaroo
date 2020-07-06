@@ -5,6 +5,7 @@ namespace LamaLama\LaravelBuckaroo;
 use Carbon\Carbon;
 use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
 use LamaLama\LaravelBuckaroo\Api\ApiResponseBody;
+use Illuminate\Support\Facades\Cache;
 
 class Buckaroo
 {
