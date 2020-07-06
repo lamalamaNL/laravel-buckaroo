@@ -4,6 +4,7 @@ namespace LamaLama\LaravelBuckaroo;
 
 use Carbon\Carbon;
 use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
+use Illuminate\Support\Facades\Cache;
 
 class Buckaroo
 {
@@ -63,7 +64,7 @@ class Buckaroo
         // TODO: return BuckarooPayment object
         $paymentOptions = new PaymentMethods();
         if (array_key_exists('ideal', $paymentOptions->toArray())) {
-            $buckarooResponse = cache()->remember(
+            $buckarooResponse = Cache()->remember(
                 'buckaroo_ideal_issuers_cache',
                 config('buckaroo.cache.paymentOptionsCachePeriode'),
                 function () {
