@@ -7,10 +7,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
-use LamaLama\LaravelBuckaroo\Customer;
-use LamaLama\LaravelBuckaroo\Payment;
-use LamaLama\LaravelBuckaroo\Tests\helpers\MockData;
-use LamaLama\LaravelBuckaroo\Subscription;
 
 class SubscriptionTest extends TestCase
 {

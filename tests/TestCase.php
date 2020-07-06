@@ -2,13 +2,13 @@
 
 namespace LamaLama\LaravelBuckaroo\Tests;
 
+use Illuminate\Support\Str;
 use LamaLama\LaravelBuckaroo\BuckarooServiceProvider;
-use Orchestra\Testbench\TestCase as Orchestra;
 use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
 use LamaLama\LaravelBuckaroo\Tests\helpers\MockData;
-use Illuminate\Support\Str;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
@@ -45,6 +45,7 @@ abstract class TestCase extends Orchestra
         $fillable = MockData::$customerProps;
         $customer = new Customer($fillable);
         $customer->save();
+
         return $customer;
     }
 
@@ -59,6 +60,7 @@ abstract class TestCase extends Orchestra
             'code' => Str::random(24),
             'SubscriptionGuid' => null,
         ];
+
         return new Subscription($fillable);
     }
 
@@ -69,6 +71,7 @@ abstract class TestCase extends Orchestra
         $fillable['transactionKey'] = $transactionKey;
         $payment = new Payment($fillable);
         $payment->save();
+
         return $payment;
     }
 }
