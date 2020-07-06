@@ -4,14 +4,13 @@ namespace LamaLama\LaravelBuckaroo\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Support\Str;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
-use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
+use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Payment;
-use LamaLama\LaravelBuckaroo\Subscription;
 use LamaLama\LaravelBuckaroo\Tests\helpers\MockData;
+use LamaLama\LaravelBuckaroo\Subscription;
 
 class SubscriptionTest extends TestCase
 {
@@ -30,30 +29,13 @@ class SubscriptionTest extends TestCase
             });
         }
 
-
-        /** @var Buckaroo $buckaroo */
-        $buckaroo = $this->app->make(Buckaroo::class);
-        $customerFillable = MockData::$customerProps;
-        $customer = new Customer($customerFillable);
-
-        $date = new \DateTime();
-        $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
-
-        $subFillable = [
-            'includeTransaction' => false,
-            'startDate' => $date,
-            'ratePlanCode' => 'u24atwfd',
-            //'ratePlanCode' => 'donation_eur5_monthly',
-            'configurationCode' => 'ea2pvc5w',
-            'code' => Str::random(24),
-            'SubscriptionGuid' => null,
-        ];
-        $sub = new Subscription($subFillable);
-
-        $payFillable = MockData::getPaymentData(5);
-        $payment = new Payment($payFillable);
+        $customer = $this->createCustomer();
+        $sub = $this->createSubscription($customer);
+        $payment = $this->createPayment($customer);
 
         try {
+            /** @var Buckaroo $buckaroo */
+            $buckaroo = $this->app->make(Buckaroo::class);
             $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
         } catch (\Exception $e) {
             dd($e);
@@ -61,10 +43,10 @@ class SubscriptionTest extends TestCase
         /*
          * Are models stored in DB
          */
-        $this->assertDatabaseHas('customers', ['email' => $customerFillable['email']]);
-        $this->assertDatabaseHas('subscriptions', ['includeTransaction' => $subFillable['includeTransaction']]);
-        $this->assertDatabaseHas('subscriptions', ['includeTransaction' => $subFillable['includeTransaction']]);
-        $this->assertDatabaseHas('payments', ['amount' => $payFillable['amount'], 'service' => $payFillable['service']]);
+        $this->assertDatabaseHas('customers', ['email' => $customer->email]);
+        $this->assertDatabaseHas('subscriptions', ['includeTransaction' => $sub->includeTransaction]);
+        $this->assertDatabaseHas('subscriptions', ['includeTransaction' => $sub->includeTransaction]);
+        $this->assertDatabaseHas('payments', ['amount' => $payment->amount, 'service' => $payment->service]);
 
         /*
          * Check on the response
@@ -91,7 +73,6 @@ class SubscriptionTest extends TestCase
         $buckarooResponse = $buckaroo->handleWebhook(json_decode(file_get_contents(__DIR__ . '/api_response_mocks/webhook_success_response.json'), true));
     }
 
-
     public function it_will_throw_a_491_error_when_using_incorrect_paramenters()
     {
         if ($this->mockApi) {
@@ -104,58 +85,57 @@ class SubscriptionTest extends TestCase
             });
         }
 
-        // TODO mode fillables to json files
         $buckaroo = $this->app->make(Buckaroo::class);
-        $fillable = [
-            'email' => 'test@lamalama.nl',
-            'phone' => '06555555555',
-            'firstName' => 'Test',
-            'lastName' => 'Testerma',
-            'gender' => '1',
-            'birthDate' => '01-01-1981',
-            'street' => 'RJH Foruynstraat',
-            'houseNumber' => '111',
-            'zipcode' => '1019WK',
-            'city' => 'Amsterdam',
-            'culture' => 'nl-NL',
-            'country' => 'NL',
-            'ip' => '0.0.0.0',
-        ];
-        $customer = new Customer($fillable);
 
-        $fillable = [
-            'customer_id' => $customer->id,
-            'includeTransaction' => '????',
-            'startDate' => new \DateTime(),
-            'ratePlanCode' => 'u24atwfd',
-            'configurationCode' => 'ea2pvc5w',
-            'code' => 'AapjeTest',
-            'SubscriptionGuid' => null,
-        ];
-        $sub = new Subscription($fillable);
+        $customer = $this->createCustomer();
+        $sub = $this->createSubscription($customer);
+        $payment = $this->createPayment($customer);
 
-        $fillable = [
-            'customer_id' => $customer->id,
-            'amount' => 10,
-            'currency' => 'EUR',
-            'status' => 'open',
-            'service' => 'ideal',
-            'issuer' => 'RABO',
-            'transactionId' => null,
-        ];
-        $payment = new Payment($fillable);
         $this->expectException(BuckarooApiException::class);
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
-        // TODO: Check for 419 status
     }
 
+    /** @test */
     public function it_will_update_payment_status_when_webhook_called()
     {
+        if ($this->mockApi) {
+            $this->app->bind(ApiClient::class, function () {
+                return new ApiClient([
+                new Response(200, [
+                'Content-Type' => 'application/json',
+                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_success_190.json')),
+                ]);
+            });
+        }
+
+        $successResponse = json_decode(
+            file_get_contents(__DIR__ . '/api_response_mocks/webhook_success_response.json'),
+            true
+        );
+
+        $customer = $this->createCustomer();
+        $payment = $this->createPayment($customer, $successResponse['Transaction']['Key']);
+        
+        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'open']);
+
+        $buckaroo = $this->app->make(Buckaroo::class);
+        $buckarooResponse = $buckaroo->handleWebhook($successResponse);
+
+        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
     }
 
 
     public function it_will_handle_redirect_requests_from_buckaroo_and_redirect_to_client_app_urls_by_config()
     {
+        if ($this->mockApi) {
+            $this->app->bind(ApiClient::class, function () {
+                return new ApiClient([
+                new Response(200, [
+                'Content-Type' => 'application/json',
+                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_success_190.json')),
+                ]);
+            });
+        }
         // TODO: @Delano: 4 test van maken 4 alle 4 de reidrect url's van buckaroo
         // TODO: @Delano: Moeten hier voor de zekerheid de status van de order checken?
     }

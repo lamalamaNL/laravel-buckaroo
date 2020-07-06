@@ -1,4 +1,6 @@
-<?php namespace LamaLama\LaravelBuckaroo\Tests\helpers;
+<?php
+
+namespace LamaLama\LaravelBuckaroo\Tests\helpers;
 
 class MockData
 {
@@ -17,7 +19,6 @@ class MockData
             'country' => 'NL',
             'ip' => '213.127.75.72',
         ];
-
 
     public static function getPaymentData($amount)
     {

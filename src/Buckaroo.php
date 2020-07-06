@@ -93,8 +93,6 @@ class Buckaroo
             791 => 'Processing',
             792 => 'Awaiting Consumer',
         ];
-
-
         $payment = Payment::where('transactionKey', $rawResponse['Transaction']['Key'])->first();
         $statusCode = 1;
         if (isset($rawResponse['Transaction']['Status']['Code']['Code'])) {

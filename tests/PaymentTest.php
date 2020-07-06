@@ -1,4 +1,6 @@
-<?php namespace LamaLama\LaravelBuckaroo\Tests;
+<?php
+
+namespace LamaLama\LaravelBuckaroo\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -12,7 +14,7 @@ class PaymentTest extends TestCase
 {
     use DatabaseMigrations;
 
-    ///** @test */
+    /** @test */
     public function it_will_create_a_new_payment()
     {
         if ($this->mockApi) {
@@ -29,7 +31,6 @@ class PaymentTest extends TestCase
         $payment = new Payment(MockData::getPaymentData($amount));
 
         $buckaroo = resolve(Buckaroo::class);
-
         $buckResult = $buckaroo->oneTimePayment($customer, $payment);
         /*
          * Are models stored in DB
@@ -40,8 +41,33 @@ class PaymentTest extends TestCase
         $this->assertNotNull($buckResult->getPayment()->transactionKey);
     }
 
+    /** @test */
     public function it_will_update_payment_status_when_webhook_called()
     {
+        if ($this->mockApi) {
+            $this->app->bind(ApiClient::class, function () {
+                return new ApiClient([
+                new Response(200, [
+                'Content-Type' => 'application/json',
+                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_success_190.json')),
+                ]);
+            });
+        }
+
+        $successResponse = json_decode(
+            file_get_contents(__DIR__ . '/api_response_mocks/webhook_success_response.json'),
+            true
+        );
+
+        $customer = $this->createCustomer();
+        $payment = $this->createPayment($customer, $successResponse['Transaction']['Key']);
+        
+        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'open']);
+
+        $buckaroo = $this->app->make(Buckaroo::class);
+        $buckarooResponse = $buckaroo->handleWebhook($successResponse);
+
+        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
     }
 
 
