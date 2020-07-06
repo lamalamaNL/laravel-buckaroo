@@ -1,4 +1,6 @@
-<?php namespace LamaLama\LaravelBuckaroo\Acknowledgments;
+<?php
+
+namespace LamaLama\LaravelBuckaroo\Acknowledgments;
 
 use Illuminate\Support\Str;
 use LamaLama\LaravelBuckaroo\Api\ApiResponseBody;

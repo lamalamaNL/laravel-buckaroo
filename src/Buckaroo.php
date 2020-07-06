@@ -4,7 +4,7 @@ namespace LamaLama\LaravelBuckaroo;
 
 use Carbon\Carbon;
 use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
-use Illuminate\Support\Facades\Cache;
+use LamaLama\LaravelBuckaroo\Api\ApiResponseBody;
 
 class Buckaroo
 {
@@ -71,7 +71,11 @@ class Buckaroo
                     return  $this->api->fetch('GET', 'json/Transaction/Specification/ideal');
                 }
             );
-            $paymentOptions->parseIdealPaymentMethod($buckarooResponse);
+            if ($buckarooResponse instanceof PaymentMethods) {
+                $paymentOptions = $buckarooResponse;
+            } else {
+                $paymentOptions->parseIdealPaymentMethod($buckarooResponse);
+            }
         }
 
 

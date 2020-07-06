@@ -55,7 +55,7 @@ class PaymentMethodsTest extends TestCase
 
         $buckaroo = $this->app->make(Buckaroo::class);
         $paymentMethods = $buckaroo->fetchPaymentMethods();
-    /** @test */
+
         Cache::shouldReceive('remember')->once()
         ->with(
             'buckaroo_ideal_issuers_cache',
@@ -63,5 +63,10 @@ class PaymentMethodsTest extends TestCase
             Closure::class
         )
         ->andReturn($paymentMethods);
+        Cache::makePartial();
+
+
+        $buckaroo = $this->app->make(Buckaroo::class);
+        $paymentMethods = $buckaroo->fetchPaymentMethods();
     }
 }
