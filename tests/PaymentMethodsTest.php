@@ -2,12 +2,12 @@
 
 namespace LamaLama\LaravelBuckaroo\Tests;
 
+use Closure;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Cache;
 use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
-use Illuminate\Support\Facades\Cache;
-use Closure;
 
 class PaymentMethodsTest extends TestCase
 {
@@ -55,7 +55,7 @@ class PaymentMethodsTest extends TestCase
 
         $buckaroo = $this->app->make(Buckaroo::class);
         $paymentMethods = $buckaroo->fetchPaymentMethods();
-    /** @test */
+        /** @test */
         Cache::shouldReceive('remember')->once()
         ->with(
             'buckaroo_ideal_issuers_cache',
