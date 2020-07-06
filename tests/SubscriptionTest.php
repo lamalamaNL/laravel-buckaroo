@@ -148,4 +148,17 @@ class SubscriptionTest extends TestCase
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
         // TODO: Check for 419 status
     }
+
+    public function it_will_update_payment_status_when_webhook_called()
+    {
+
+    }
+
+
+    public function it_will_handle_redirect_requests_from_buckaroo_and_redirect_to_client_app_urls_by_config()
+    {
+        // TODO: @Delano: 4 test van maken 4 alle 4 de reidrect url's van buckaroo
+        // TODO: @Delano: Moeten hier voor de zekerheid de status van de order checken?
+    }
+
 }

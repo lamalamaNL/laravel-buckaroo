@@ -37,4 +37,10 @@ class PaymentMethodsTest extends TestCase
         $this->assertArrayHasKey('issuers', $paymentMethods->toArray()['ideal']['options']);
         $this->assertGreaterThan(0, count($paymentMethods->toArray()['ideal']['options']));
     }
+
+
+    public function it_will_use_cache_for_payment_options_requests()
+    {
+        
+    }
 }

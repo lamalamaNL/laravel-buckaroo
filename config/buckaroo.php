@@ -14,10 +14,29 @@ return [
     /*
      * Return url configuration
      */
-    'returnURL' =>  env('BUCKAROO_RETURN_URL', 'http://website.org/payment/success'),
-    'returnURLCancel' =>  env('BUCKAROO_CANCEL_URL', 'http://website.org/payment/failed'),
-    'returnURLError' =>  env('BUCKAROO_ERROR_URL', 'http://website.org/payment/failed'),
-    'returnURLReject' =>  env('BUCKAROO_REJECT_URL', 'http://website.org/payment/failed'),
+    // TODO: @Delano
+    /*
+     * Na een betaling redirect Buckaroo naar 1 van deze naar deze urls afhankelijk van de status van
+     * de status van de payment
+     * /payment/success
+     * /payment/cancel
+     * /payment/error
+     * /payment/reject
+     *
+     * Deze urls moeten geconfigureerd kunnen in buckaroo:
+     * https://plaza.buckaroo.nl/Configuration/WebSite/Index/.
+     *
+     */
+    'BucckarooReturnURL' =>  env('BUCKAROO_RETURN_URL', 'http://website.org/payment/success'),
+    'BucckarooReturnURLCancel' =>  env('BUCKAROO_CANCEL_URL', 'http://website.org/payment/cancel'),
+    'BucckarooReturnURLError' =>  env('BUCKAROO_ERROR_URL', 'http://website.org/payment/error'),
+    'BucckarooReturnURLReject' =>  env('BUCKAROO_REJECT_URL', 'http://website.org/payment/reject'),
+    /*
+     * En vervolgens moeten deze url afgevangen worden in de package. En deze endpoints moeten op hun beurt
+     * weer naar de client url redirecten (op basis can config
+     */
+    'clientSuccessURL' =>  env('CLIENT_SUCCESS_URL', 'http://website.org/payment/success'),
+    'BucckarooFailedURL' =>  env('CLIENT_FAILURE_URL', 'http://website.org/payment/failed'),
 
     /*
      * Invoice configuration
