@@ -4,12 +4,12 @@ namespace LamaLama\LaravelBuckaroo\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use LamaLama\LaravelBuckaroo\Buckaroo;
 use LamaLama\LaravelBuckaroo\ApiClient;
+use LamaLama\LaravelBuckaroo\Buckaroo;
 use LamaLama\LaravelBuckaroo\Customer;
+use LamaLama\LaravelBuckaroo\Events\WebhookResponse;
 use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
-use LamaLama\LaravelBuckaroo\Events\WebhookResponse;
 
 class BuckarooController extends Controller
 {
@@ -77,6 +77,7 @@ class BuckarooController extends Controller
     {
         $apiClient = new ApiClient();
         $buckaroo = new Buckaroo($apiClient);
+
         return $buckaroo;
     }
 
