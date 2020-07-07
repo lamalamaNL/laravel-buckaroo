@@ -12,7 +12,6 @@ class SubscriptionTest extends TestCase
 {
     use DatabaseMigrations;
 
-    /** @test */
     public function it_will_create_succesfully_create_a_subscription_with_payment()
     {
         if ($this->mockApi) {
@@ -91,7 +90,6 @@ class SubscriptionTest extends TestCase
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
     }
 
-    /** @test */
     public function it_will_update_payment_status_when_webhook_called()
     {
         if ($this->mockApi) {
@@ -103,36 +101,52 @@ class SubscriptionTest extends TestCase
                 ]);
             });
         }
-
-        $successResponse = json_decode(
-            file_get_contents(__DIR__ . '/api_response_mocks/webhook_success_response.json'),
-            true
-        );
-
         $customer = $this->createCustomer();
-        $payment = $this->createPayment($customer, $successResponse['Transaction']['Key']);
+        $sub = $this->createSubscription($customer);
+        $payment = $this->createPayment($customer);
         
-        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'open']);
-
         $buckaroo = $this->app->make(Buckaroo::class);
+        $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
+
+        $successResponse = $buckarooResponse->getRawResponse();
+
+        $payment->transactionKey = $successResponse['Transaction']['Key'];
+        $payment->save();
+        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'open']);
+        $this->assertDatabaseMissing('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
+
         $buckarooResponse = $buckaroo->handleWebhook($successResponse);
 
+        $this->assertDatabaseMissing('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'open']);
         $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
     }
 
-
+    /** @test */
     public function it_will_handle_redirect_requests_from_buckaroo_and_redirect_to_client_app_urls_by_config()
     {
-        if ($this->mockApi) {
-            $this->app->bind(ApiClient::class, function () {
-                return new ApiClient([
-                new Response(200, [
-                'Content-Type' => 'application/json',
-                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_success_190.json')),
-                ]);
-            });
-        }
-        // TODO: @Delano: 4 test van maken 4 alle 4 de reidrect url's van buckaroo
-        // TODO: @Delano: Moeten hier voor de zekerheid de status van de order checken?
+        $response = $this->post('/buckaroo/success');
+        $response->assertStatus(200);
+        $response->assertJson([
+                'url' => config('buckaroo.clientSuccessURL'),
+            ]);
+
+        
+        $response = $this->post('/buckaroo/cancel');
+        $response->assertStatus(200);
+        $response->assertJson([
+                'url' => config('buckaroo.BucckarooFailedURL'),
+            ]);
+        
+        $response = $this->post('/buckaroo/error');
+        $response->assertStatus(200);
+        $response->assertJson([
+                'url' => config('buckaroo.BucckarooFailedURL'),
+            ]);
+        
+        $response = $this->post('/buckaroo/reject');
+        $response->assertStatus(200);
+        $response->assertJson([
+                'url' => config('buckaroo.BucckarooFailedURL'),
+            ]);
     }
 }

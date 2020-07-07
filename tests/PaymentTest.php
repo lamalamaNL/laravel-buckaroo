@@ -70,10 +70,32 @@ class PaymentTest extends TestCase
         $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
     }
 
-
+    /** @test */
     public function it_will_handle_redirect_requests_from_buckaroo_and_redirect_to_client_app_urls_by_config()
     {
-        // TODO: @Delano: 4 test van maken 4 alle 4 de reidrect url's van buckaroo
-        // TODO: @Delano: Moeten hier voor de zekerheid de status van de order checken?
+        $response = $this->post('/buckaroo/success');
+        $response->assertStatus(200);
+        $response->assertJson([
+                'url' => config('buckaroo.clientSuccessURL'),
+            ]);
+
+        
+        $response = $this->post('/buckaroo/cancel');
+        $response->assertStatus(200);
+        $response->assertJson([
+                'url' => config('buckaroo.BucckarooFailedURL'),
+            ]);
+        
+        $response = $this->post('/buckaroo/error');
+        $response->assertStatus(200);
+        $response->assertJson([
+                'url' => config('buckaroo.BucckarooFailedURL'),
+            ]);
+        
+        $response = $this->post('/buckaroo/reject');
+        $response->assertStatus(200);
+        $response->assertJson([
+                'url' => config('buckaroo.BucckarooFailedURL'),
+            ]);
     }
 }

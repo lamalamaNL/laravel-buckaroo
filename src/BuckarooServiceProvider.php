@@ -11,6 +11,9 @@ class BuckarooServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->register(EventServiceProvider::class);
+
+        $this->loadRoutesFrom(__DIR__.'/routes.php');
+
         /*
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -43,5 +46,7 @@ class BuckarooServiceProvider extends ServiceProvider
         $this->app->bind(Buckaroo::class, function () {
             return new Buckaroo($this->app->make(ApiClient::class));
         });
+
+        $this->app->make('LamaLama\LaravelBuckaroo\Controllers\BuckarooController');
     }
 }

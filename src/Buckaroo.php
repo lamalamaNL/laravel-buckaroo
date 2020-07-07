@@ -34,7 +34,6 @@ class Buckaroo
         $transactionKey = isset($rawResponse['Key']) ? $rawResponse['Key'] : null;
         $payment->transactionKey = $transactionKey;
         $payment->save();
-
         $redirectUrl = isset($rawResponse['RequiredAction']['RedirectURL']) ? $rawResponse['RequiredAction']['RedirectURL'] : null;
 
         return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, $subscription, $payment);
@@ -61,8 +60,6 @@ class Buckaroo
 
     public function fetchPaymentMethods() : PaymentMethods
     {
-
-        // TODO: return BuckarooPayment object
         $paymentOptions = new PaymentMethods();
         if (array_key_exists('ideal', $paymentOptions->toArray())) {
             $buckarooResponse = Cache()->remember(

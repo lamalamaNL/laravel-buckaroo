@@ -44,7 +44,7 @@ class BuckarooResponse
      * @param Payment $payment
      */
     public function __construct(
-        String $redirectUrl,
+        ?String $redirectUrl,
         String $status,
         $rawResponse,
         Customer $customer,
@@ -59,12 +59,12 @@ class BuckarooResponse
         $this->setPayment($payment);
     }
 
-    public function setRedirectUrl(String $redirectUrl)
+    public function setRedirectUrl(?String $redirectUrl)
     {
         $this->redirectUrl = $redirectUrl;
     }
 
-    public function getRedirectUrl(): String
+    public function getRedirectUrl(): ?String
     {
         return $this->redirectUrl;
     }
