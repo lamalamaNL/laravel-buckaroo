@@ -31,11 +31,6 @@ class BuckarooController extends Controller
         $customer->ip = $request->ip();
         $customer->save();
 
-        $sub = new Subscription();
-        $sub->fill($request->only('includeTransaction', 'startDate', 'ratePlanCode', 'configurationCode', 'code', 'SubscriptionGuid'));
-        $sub->customer_id = $customer->id;
-        $sub->save();
-
         $payment = new Payment();
         $payment->fill($request->only('amount', 'currency', 'status', 'service', 'issuer', 'transactionId'));
         $payment->customer_id = $customer->id;
