@@ -121,17 +121,20 @@ class Buckaroo
             "ServiceList" => [
               [
                 "Name" => $payment->service,
-                "Action" => "Pay",
-                "Parameters" => [
-                  [
-                    "Name" => "issuer",
-                    "Value" => isset($payment->issuer) ? $payment->issuer : null,
-                  ],
-                ],
+                "Action" => "Pay"
               ],
             ],
           ],
         ];
+
+        if (strtolower($payment->service) === 'ideal') {
+            $params['Services']['ServiceList'][0]['Parameters'] = [
+                [
+                    "Name"  => "issuer",
+                    "Value" => isset($payment->issuer) ? $payment->issuer : null,
+                ]
+            ];
+        }
 
         if (! $subscription) {
             return $params;
