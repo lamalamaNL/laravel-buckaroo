@@ -17,7 +17,15 @@ abstract class TestCase extends Orchestra
     public function setUp(): void
     {
         parent::setUp();
+        $this->setBuckarooCredentailsForTesting();
         $this->withFactories(__DIR__.'/database/factories');
+    }
+
+    private function setBuckarooCredentailsForTesting()
+    {
+        include(__DIR__ . './../testing_credentials.php');
+        config()->set('buckaroo.key', $buckaroo_api_key);
+        config()->set('buckaroo.secret', $buckaroo_api_secret);
     }
 
     protected function getPackageProviders($app)
