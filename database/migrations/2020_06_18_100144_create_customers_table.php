@@ -15,19 +15,19 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
-            $table->string('phone');
-            $table->string('firstName');
-            $table->string('lastName');
-            $table->enum('gender', ['male', 'female']);
-            $table->date('birthDate');
-            $table->string('street');
-            $table->string('houseNumber');
-            $table->string('zipcode');
-            $table->string('city');
-            $table->string('country');
-            $table->string('culture');
-            $table->string('ip');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('firstName')->nullable();
+            $table->string('lastName')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->date('birthDate')->nullable();
+            $table->string('street')->nullable();
+            $table->string('houseNumber')->nullable();
+            $table->string('zipcode')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->string('culture')->nullable();
+            $table->string('ip')->nullable();
             $table->timestamps();
         });
     }
