@@ -8,3 +8,4 @@ coverage
 .php_cs.cache
 
 /config/testing_credentials.php
+/testing_credentials.php
