@@ -166,12 +166,6 @@ class Buckaroo
                 [
                     "Name" => $payment->service,
                     "Action" => "Pay",
-                    "Parameters" => [
-                        [
-                            "Name" => "issuer",
-                            "Value" => isset($payment->issuer) ? $payment->issuer : null,
-                        ],
-                    ],
                 ],
                 [
                     'Name' => 'Subscriptions',
