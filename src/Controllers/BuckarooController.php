@@ -52,7 +52,7 @@ class BuckarooController extends Controller
      */
     public function redirectSuccess() : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.redirects.clientSuccessURL'));
+        return new RedirectResponse(config('buckaroo.redirects.clientSuccessUrl'));
     }
 
     /**

@@ -135,28 +135,20 @@ class SubscriptionTest extends TestCase
     public function it_will_handle_redirect_requests_from_buckaroo_and_redirect_to_client_app_urls_by_config()
     {
         $response = $this->post('/api/buckaroo/success');
-        $response->assertStatus(200);
-        $response->assertJson([
-                'url' => config('buckaroo.clientSuccessURL'),
-            ]);
+        $response->assertStatus(302);
+        $response->assertRedirect(config('buckaroo.redirects.clientSuccessUrl'));
 
-        
+
         $response = $this->post('/api/buckaroo/cancel');
-        $response->assertStatus(200);
-        $response->assertJson([
-                'url' => config('buckaroo.BucckarooFailedURL'),
-            ]);
-        
+        $response->assertStatus(302);
+        $response->assertRedirect(config('buckaroo.redirects.clientNoSuccessUrl'));
+
         $response = $this->post('/api/buckaroo/error');
-        $response->assertStatus(200);
-        $response->assertJson([
-                'url' => config('buckaroo.BucckarooFailedURL'),
-            ]);
-        
+        $response->assertStatus(302);
+        $response->assertRedirect(config('buckaroo.redirects.clientNoSuccessUrl'));
+
         $response = $this->post('/api/buckaroo/reject');
-        $response->assertStatus(200);
-        $response->assertJson([
-                'url' => config('buckaroo.BucckarooFailedURL'),
-            ]);
+        $response->assertStatus(302);
+        $response->assertRedirect(config('buckaroo.redirects.clientNoSuccessUrl'));
     }
 }
