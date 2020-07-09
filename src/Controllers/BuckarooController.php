@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
-use LamaLama\LaravelBuckaroo\Customer;
 use LamaLama\LaravelBuckaroo\Events\WebhookResponse;
-use LamaLama\LaravelBuckaroo\Payment;
-use LamaLama\LaravelBuckaroo\Subscription;
 
 class BuckarooController extends Controller
 {
@@ -26,9 +23,10 @@ class BuckarooController extends Controller
     public function getSubscriptions() : JsonResponse
     {
         $subs = collect(config('buckaroo.subscriptions'));
-        $subs = $subs->map(function($val) {
+        $subs = $subs->map(function ($val) {
             return collect($val)->forget(['ratePlanCode', 'configurationCode']);
         });
+
         return response()->json($subs);
     }
 

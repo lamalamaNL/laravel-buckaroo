@@ -14,7 +14,8 @@ class Payment extends Model
     /**
      * Payment constructor.
      */
-    public function __construct(array $attributes = []) {
+    public function __construct(array $attributes = [])
+    {
         $this->setAttribute('currency', 'EUR');
         $this->setAttribute('status', 'open');
         parent::__construct($attributes);
@@ -34,6 +35,7 @@ class Payment extends Model
     public function setAmount(float $amount) : self
     {
         $this->setAttribute('amount', $amount);
+
         return $this;
     }
 
@@ -47,18 +49,18 @@ class Payment extends Model
     {
         $this->setAttribute('service', $paymentmethod);
         if ($issuer) {
-
-        $this->setAttribute('issuer', $issuer);
+            $this->setAttribute('issuer', $issuer);
         }
+
         return $this;
     }
 
     public function validate()
     {
-        $validator =  Validator::make($this->getAttributes(), [
+        $validator = Validator::make($this->getAttributes(), [
             'amount' => 'required|',
             'service' => ['required', Rule::in(config('buckaroo.paymentMethods'))],
-            'issuer' => Rule::requiredIf($this->service === 'ideal')
+            'issuer' => Rule::requiredIf($this->service === 'ideal'),
         ]);
         if ($validator->fails()) {
             throw new ValidationException($validator);
@@ -66,5 +68,4 @@ class Payment extends Model
 
         return true;
     }
-
 }

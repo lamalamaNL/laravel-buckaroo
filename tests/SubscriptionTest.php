@@ -129,7 +129,6 @@ class SubscriptionTest extends TestCase
         $customer = $this->createCustomer();
         $this->expectException(ValidationException::class);
         $sub = Subscription::createByConfigKey('doesnotexists', $customer);
-
     }
 
     /** @test */

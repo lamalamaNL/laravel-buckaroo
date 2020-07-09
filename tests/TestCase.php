@@ -33,7 +33,7 @@ abstract class TestCase extends Orchestra
                 'amount' => 5,
                 'ratePlanCode' => $buckaroo_api_subscription_ratePlanCode,
                 'configurationCode' => $buckaroo_api_subscription_configurationCode,
-            ]
+            ],
         ]);
     }
 

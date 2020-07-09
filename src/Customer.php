@@ -4,7 +4,6 @@ namespace LamaLama\LaravelBuckaroo;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class Customer extends Model
@@ -23,7 +22,7 @@ class Customer extends Model
 
     public function validateForSubscription()
     {
-        $validator =  Validator::make($this->getAttributes(), [
+        $validator = Validator::make($this->getAttributes(), [
             'email' => 'required|email',
             'culture' => 'required|string',
             'lastName' => 'required|string',

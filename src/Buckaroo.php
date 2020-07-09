@@ -126,7 +126,7 @@ class Buckaroo
             "ServiceList" => [
               [
                 "Name" => $payment->service,
-                "Action" => "Pay"
+                "Action" => "Pay",
               ],
             ],
           ],
@@ -135,9 +135,9 @@ class Buckaroo
         if (strtolower($payment->service) === 'ideal') {
             $params['Services']['ServiceList'][0]['Parameters'] = [
                 [
-                    "Name"  => "issuer",
+                    "Name" => "issuer",
                     "Value" => isset($payment->issuer) ? $payment->issuer : null,
-                ]
+                ],
             ];
         }
 
@@ -274,9 +274,9 @@ class Buckaroo
         if (strtolower($payment->service) === 'ideal') {
             $params['Services']['ServiceList'][0]['Parameters'] = [
                 [
-                    "Name"  => "issuer",
+                    "Name" => "issuer",
                     "Value" => isset($payment->issuer) ? $payment->issuer : null,
-                ]
+                ],
             ];
         }
 

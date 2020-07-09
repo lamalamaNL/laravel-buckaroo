@@ -26,7 +26,7 @@ class Subscription extends Model
         $config = collect($configSubs)->first(function ($val) use ($configKey) {
             return $val['key'] === $configKey;
         });
-        if (!$config) {
+        if (! $config) {
             throw ValidationException::withMessages(['key' => 'This key is not congigured']);
         }
         $sub = new static();
