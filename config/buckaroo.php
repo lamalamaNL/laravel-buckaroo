@@ -21,7 +21,7 @@ return [
      */
     'redirects' => [
         'clientSuccessUrl' =>  env('CLIENT_SUCCESS_URL', 'http://website.org/payment/success'),
-        'clientFailedUrl' =>  env('CLIENT_FAILURE_URL', 'http://website.org/payment/failed'),
+        'clientNoSuccessUrl' =>  env('CLIENT_FAILURE_URL', 'http://website.org/payment/failed'),
     ],
 
     /*

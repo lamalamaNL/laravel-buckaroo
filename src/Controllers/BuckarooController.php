@@ -3,6 +3,7 @@
 namespace LamaLama\LaravelBuckaroo\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LamaLama\LaravelBuckaroo\ApiClient;
@@ -46,28 +47,37 @@ class BuckarooController extends Controller
     {
         event(new WebhookResponse($request->all()));
     }
-    
+
 
     /**
-     * Redirect handlers
+     * @return RedirectResponse
      */
-    public function redirectSuccess(Request $request)
+    public function redirectSuccess() : RedirectResponse
     {
-        return ['url' => config('buckaroo.clientSuccessURL')];
+        return redirect(config('buckaroo.clientSuccessURL'));
     }
 
-    public function redirectCancel(Request $request)
+    /**
+     * @return RedirectResponse
+     */
+    public function redirectCancel() : RedirectResponse
     {
-        return ['url' => config('buckaroo.BucckarooFailedURL')];
+        return redirect(config('buckaroo.clientNoSuccessUrl'));
     }
 
-    public function redirectError(Request $request)
+    /**
+     * @return RedirectResponse
+     */
+    public function redirectError() : RedirectResponse
     {
-        return ['url' => config('buckaroo.BucckarooFailedURL')];
+        return redirect(config('buckaroo.clientNoSuccessUrl'));
     }
 
-    public function redirectReject(Request $request)
+    /**
+     * @return RedirectResponse
+     */
+    public function redirectReject() : RedirectResponse
     {
-        return ['url' => config('buckaroo.BucckarooFailedURL')];
+        return redirect(config('buckaroo.clientNoSuccessUrl'));
     }
 }
