@@ -3,6 +3,9 @@
 namespace LamaLama\LaravelBuckaroo;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class Customer extends Model
 {
@@ -16,5 +19,24 @@ class Customer extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function validateForSubscription()
+    {
+        $validator =  Validator::make($this->getAttributes(), [
+            'email' => 'required|email',
+            'culture' => 'required|string',
+            'lastName' => 'required|string',
+            'street' => 'required|string',
+            'city' => 'required|string',
+            'zipcode' => 'required|string',
+            'country' => 'required|string',
+            'phone' => 'required|string',
+        ]);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        return true;
     }
 }

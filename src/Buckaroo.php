@@ -21,6 +21,8 @@ class Buckaroo
 
     public function subscribeAndPay(Customer $customer, Subscription $subscription, Payment $payment): BuckarooResponse
     {
+        // TODO: Add validation for Objects
+        $customer->validateForSubscription();
         $customer->save();
         $subscription->customer_id = $customer->id;
         $subscription->save();
@@ -274,6 +276,15 @@ class Buckaroo
                       ],
             ],
         ];
+
+        if (strtolower($payment->service) === 'ideal') {
+            $params['Services']['ServiceList'][0]['Parameters'] = [
+                [
+                    "Name"  => "issuer",
+                    "Value" => isset($payment->issuer) ? $payment->issuer : null,
+                ]
+            ];
+        }
 
         return $params;
     }
