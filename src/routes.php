@@ -1,14 +1,13 @@
 <?php
 
-Route::prefix('buckaroo')->group(function () {
-    Route::post('get-payment-options', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@getPaymentOptions');
-    Route::post('single-donation', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@makeSingleDonation');
-    Route::post('subscribe', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@subscribe');
+Route::prefix(config('buckaroo.url_namespace'))->middleware('api')->group(function () {
+    Route::get('paymentmethods', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@getPaymentmethods')->name('buckaroo.paymentmethods');
+    Route::get('subscriptions', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@getSubscriptions')->name('buckaroo.subscriptions');
  
-    Route::post('webhook', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@webhook');
+    Route::post('webhook', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@webhook')->name('buckaroo.config.webhook');
 
-    Route::post('success', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@redirectSuccess');
-    Route::post('cancel', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@redirectCancel');
-    Route::post('error', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@redirectError');
-    Route::post('reject', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@redirectReject');
+    Route::any('success', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@redirectSuccess')->name('buckaroo.config.success');
+    Route::any('cancel', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@redirectCancel')->name('buckaroo.config.cancel');
+    Route::any('error', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@redirectError')->name('buckaroo.config.error');
+    Route::any('reject', 'LamaLama\LaravelBuckaroo\Controllers\BuckarooController@redirectReject')->name('buckaroo.config.reject');
 });

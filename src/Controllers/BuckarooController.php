@@ -14,12 +14,12 @@ use LamaLama\LaravelBuckaroo\Subscription;
 
 class BuckarooController extends Controller
 {
-    public function getPaymentOptions(Request $request)
+    public function getPaymentmethods(Request $request) : JsonResponse
     {
         $buckaroo = $this->setupBuckaroo();
         $paymentOptions = $buckaroo->fetchPaymentMethods();
 
-        return $paymentOptions->toArray();
+        return response()->json($paymentOptions->toArray());
     }
 
     public function getSubscriptions() : JsonResponse
@@ -31,52 +31,8 @@ class BuckarooController extends Controller
         return response()->json($subs);
     }
 
-    public function makeSingleDonation(Request $request)
-    {
-        $requestAll = $request->all();
-        $buckaroo = $this->setupBuckaroo();
 
-        $customer = new Customer();
-        $customer->fill($request->only('email', 'phone', 'firstName', 'lastName', 'gender', 'birthDate', 'street', 'houseNumber', 'zipcode', 'city', 'country', 'culture'));
-        $customer->ip = $request->ip();
-        $customer->save();
 
-        $payment = new Payment();
-        $payment->fill($request->only('amount', 'currency', 'status', 'service', 'issuer', 'transactionId'));
-        $payment->customer_id = $customer->id;
-        $payment->save();
-
-        $paymentInfo = $buckaroo->oneTimePayment($customer, $payment);
-
-        // TODO CHANGE TO REDIRECT RESPONSE
-        dd($paymentInfo);
-    }
-
-    public function subscribe(Request $request)
-    {
-        $requestAll = $request->all();
-        $buckaroo = $this->setupBuckaroo();
-
-        $customer = new Customer();
-        $customer->fill($request->only('email', 'phone', 'firstName', 'lastName', 'gender', 'birthDate', 'street', 'houseNumber', 'zipcode', 'city', 'country', 'culture'));
-        $customer->ip = $request->ip();
-        $customer->save();
-
-        $sub = new Subscription();
-        $sub->fill($request->only('includeTransaction', 'startDate', 'ratePlanCode', 'configurationCode', 'code', 'SubscriptionGuid'));
-        $sub->customer_id = $customer->id;
-        $sub->save();
-
-        $payment = new Payment();
-        $payment->fill($request->only('amount', 'currency', 'status', 'service', 'issuer', 'transactionId'));
-        $payment->customer_id = $customer->id;
-        $payment->save();
-        
-        $paymentInfo = $buckaroo->subscribeAndPay($customer, $sub, $payment);
-
-        // TODO CHANGE TO REDIRECT RESPONSE
-        dd($paymentInfo);
-    }
 
     private function setupBuckaroo()
     {
