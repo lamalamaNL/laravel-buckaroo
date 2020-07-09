@@ -52,7 +52,7 @@ class BuckarooController extends Controller
      */
     public function redirectSuccess() : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.clientSuccessURL'));
+        return new RedirectResponse(config('buckaroo.redirects.clientSuccessURL'));
     }
 
     /**
@@ -60,7 +60,7 @@ class BuckarooController extends Controller
      */
     public function redirectCancel() : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.clientNoSuccessUrl'));
+        return new RedirectResponse(config('buckaroo.redirects.clientNoSuccessUrl'));
     }
 
     /**
@@ -68,7 +68,7 @@ class BuckarooController extends Controller
      */
     public function redirectError() : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.clientNoSuccessUrl'));
+        return new RedirectResponse(config('buckaroo.redirects.clientNoSuccessUrl'));
     }
 
     /**
@@ -76,6 +76,6 @@ class BuckarooController extends Controller
      */
     public function redirectReject() : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.clientNoSuccessUrl'));
+        return new RedirectResponse(config('buckaroo.redirects.clientNoSuccessUrl'));
     }
 }
