@@ -47,34 +47,22 @@ class BuckarooController extends Controller
     }
 
 
-    /**
-     * @return RedirectResponse
-     */
-    public function redirectSuccess() : RedirectResponse
+    public function redirectSuccess()
     {
         return redirect(config('buckaroo.clientSuccessURL'));
     }
 
-    /**
-     * @return RedirectResponse
-     */
-    public function redirectCancel() : RedirectResponse
+    public function redirectCancel()
     {
         return redirect(config('buckaroo.clientNoSuccessUrl'));
     }
 
-    /**
-     * @return RedirectResponse
-     */
-    public function redirectError() : RedirectResponse
+    public function redirectError()
     {
         return redirect(config('buckaroo.clientNoSuccessUrl'));
     }
 
-    /**
-     * @return RedirectResponse
-     */
-    public function redirectReject() : RedirectResponse
+    public function redirectReject()
     {
         return redirect(config('buckaroo.clientNoSuccessUrl'));
     }
