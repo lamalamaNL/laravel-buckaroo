@@ -73,26 +73,26 @@ class PaymentTest extends TestCase
     /** @test */
     public function it_will_handle_redirect_requests_from_buckaroo_and_redirect_to_client_app_urls_by_config()
     {
-        $response = $this->post('/buckaroo/success');
+        $response = $this->post('/api/buckaroo/success');
         $response->assertStatus(200);
         $response->assertJson([
                 'url' => config('buckaroo.clientSuccessURL'),
             ]);
 
         
-        $response = $this->post('/buckaroo/cancel');
+        $response = $this->post('/api/buckaroo/cancel');
         $response->assertStatus(200);
         $response->assertJson([
                 'url' => config('buckaroo.BucckarooFailedURL'),
             ]);
         
-        $response = $this->post('/buckaroo/error');
+        $response = $this->post('/api/buckaroo/error');
         $response->assertStatus(200);
         $response->assertJson([
                 'url' => config('buckaroo.BucckarooFailedURL'),
             ]);
         
-        $response = $this->post('/buckaroo/reject');
+        $response = $this->post('/api/buckaroo/reject');
         $response->assertStatus(200);
         $response->assertJson([
                 'url' => config('buckaroo.BucckarooFailedURL'),
