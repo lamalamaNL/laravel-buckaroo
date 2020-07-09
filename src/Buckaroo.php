@@ -40,11 +40,14 @@ class Buckaroo
 
     public function oneTimePayment(Customer $customer, Payment $payment): BuckarooResponse
     {
+        // TODO: Add validation for Objects
+        $payment->validate();
+
         $customer->save();
         $payment->customer_id = $customer->id;
+        $payment->status = 'open';
         $payment->save();
         $payload = $this->getPayload($customer, null, $payment);
-        //dd($payload);
         $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         $rawResponse = $result->getRawResponse();
 

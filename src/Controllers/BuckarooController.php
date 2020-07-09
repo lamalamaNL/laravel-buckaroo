@@ -2,6 +2,7 @@
 
 namespace LamaLama\LaravelBuckaroo\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LamaLama\LaravelBuckaroo\ApiClient;
@@ -19,6 +20,15 @@ class BuckarooController extends Controller
         $paymentOptions = $buckaroo->fetchPaymentMethods();
 
         return $paymentOptions->toArray();
+    }
+
+    public function getSubscriptions() : JsonResponse
+    {
+        $subs = collect(config('buckaroo.subscriptions'));
+        $subs = $subs->map(function($val) {
+            return collect($val)->forget(['ratePlanCode', 'configurationCode']);
+        });
+        return response()->json($subs);
     }
 
     public function makeSingleDonation(Request $request)

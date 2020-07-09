@@ -26,6 +26,15 @@ abstract class TestCase extends Orchestra
         include(__DIR__ . './../testing_credentials.php');
         config()->set('buckaroo.key', $buckaroo_api_key);
         config()->set('buckaroo.secret', $buckaroo_api_secret);
+        config()->set('buckaroo.subscriptions', [
+            [
+                'key' => 'monthly_5',
+                'name' => '5 euro per maand',
+                'amount' => 5,
+                'ratePlanCode' => $buckaroo_api_subscription_ratePlanCode,
+                'configurationCode' => $buckaroo_api_subscription_configurationCode,
+            ]
+        ]);
     }
 
     protected function getPackageProviders($app)

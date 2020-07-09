@@ -4,9 +4,11 @@ namespace LamaLama\LaravelBuckaroo\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Validation\ValidationException;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
+use LamaLama\LaravelBuckaroo\Subscription;
 
 class SubscriptionTest extends TestCase
 {
@@ -25,7 +27,7 @@ class SubscriptionTest extends TestCase
         }
 
         $customer = $this->createCustomer();
-        $sub = $this->createSubscription($customer);
+        $sub = Subscription::createByConfigKey('montly_5', $customer);
         $payment = $this->createPayment($customer);
 
         try {
@@ -83,7 +85,7 @@ class SubscriptionTest extends TestCase
         $buckaroo = $this->app->make(Buckaroo::class);
 
         $customer = $this->createCustomer();
-        $sub = $this->createSubscription($customer);
+        $sub = Subscription::createByConfigKey('montly_5', $customer);
         $payment = $this->createPayment($customer);
 
         $this->expectException(BuckarooApiException::class);
@@ -102,7 +104,7 @@ class SubscriptionTest extends TestCase
             });
         }
         $customer = $this->createCustomer();
-        $sub = $this->createSubscription($customer);
+        $sub = Subscription::createByConfigKey('montly_5', $customer);
         $payment = $this->createPayment($customer);
         
         $buckaroo = $this->app->make(Buckaroo::class);
@@ -122,28 +124,37 @@ class SubscriptionTest extends TestCase
     }
 
     /** @test */
+    public function it_will_throw_a_validation_error_if_key_is_not_configured()
+    {
+        $customer = $this->createCustomer();
+        $this->expectException(ValidationException::class);
+        $sub = Subscription::createByConfigKey('doesnotexists', $customer);
+
+    }
+
+    /** @test */
     public function it_will_handle_redirect_requests_from_buckaroo_and_redirect_to_client_app_urls_by_config()
     {
-        $response = $this->post('/buckaroo/success');
+        $response = $this->post('/api/buckaroo/success');
         $response->assertStatus(200);
         $response->assertJson([
                 'url' => config('buckaroo.clientSuccessURL'),
             ]);
 
         
-        $response = $this->post('/buckaroo/cancel');
+        $response = $this->post('/api/buckaroo/cancel');
         $response->assertStatus(200);
         $response->assertJson([
                 'url' => config('buckaroo.BucckarooFailedURL'),
             ]);
         
-        $response = $this->post('/buckaroo/error');
+        $response = $this->post('/api/buckaroo/error');
         $response->assertStatus(200);
         $response->assertJson([
                 'url' => config('buckaroo.BucckarooFailedURL'),
             ]);
         
-        $response = $this->post('/buckaroo/reject');
+        $response = $this->post('/api/buckaroo/reject');
         $response->assertStatus(200);
         $response->assertJson([
                 'url' => config('buckaroo.BucckarooFailedURL'),

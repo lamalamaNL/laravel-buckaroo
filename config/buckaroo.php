@@ -59,6 +59,19 @@ return [
     ],
 
     /*
+     * Subscriptions
+     */
+    'subscriptions' => [
+        [
+            'key' => 'montly_5', // Unique key to identity subscription
+            'name' => 'Vijf euro per maand',
+            'amount' => 5,
+            'ratePlanCode' => '', // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
+            'configurationCode' => '', // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+        ]
+    ],
+
+    /*
      * Cache settings
      */
     'cache' => [
