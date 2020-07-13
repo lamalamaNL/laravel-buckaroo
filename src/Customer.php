@@ -26,11 +26,6 @@ class Customer extends Model
             'email' => 'required|email',
             'culture' => 'required|string',
             'lastName' => 'required|string',
-            'street' => 'required|string',
-            'city' => 'required|string',
-            'zipcode' => 'required|string',
-            'country' => 'required|string',
-            'phone' => 'required|string',
         ]);
         if ($validator->fails()) {
             throw new ValidationException($validator);

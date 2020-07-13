@@ -151,4 +151,15 @@ class SubscriptionTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect(config('buckaroo.redirects.clientNoSuccessUrl'));
     }
+
+
+    /** @test */
+    public function it_will_validate_the_objects()
+    {
+        $customer = $this->createCustomer();
+        $customer->email = null;
+        $this->expectException(ValidationException::class);
+        $customer->validateForSubscription();
+    }
+
 }

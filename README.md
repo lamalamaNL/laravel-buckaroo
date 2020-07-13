@@ -1,4 +1,21 @@
-# 
+## Todo
+
+Next up!!
+- [x] Redirects goed in regelen
+- [ ] Webhook fixen event goed regelen
+- [ ] Beter naming voor buckaroo db velden
+- [ ] Verschillende payment methods per land
+	- [ ] Voeg response van webhook to
+	- [ ] enum voor statussen
+	- [ ] service --> payment method
+- [ ] Tests toevoegen voor validatie
+- [ ] CORS open
+- [ ] Redirect url in de call meenemen
+- [ ] Bedrag opnemen in redirect URL
+- [ ] Update Documentatie
+- [ ] Deploy prod 
+- [ ] (Mark): Implement in wordpress
+- [ ] Test test test!! 
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-buckaroo-ed.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-buckaroo-ed)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-buckaroo-ed/run-tests?label=tests)](https://github.com/spatie/laravel-buckaroo-ed/actions?query=workflow%3Arun-tests+branch%3Amaster)

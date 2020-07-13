@@ -22,13 +22,14 @@ class Buckaroo
     public function subscribeAndPay(Customer $customer, Subscription $subscription, Payment $payment): BuckarooResponse
     {
         // TODO: Add validation for Objects
-        $customer->validateForSubscription();
+        //$customer->validateForSubscription();
         $customer->save();
         $subscription->customer_id = $customer->id;
         $subscription->save();
         $payment->customer_id = $customer->id;
         $payment->save();
         $payload = $this->getPayload($customer, $subscription, $payment);
+        //dd($payload);
         $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         $rawResponse = $result->getRawResponse();
 
@@ -193,11 +194,11 @@ class Buckaroo
                             'GroupID' => '',
                             'Value' => $subscription->code,
                         ],
-                        [
-                            'Name' => 'FirstName',
-                            'GroupType' => 'Person',
+                           [
+                            'Name' => 'Email',
+                            'GroupType' => 'Email',
                             'GroupID' => '',
-                            'Value' => $customer->firstName,
+                            'Value' => $customer->email,
                         ],
                         [
                             'Name' => 'LastName',
@@ -206,68 +207,13 @@ class Buckaroo
                             'Value' => $customer->lastName,
                         ],
                         [
-                            'Name' => 'Gender',
-                            'GroupType' => 'Person',
-                            'GroupID' => '',
-                            'Value' => $gender,
-                        ],
-                        [
                             'Name' => 'Culture',
                             'GroupType' => 'Person',
                             'GroupID' => '',
                             'Value' => $customer->culture,
                         ],
-                        [
-                            'Name' => 'BirthDate',
-                            'GroupType' => 'Person',
-                            'GroupID' => '',
-                            'Value' => Carbon::parse($customer->birthDate)->format('d-m-Y'),
-                        ],
-                        [
-                            'Name' => 'Street',
-                            'GroupType' => 'Address',
-                            'GroupID' => '',
-                            'Value' => $customer->street,
-                        ],
-                        [
-                            'Name' => 'HouseNumber',
-                            'GroupType' => 'Address',
-                            'GroupID' => '',
-                            'Value' => $customer->houseNumber,
-                        ],
-                        [
-                            'Name' => 'ZipCode',
-                            'GroupType' => 'Address',
-                            'GroupID' => '',
-                            'Value' => $customer->zipcode,
-                        ],
-
-                        [
-                            'Name' => 'City',
-                            'GroupType' => 'Address',
-                            'GroupID' => '',
-                            'Value' => $customer->city,
-                        ],
-                        [
-                            'Name' => 'Country',
-                            'GroupType' => 'Address',
-                            'GroupID' => '',
-                            'Value' => $customer->country, // countryCode
-                        ],
-                        [
-                            'Name' => 'Email',
-                            'GroupType' => 'Email',
-                            'GroupID' => '',
-                            'Value' => $customer->email,
-                        ],
-                        [
-                            'Name' => 'Mobile',
-                            'GroupType' => 'Phone',
-                            'GroupID' => '',
-                            'Value' => $customer->phone,
-                        ],
-                      ],
-                      ],
+                    ],
+                ],
             ],
         ];
 
