@@ -14,10 +14,10 @@ class PaymentMethods implements AcknowledgmentInterface
      * PaymentMethods constructor.
      * @param $availableMethods
      */
-    public function __construct()
+    public function __construct($locale = 'default')
     {
         $methods = [];
-        $configMethods = config('buckaroo.paymentMethods', []);
+        $configMethods = config('buckaroo.paymentMethods.'.$locale, []);
         foreach ($configMethods as $configMethod) {
             $methods[$configMethod] = [
                 'key' => $configMethod,

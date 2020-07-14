@@ -3,15 +3,16 @@
 Next up!!
 - [x] Redirects goed in regelen
 - [x] Webhook fixen event goed regelen
-- [ ] Beter naming voor buckaroo db velden
 - [ ] Verschillende payment methods per land
+- [ ] CORS open
+- [ ] Redirect url in de call meenemen
+- [ ] Bedrag opnemen in redirect URL
+- [ ] Beter naming voor buckaroo db velden
+    - [ ] Fix model relations
 	- [ ] Voeg response van webhook to
 	- [ ] enum voor statussen
 	- [ ] service --> payment method
 - [ ] Tests toevoegen voor validatie
-- [ ] CORS open
-- [ ] Redirect url in de call meenemen
-- [ ] Bedrag opnemen in redirect URL
 - [ ] Update Documentatie
 - [ ] Deploy prod 
 - [ ] (Mark): Implement in wordpress

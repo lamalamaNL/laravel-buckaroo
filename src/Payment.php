@@ -57,9 +57,16 @@ class Payment extends Model
 
     public function validate()
     {
+        $paymentmethodOptions = [];
+        foreach (config('buckaroo.paymentMethods') as $methods) {
+            foreach ($methods as $method) {
+                $paymentmethodOptions[] = $method;
+            }
+        }
+        $paymentmethodOptions = array_unique($paymentmethodOptions);
         $validator = Validator::make($this->getAttributes(), [
             'amount' => 'required|',
-            'service' => ['required', Rule::in(config('buckaroo.paymentMethods'))],
+            'service' => ['required', Rule::in($paymentmethodOptions)],
             'issuer' => Rule::requiredIf($this->service === 'ideal'),
         ]);
         if ($validator->fails()) {

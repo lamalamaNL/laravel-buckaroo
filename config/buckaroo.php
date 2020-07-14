@@ -36,14 +36,38 @@ return [
      * Make sure all option you add are also activated in Buckaroo Plaza
      */
     'paymentMethods' => [
-        'mastercard',
-        'visa',
-        'amex',
-        'bancontactmrcash',
-        'eps',
-        'ideal',
-        'paypal',
-        'sofortueberweisung',
+        'nl' => [
+            'mastercard',
+            'visa',
+            'amex',
+            'bancontactmrcash',
+            'ideal',
+            'paypal',
+        ],
+        'de' => [
+            'mastercard',
+            'visa',
+            'amex',
+            'paypal',
+            'sofortueberweisung',
+        ],
+        'en' => [
+            'mastercard',
+            'visa',
+            'amex',
+            'bancontactmrcash',
+            'sepa',
+            'ideal',
+            'paypal',
+            'sofortueberweisung',
+            'giropay'
+        ],
+        'default' => [
+            'mastercard',
+            'visa',
+            'amex',
+            'paypal',
+        ],
     ],
 
     /*

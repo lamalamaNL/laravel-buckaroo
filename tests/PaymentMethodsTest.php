@@ -11,15 +11,26 @@ use LamaLama\LaravelBuckaroo\Buckaroo;
 
 class PaymentMethodsTest extends TestCase
 {
+    /** @test */
     public function it_will_get_payment_methods_from_config()
     {
         $paymentMethods = new PaymentMethods();
-        $paymentMethodsConfig = config('buckaroo.paymentMethods');
+        $paymentMethodsConfig = config('buckaroo.paymentMethods.default');
         foreach ($paymentMethodsConfig as $paymentMethod) {
             $this->assertArrayHasKey($paymentMethod, $paymentMethods->toArray());
         }
     }
-    
+
+    /** @test */
+    public function it_will_have_different_payment_options_per_country()
+    {
+        $responseNL = $this->get(config('buckaroo.url_namespace') . '/paymentmethods?locale=nl');
+        $responseDE = $this->get(config('buckaroo.url_namespace') . '/paymentmethods?locale=de');
+        $this->assertNotEquals($responseNL->json(), $responseDE->json());
+
+    }
+
+    /** @test */
     public function it_will_fetch_ideal_issuers_and_add_them_to__the_payment_methods()
     {
         if ($this->mockApi) {
@@ -33,7 +44,7 @@ class PaymentMethodsTest extends TestCase
         }
 
         $buckaroo = $this->app->make(Buckaroo::class);
-        $paymentMethods = $buckaroo->fetchPaymentMethods();
+        $paymentMethods = $buckaroo->fetchPaymentMethods('nl');
         $this->assertArrayHasKey('ideal', $paymentMethods->toArray());
         $this->assertArrayHasKey('options', $paymentMethods->toArray()['ideal']);
         $this->assertArrayHasKey('issuers', $paymentMethods->toArray()['ideal']['options']);
@@ -54,7 +65,7 @@ class PaymentMethodsTest extends TestCase
         }
 
         $buckaroo = $this->app->make(Buckaroo::class);
-        $paymentMethods = $buckaroo->fetchPaymentMethods();
+        $paymentMethods = $buckaroo->fetchPaymentMethods('nl');
         Cache::shouldReceive('remember')->once()
         ->with(
             'buckaroo_ideal_issuers_cache',
@@ -66,6 +77,6 @@ class PaymentMethodsTest extends TestCase
 
 
         $buckaroo = $this->app->make(Buckaroo::class);
-        $paymentMethods = $buckaroo->fetchPaymentMethods();
+        $paymentMethods = $buckaroo->fetchPaymentMethods('nl');
     }
 }

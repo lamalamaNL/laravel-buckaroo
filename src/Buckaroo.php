@@ -64,9 +64,9 @@ class Buckaroo
         return new BuckarooResponse($redirectUrl, $result->getStatus(), $rawResponse, $customer, null, $payment);
     }
 
-    public function fetchPaymentMethods() : PaymentMethods
+    public function fetchPaymentMethods(string $locale = 'default') : PaymentMethods
     {
-        $paymentOptions = new PaymentMethods();
+        $paymentOptions = new PaymentMethods($locale);
         if (array_key_exists('ideal', $paymentOptions->toArray())) {
             $buckarooResponse = Cache()->remember(
                 'buckaroo_ideal_issuers_cache',
