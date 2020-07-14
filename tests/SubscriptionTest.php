@@ -4,10 +4,13 @@ namespace LamaLama\LaravelBuckaroo\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Validation\ValidationException;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
+use LamaLama\LaravelBuckaroo\Events\PaymentCompletedEvent;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
+use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
 
 class SubscriptionTest extends TestCase
@@ -27,7 +30,7 @@ class SubscriptionTest extends TestCase
         }
 
         $customer = $this->createCustomer();
-        $sub = Subscription::createByConfigKey('montly_5', $customer);
+        $sub = Subscription::createByConfigKey('monthly_5', $customer);
         $payment = $this->createPayment($customer);
 
         try {
@@ -53,22 +56,6 @@ class SubscriptionTest extends TestCase
     }
 
 
-    public function it_will_handle_the_webhook_and_update_internal_status()
-    {
-        if ($this->mockApi) {
-            $this->app->bind(ApiClient::class, function () {
-                return new ApiClient([
-                new Response(200, [
-                'Content-Type' => 'application/json',
-                ], file_get_contents(__DIR__ . '/api_response_mocks/create_and_pay_subscription_success_190.json')),
-                ]);
-            });
-        }
-
-        $buckaroo = $this->app->make(Buckaroo::class);
-
-        $buckarooResponse = $buckaroo->handleWebhook(json_decode(file_get_contents(__DIR__ . '/api_response_mocks/webhook_success_response.json'), true));
-    }
 
     public function it_will_throw_a_491_error_when_using_incorrect_paramenters()
     {
@@ -85,15 +72,17 @@ class SubscriptionTest extends TestCase
         $buckaroo = $this->app->make(Buckaroo::class);
 
         $customer = $this->createCustomer();
-        $sub = Subscription::createByConfigKey('montly_5', $customer);
+        $sub = Subscription::createByConfigKey('monthly_5', $customer);
         $payment = $this->createPayment($customer);
 
         $this->expectException(BuckarooApiException::class);
         $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
     }
 
-    public function it_will_update_payment_status_when_webhook_called()
+    /** @test */
+    public function it_will_update_payment_status_and_dispatch_event_when_webhook_called()
     {
+        Event::fake();
         if ($this->mockApi) {
             $this->app->bind(ApiClient::class, function () {
                 return new ApiClient([
@@ -104,7 +93,7 @@ class SubscriptionTest extends TestCase
             });
         }
         $customer = $this->createCustomer();
-        $sub = Subscription::createByConfigKey('montly_5', $customer);
+        $sub = Subscription::createByConfigKey('monthly_5', $customer);
         $payment = $this->createPayment($customer);
         
         $buckaroo = $this->app->make(Buckaroo::class);
@@ -118,9 +107,20 @@ class SubscriptionTest extends TestCase
         $this->assertDatabaseMissing('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
 
         $buckarooResponse = $buckaroo->handleWebhook($successResponse);
+        $this->post('/api/webhook', json_decode(file_get_contents(__DIR__ . '/api_response_mocks/webhook_success_response.json'), true));
 
         $this->assertDatabaseMissing('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'open']);
         $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
+
+        $payment->load('customer');
+
+        Event::assertDispatched(function(PaymentCompletedEvent $paymentCompletedEvent) use ($payment) {
+            return $paymentCompletedEvent->payment->id === $payment->id;
+        });
+
+        //Event::assertDispatched(PaymentCompletedEvent::class);
+
+
     }
 
     /** @test */

@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
-use LamaLama\LaravelBuckaroo\Events\WebhookResponse;
 
 class BuckarooController extends Controller
 {
@@ -41,9 +40,9 @@ class BuckarooController extends Controller
         return $buckaroo;
     }
 
-    public function webhook(Request $request)
+    public function webhook(Request $request,  Buckaroo $buckaroo)
     {
-        event(new WebhookResponse($request->all()));
+        $buckaroo->handleWebhook($request->all());
     }
 
 

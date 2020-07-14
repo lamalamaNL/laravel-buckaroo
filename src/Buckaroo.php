@@ -5,6 +5,7 @@ namespace LamaLama\LaravelBuckaroo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use LamaLama\LaravelBuckaroo\Acknowledgments\PaymentMethods;
+use LamaLama\LaravelBuckaroo\Events\PaymentCompletedEvent;
 
 class Buckaroo
 {
@@ -86,7 +87,8 @@ class Buckaroo
         return $paymentOptions;
     }
 
-    public function handleWebhook($rawResponse)
+
+    public function handleWebhook(array $rawResponse) : void
     {
         $statusCodeList = [
             1 => 'Error',
@@ -109,7 +111,8 @@ class Buckaroo
         $payment->status = isset($statusCodeList[$statusCode]) ? $statusCodeList[$statusCode] : 'Unknown';
         $payment->save();
 
-        return $payment;
+        $payment->load(['customer']);
+        event(new PaymentCompletedEvent($payment, $payment->customer, $rawResponse));
     }
 
 

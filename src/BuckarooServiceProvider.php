@@ -10,7 +10,6 @@ class BuckarooServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->app->register(EventServiceProvider::class);
 
         $this->loadRoutesFrom(__DIR__.'/routes.php');
 

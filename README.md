@@ -2,7 +2,7 @@
 
 Next up!!
 - [x] Redirects goed in regelen
-- [ ] Webhook fixen event goed regelen
+- [x] Webhook fixen event goed regelen
 - [ ] Beter naming voor buckaroo db velden
 - [ ] Verschillende payment methods per land
 	- [ ] Voeg response van webhook to
