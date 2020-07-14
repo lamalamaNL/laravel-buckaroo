@@ -116,8 +116,6 @@ class SubscriptionTest extends TestCase
         Event::assertDispatched(function (PaymentCompletedEvent $paymentCompletedEvent) use ($payment) {
             return $paymentCompletedEvent->payment->id === $payment->id;
         });
-
-        //Event::assertDispatched(PaymentCompletedEvent::class);
     }
 
     /** @test */

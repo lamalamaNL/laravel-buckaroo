@@ -23,14 +23,13 @@ class Buckaroo
     public function subscribeAndPay(Customer $customer, Subscription $subscription, Payment $payment): BuckarooResponse
     {
         // TODO: Add validation for Objects
-        //$customer->validateForSubscription();
+        $customer->validateForSubscription();
         $customer->save();
         $subscription->customer_id = $customer->id;
         $subscription->save();
         $payment->customer_id = $customer->id;
         $payment->save();
         $payload = $this->getPayload($customer, $subscription, $payment);
-        //dd($payload);
         $result = $this->api->fetch('POST', 'json/Transaction', $payload);
         $rawResponse = $result->getRawResponse();
 
@@ -146,7 +145,7 @@ class Buckaroo
           "Services" => [
             "ServiceList" => [
               [
-                "Name" => $payment->service,
+                "Name" => $payment->paymentmethod,
                 "Action" => "Pay",
               ],
             ],
@@ -185,7 +184,7 @@ class Buckaroo
         $params['Services'] = [
             'ServiceList' => [
                 [
-                    "Name" => $payment->service,
+                    "Name" => $payment->paymentmethod,
                     "Action" => "Pay",
                 ],
                 [
