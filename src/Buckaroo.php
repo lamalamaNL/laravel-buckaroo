@@ -192,6 +192,18 @@ class Buckaroo
                     'Action' => 'CreateCombinedSubscription',
                     'Parameters' => [
                         [
+                            'Name' => 'IncludeTransaction',
+                            'GroupType' => '',
+                            'GroupID' => '',
+                            'Value' => 'true',
+                        ],
+                        [
+                            'Name' => 'TransactionVatPercentage',
+                            'GroupType' => '',
+                            'GroupID' => '',
+                            'Value' => 0,
+                        ],
+                        [
                             'Name' => 'StartDate',
                             'GroupType' => 'AddRatePlan',
                             'GroupID' => '',

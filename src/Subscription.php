@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 
 class Subscription extends Model
 {
-    protected $fillable = ['customer_id', 'includeTransaction', 'startDate', 'ratePlanCode', 'configurationCode', 'code', 'SubscriptionGuid'];
+    protected $fillable = ['customer_id', 'amount', 'includeTransaction', 'startDate', 'ratePlanCode', 'configurationCode', 'code', 'SubscriptionGuid'];
     
     public function customer()
     {
@@ -35,6 +35,7 @@ class Subscription extends Model
         if ($customer) {
             $sub->setAttribute('customer_id', $customer->id);
         }
+        $sub->setAttribute('amount', $config['amount']);
         $sub->setAttribute('includeTransaction', '????');
         $sub->setAttribute('startDate', new \DateTime());
         $sub->setAttribute('code', Str::random(24));

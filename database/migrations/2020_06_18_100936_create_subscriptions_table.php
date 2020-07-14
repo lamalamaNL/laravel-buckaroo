@@ -17,10 +17,11 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
-            $table->string('includeTransaction');
-            $table->date('startDate')->default(now());
+            $table->float('amount');
             $table->string('ratePlanCode');
             $table->string('configurationCode');
+            $table->string('includeTransaction');
+            $table->date('startDate')->default(now());
             $table->string('code');
             $table->string('SubscriptionGuid')->nullable();
             $table->timestamps();
