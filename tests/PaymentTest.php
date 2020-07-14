@@ -67,7 +67,7 @@ class PaymentTest extends TestCase
         $buckaroo = $this->app->make(Buckaroo::class);
         $buckarooResponse = $buckaroo->handleWebhook($successResponse);
 
-        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
+        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'paid']);
     }
 
     /** @test */

@@ -108,7 +108,24 @@ class Buckaroo
         if (isset($rawResponse['Transaction']['Status']['Code']['Code'])) {
             $statusCode = $rawResponse['Transaction']['Status']['Code']['Code'];
         }
-        $payment->status = isset($statusCodeList[$statusCode]) ? $statusCodeList[$statusCode] : 'Unknown';
+        $payment->buckaroo_status = isset($statusCodeList[$statusCode]) ? $statusCodeList[$statusCode] : 'Unknown: ' . $rawResponse['Transaction']['Status']['Code']['Code'];
+        $payment->buckaroo_webhook_data = json_encode($rawResponse);
+        switch ($statusCode) {
+            case 190:
+                $payment->status = 'paid';
+            break;
+            case 1:
+            case 490:
+            case 491:
+            case 492:
+            case 890:
+            case 891:
+            case 690:
+                $payment->status = 'failed';
+            break;
+            default:
+                $payment->status = 'open';
+        }
         $payment->save();
 
         $payment->load(['customer']);

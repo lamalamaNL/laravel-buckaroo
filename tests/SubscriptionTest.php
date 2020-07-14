@@ -104,13 +104,13 @@ class SubscriptionTest extends TestCase
         $payment->transactionKey = $successResponse['Transaction']['Key'];
         $payment->save();
         $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'open']);
-        $this->assertDatabaseMissing('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
+        $this->assertDatabaseMissing('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'paid']);
 
         $buckarooResponse = $buckaroo->handleWebhook($successResponse);
         $this->post('/api/webhook', json_decode(file_get_contents(__DIR__ . '/api_response_mocks/webhook_success_response.json'), true));
 
         $this->assertDatabaseMissing('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'open']);
-        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'success']);
+        $this->assertDatabaseHas('payments', ['transactionKey' => $successResponse['Transaction']['Key'], 'status' => 'paid']);
 
         $payment->load('customer');
 

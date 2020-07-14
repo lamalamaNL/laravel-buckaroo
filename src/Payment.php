@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class Payment extends Model
 {
-    protected $fillable = ['customer_id', 'amount', 'currency', 'status', 'service', 'issuer', 'transactionId', 'transactionKey'];
+    protected $guarded = ['id'];
 
     /**
      * Payment constructor.
@@ -47,9 +47,9 @@ class Payment extends Model
      */
     public function setPaymentmethod(string $paymentmethod, $issuer = null) : self
     {
-        $this->setAttribute('service', $paymentmethod);
+        $this->setAttribute('paymentmethod', $paymentmethod);
         if ($issuer) {
-            $this->setAttribute('issuer', $issuer);
+            $this->setAttribute('payment_issuer', $issuer);
         }
 
         return $this;
@@ -66,8 +66,8 @@ class Payment extends Model
         $paymentmethodOptions = array_unique($paymentmethodOptions);
         $validator = Validator::make($this->getAttributes(), [
             'amount' => 'required|',
-            'service' => ['required', Rule::in($paymentmethodOptions)],
-            'issuer' => Rule::requiredIf($this->service === 'ideal'),
+            'paymentmethod' => ['required', Rule::in($paymentmethodOptions)],
+            'payment_issuer' => Rule::requiredIf($this->service === 'ideal'),
         ]);
         if ($validator->fails()) {
             throw new ValidationException($validator);

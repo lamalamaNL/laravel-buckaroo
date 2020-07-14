@@ -19,11 +19,13 @@ class CreatePaymentsTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->float('amount');
             $table->string('currency');
-            $table->string('status');
-            $table->string('service');
-            $table->string('issuer')->nullable();
+            $table->enum('status', ['open', 'paid', 'failed']);
+            $table->string('paymentmethod');
+            $table->string('payment_issuer')->nullable();
             $table->string('transactionId')->nullable();
             $table->string('transactionKey')->nullable();
+            $table->string('buckaroo_status')->nullable();
+            $table->string('buckaroo_webhook_data')->nullable();
             $table->timestamps();
         });
     }

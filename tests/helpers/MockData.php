@@ -26,8 +26,8 @@ class MockData
             'amount' => $amount,
             'currency' => 'EUR',
             'status' => 'open',
-            'service' => 'ideal',
-            'issuer' => 'ABNANL2A',
+            'paymentmethod' => 'ideal',
+            'payment_issuer' => 'ABNANL2A',
             'transactionId' => null,
         ];
     }

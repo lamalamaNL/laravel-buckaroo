@@ -3,8 +3,8 @@
 Next up!!
 - [x] Redirects goed in regelen
 - [x] Webhook fixen event goed regelen
-- [ ] Verschillende payment methods per land
-- [ ] CORS open
+- [x] Verschillende payment methods per land
+- [x] CORS open (use cors.php in application)
 - [ ] Redirect url in de call meenemen
 - [ ] Bedrag opnemen in redirect URL
 - [ ] Beter naming voor buckaroo db velden
