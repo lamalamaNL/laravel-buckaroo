@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
+use LamaLama\LaravelBuckaroo\Payment;
 
 class BuckarooController extends Controller
 {
@@ -50,32 +51,63 @@ class BuckarooController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function redirectSuccess() : RedirectResponse
+    public function redirectSuccess(Request $request) : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.redirects.clientSuccessUrl'));
+        return new RedirectResponse($this->getSuccessUrl($request));
     }
 
     /**
      * @return RedirectResponse
      */
-    public function redirectCancel() : RedirectResponse
+    public function redirectCancel(Request $request) : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.redirects.clientNoSuccessUrl'));
+        return new RedirectResponse($this->getNoSuccessUrl($request));
     }
 
     /**
      * @return RedirectResponse
      */
-    public function redirectError() : RedirectResponse
+    public function redirectError(Request $request) : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.redirects.clientNoSuccessUrl'));
+        return new RedirectResponse($this->getNoSuccessUrl($request));
     }
 
     /**
      * @return RedirectResponse
      */
-    public function redirectReject() : RedirectResponse
+    public function redirectReject(Request $request) : RedirectResponse
     {
-        return new RedirectResponse(config('buckaroo.redirects.clientNoSuccessUrl'));
+        return new RedirectResponse($this->getNoSuccessUrl($request));
+    }
+
+    private function getSuccessUrl(Request $request) : string
+    {
+        $url = config('buckaroo.redirects.clientSuccessUrl');
+        $transactionKey = $request->get('brq_transactions');
+        if ($transactionKey) {
+           $payment = Payment::query()->where('transactionKey', $transactionKey)->first();
+           if ($payment->redirect_success) {
+               $url = $payment->redirect_success;
+           }
+           $url = strpos($url, '?') === false ? "$url?amount=$payment->amount" : "$url&amount=$payment->amount";
+        }
+
+        return $url;
+    }
+
+
+    private function getNoSuccessUrl(Request $request) : string
+    {
+        $url = config('buckaroo.redirects.clientNoSuccessUrl');
+        $transactionKey = $request->get('brq_transactions');
+        if ($transactionKey) {
+           $payment = Payment::query()->where('transactionKey', $transactionKey)->first();
+           if ($payment->redirect_failed) {
+               $url = $payment->redirect_failed;
+           }
+           $url = strpos($url, '?') === false ? "$url?amount=$payment->amount" : "$url&amount=$payment->amount";
+        }
+
+        return $url;
     }
 }

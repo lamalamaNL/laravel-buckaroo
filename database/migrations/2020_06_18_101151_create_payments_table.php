@@ -25,6 +25,8 @@ class CreatePaymentsTable extends Migration
             $table->string('transactionId')->nullable();
             $table->string('transactionKey')->nullable();
             $table->string('buckaroo_status')->nullable();
+            $table->string('redirect_success')->nullable();
+            $table->string('redirect_failed')->nullable();
             $table->text('buckaroo_webhook_data')->nullable();
             $table->timestamps();
         });

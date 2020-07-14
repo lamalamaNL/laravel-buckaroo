@@ -40,6 +40,21 @@ class Payment extends Model
     }
 
 
+    public function setSuccessRedirectUrl(?string $url = null) : self
+    {
+        $this->setAttribute('redirect_success', $url);
+        return $this;
+    }
+
+    public function setNoSuccessRedirectUrl(?string $url = null) : self
+    {
+        $this->setAttribute('redirect_failed', $url);
+        return $this;
+    }
+
+
+
+
     /**
      * @param string $paymentmethod
      * @param null $issuer

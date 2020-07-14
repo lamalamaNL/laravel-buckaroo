@@ -152,11 +152,11 @@ class Buckaroo
           ],
         ];
 
-        if (strtolower($payment->service) === 'ideal') {
+        if (strtolower($payment->paymentmethod) === 'ideal') {
             $params['Services']['ServiceList'][0]['Parameters'] = [
                 [
                     "Name" => "issuer",
-                    "Value" => isset($payment->issuer) ? $payment->issuer : null,
+                    "Value" => isset($payment->payment_issuer) ? $payment->payment_issuer : null,
                 ],
             ];
         }
@@ -236,11 +236,11 @@ class Buckaroo
             ],
         ];
 
-        if (strtolower($payment->service) === 'ideal') {
+        if (strtolower($payment->paymentmethod) === 'ideal') {
             $params['Services']['ServiceList'][0]['Parameters'] = [
                 [
                     "Name" => "issuer",
-                    "Value" => isset($payment->issuer) ? $payment->issuer : null,
+                    "Value" => isset($payment->payment_issuer) ? $payment->payment_issuer : null,
                 ],
             ];
         }
