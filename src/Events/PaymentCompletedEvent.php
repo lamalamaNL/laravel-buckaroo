@@ -46,5 +46,4 @@ class PaymentCompletedEvent
         $this->buckarooResponse = $buckarooResponse;
         $this->subscription = $subscription;
     }
-
 }
