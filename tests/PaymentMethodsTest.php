@@ -27,7 +27,6 @@ class PaymentMethodsTest extends TestCase
         $responseNL = $this->get(config('buckaroo.url_namespace') . '/paymentmethods?locale=nl');
         $responseDE = $this->get(config('buckaroo.url_namespace') . '/paymentmethods?locale=de');
         $this->assertNotEquals($responseNL->json(), $responseDE->json());
-
     }
 
     /** @test */

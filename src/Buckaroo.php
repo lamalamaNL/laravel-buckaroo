@@ -112,6 +112,7 @@ class Buckaroo
         switch ($statusCode) {
             case 190:
                 $payment->status = 'paid';
+
             break;
             case 1:
             case 490:
@@ -121,6 +122,7 @@ class Buckaroo
             case 891:
             case 690:
                 $payment->status = 'failed';
+
             break;
             default:
                 $payment->status = 'open';

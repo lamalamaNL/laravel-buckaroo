@@ -85,11 +85,11 @@ class BuckarooController extends Controller
         $url = config('buckaroo.redirects.clientSuccessUrl');
         $transactionKey = $request->get('brq_transactions');
         if ($transactionKey) {
-           $payment = Payment::query()->where('transactionKey', $transactionKey)->first();
-           if ($payment->redirect_success) {
-               $url = $payment->redirect_success;
-           }
-           $url = strpos($url, '?') === false ? "$url?amount=$payment->amount" : "$url&amount=$payment->amount";
+            $payment = Payment::query()->where('transactionKey', $transactionKey)->first();
+            if ($payment->redirect_success) {
+                $url = $payment->redirect_success;
+            }
+            $url = strpos($url, '?') === false ? "$url?amount=$payment->amount" : "$url&amount=$payment->amount";
         }
 
         return $url;
@@ -101,11 +101,11 @@ class BuckarooController extends Controller
         $url = config('buckaroo.redirects.clientNoSuccessUrl');
         $transactionKey = $request->get('brq_transactions');
         if ($transactionKey) {
-           $payment = Payment::query()->where('transactionKey', $transactionKey)->first();
-           if ($payment->redirect_failed) {
-               $url = $payment->redirect_failed;
-           }
-           $url = strpos($url, '?') === false ? "$url?amount=$payment->amount" : "$url&amount=$payment->amount";
+            $payment = Payment::query()->where('transactionKey', $transactionKey)->first();
+            if ($payment->redirect_failed) {
+                $url = $payment->redirect_failed;
+            }
+            $url = strpos($url, '?') === false ? "$url?amount=$payment->amount" : "$url&amount=$payment->amount";
         }
 
         return $url;
