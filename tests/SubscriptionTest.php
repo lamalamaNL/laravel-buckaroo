@@ -10,7 +10,6 @@ use LamaLama\LaravelBuckaroo\ApiClient;
 use LamaLama\LaravelBuckaroo\Buckaroo;
 use LamaLama\LaravelBuckaroo\Events\PaymentCompletedEvent;
 use LamaLama\LaravelBuckaroo\Exceptions\BuckarooApiException;
-use LamaLama\LaravelBuckaroo\Payment;
 use LamaLama\LaravelBuckaroo\Subscription;
 
 class SubscriptionTest extends TestCase
@@ -114,13 +113,11 @@ class SubscriptionTest extends TestCase
 
         $payment->load('customer');
 
-        Event::assertDispatched(function(PaymentCompletedEvent $paymentCompletedEvent) use ($payment) {
+        Event::assertDispatched(function (PaymentCompletedEvent $paymentCompletedEvent) use ($payment) {
             return $paymentCompletedEvent->payment->id === $payment->id;
         });
 
         //Event::assertDispatched(PaymentCompletedEvent::class);
-
-
     }
 
     /** @test */
@@ -161,5 +158,4 @@ class SubscriptionTest extends TestCase
         $this->expectException(ValidationException::class);
         $customer->validateForSubscription();
     }
-
 }
