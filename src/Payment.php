@@ -81,8 +81,9 @@ class Payment extends Model
         $paymentmethodOptions = [];
         foreach (config('buckaroo.paymentMethods') as $paymentType) {
             foreach ($paymentType as $methods) {
-                if (!is_array($methods)) {
+                if (! is_array($methods)) {
                     $paymentmethodOptions[] = $method;
+
                     continue;
                 }
                 foreach ($methods as $method) {
