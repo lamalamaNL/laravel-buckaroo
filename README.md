@@ -14,7 +14,7 @@ Next up!!
 	- [x] service --> payment method
 - [x] Tests toevoegen voor validatie en andere nieuwe features
 - [ ] Update Documentatie
-- [ ] Deploy prod 
+- [x] Deploy prod 
 - [ ] (Mark): Implement in wordpress
 - [ ] Test test test!! 
 
@@ -43,7 +43,7 @@ Todo: Add error example
 ``LamaLama\LaravelBuckaroo\Api\Action``: The result of an
 buckaroo API request. 
 
-
+``LamaLama\LaravelBuckaroo\Buckaroo``: Where the subscribeAndPay, oneTimePayment and fetchPaymentMethods functions reside.
 
 
 
