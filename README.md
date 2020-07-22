@@ -12,7 +12,7 @@ Next up!!
 	- [x] Voeg response van webhook to
 	- [x] enum voor statussen
 	- [x] service --> payment method
-- [ ] Tests toevoegen voor validatie en andere nieuwe features
+- [x] Tests toevoegen voor validatie en andere nieuwe features
 - [ ] Update Documentatie
 - [ ] Deploy prod 
 - [ ] (Mark): Implement in wordpress
