@@ -8,7 +8,7 @@ Next up!!
 - [x] Redirect url in de call meenemen
 - [x] Bedrag opnemen in redirect URL
 - [x] Beter naming voor buckaroo db velden
-    - [ ] Fix model relations (payment en subscriptions moeten ook een elkaar gelinkt kunnen worden)
+    - [x] Fix model relations (payment en subscriptions moeten ook een elkaar gelinkt kunnen worden)
 	- [x] Voeg response van webhook to
 	- [x] enum voor statussen
 	- [x] service --> payment method
