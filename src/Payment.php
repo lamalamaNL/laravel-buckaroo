@@ -27,6 +27,10 @@ class Payment extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class);
+    }
 
     /**
      * @param float $amount

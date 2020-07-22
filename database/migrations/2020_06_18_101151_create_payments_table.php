@@ -17,6 +17,8 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
+            $table->unsignedBigInteger('subscription_id')->nullable();
+            $table->foreign('subscription_id')->references('id')->on('subscriptions');
             $table->float('amount');
             $table->string('currency');
             $table->enum('status', ['open', 'paid', 'failed']);

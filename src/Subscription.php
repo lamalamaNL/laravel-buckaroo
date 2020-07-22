@@ -15,6 +15,11 @@ class Subscription extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+    
     /**
      * @param string $rateplanCode
      * @param string $configCode
@@ -25,11 +30,8 @@ class Subscription extends Model
         if (! isset(config('buckaroo.subscriptions')[$configKey])) {
             throw ValidationException::withMessages(['key' => 'This key is not found in the config']);
         }
-        $configSubs = config('buckaroo.subscriptions')[$configKey];
-        $config = collect($configSubs)->first(function ($val) use ($configKey) {
-            return $val['key'] === $configKey;
-        });
-        if (! $config) {
+        $config = config('buckaroo.subscriptions')[$configKey];
+        if (! $config['key'] === $configKey) {
             throw ValidationException::withMessages(['key' => 'This key is not congigured']);
         }
         $sub = new static();
