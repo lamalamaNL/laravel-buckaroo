@@ -99,6 +99,8 @@ and add the following:
 
 $buckaroo_api_key = '....';
 $buckaroo_api_secret = '....';
+$buckaroo_api_subscription_ratePlanCode = '....';
+$buckaroo_api_subscription_configurationCode = '....';
 
 ```
 
