@@ -24,8 +24,8 @@ class PaymentMethodsTest extends TestCase
     /** @test */
     public function it_will_have_different_payment_options_per_country()
     {
-        $responseNL = $this->get(config('buckaroo.url_namespace') . '/paymentmethods?locale=nl');
-        $responseDE = $this->get(config('buckaroo.url_namespace') . '/paymentmethods?locale=de');
+        $responseNL = $this->get(config('buckaroo.url_namespace') . '/paymentmethods?locale=nl&type=single');
+        $responseDE = $this->get(config('buckaroo.url_namespace') . '/paymentmethods?locale=de&type=single');
         $this->assertNotEquals($responseNL->json(), $responseDE->json());
     }
 
@@ -41,9 +41,8 @@ class PaymentMethodsTest extends TestCase
                 ]);
             });
         }
-
         $buckaroo = $this->app->make(Buckaroo::class);
-        $paymentMethods = $buckaroo->fetchPaymentMethods('nl');
+        $paymentMethods = $buckaroo->fetchPaymentMethods('single.nl');
         $this->assertArrayHasKey('ideal', $paymentMethods->toArray());
         $this->assertArrayHasKey('options', $paymentMethods->toArray()['ideal']);
         $this->assertArrayHasKey('issuers', $paymentMethods->toArray()['ideal']['options']);
@@ -64,7 +63,7 @@ class PaymentMethodsTest extends TestCase
         }
 
         $buckaroo = $this->app->make(Buckaroo::class);
-        $paymentMethods = $buckaroo->fetchPaymentMethods('nl');
+        $paymentMethods = $buckaroo->fetchPaymentMethods('single.nl');
         Cache::shouldReceive('remember')->once()
         ->with(
             'buckaroo_ideal_issuers_cache',
@@ -76,6 +75,6 @@ class PaymentMethodsTest extends TestCase
 
 
         $buckaroo = $this->app->make(Buckaroo::class);
-        $paymentMethods = $buckaroo->fetchPaymentMethods('nl');
+        $paymentMethods = $buckaroo->fetchPaymentMethods('single.nl');
     }
 }

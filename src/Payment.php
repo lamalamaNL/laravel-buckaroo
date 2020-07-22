@@ -79,9 +79,15 @@ class Payment extends Model
     public function validate()
     {
         $paymentmethodOptions = [];
-        foreach (config('buckaroo.paymentMethods') as $methods) {
-            foreach ($methods as $method) {
-                $paymentmethodOptions[] = $method;
+        foreach (config('buckaroo.paymentMethods') as $paymentType) {
+            foreach ($paymentType as $methods) {
+                if (!is_array($methods)) {
+                    $paymentmethodOptions[] = $method;
+                    continue;
+                }
+                foreach ($methods as $method) {
+                    $paymentmethodOptions[] = $method;
+                }
             }
         }
         $paymentmethodOptions = array_unique($paymentmethodOptions);

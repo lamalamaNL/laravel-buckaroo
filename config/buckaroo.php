@@ -115,21 +115,21 @@ return [
             'name' => 'Vijf euro per maand',
             'amount' => 5,
             'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_MONTHLY5', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
-            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', '') // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
         ],
         'monthly_25' => [
             'key' => 'monthly_25', // Unique key to identity subscription
             'name' => 'Vijfentwintig euro per maand',
             'amount' => 25,
-            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_MONTHLY', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
-            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_MONTHLY', ''),
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', '')
         ],
         'daily_25c' => [
             'key' => 'daily_25c', // Unique key to identity subscription
             'name' => 'Vijfentwintig euro cent per dag',
             'amount' => 0.25,
-            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_CENT_DAILY', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
-            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_CENT_DAILY', ''),
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', '')
         ]
     ],
 
