@@ -5,14 +5,14 @@ Next up!!
 - [x] Webhook fixen event goed regelen
 - [x] Verschillende payment methods per land
 - [x] CORS open (use cors.php in application)
-- [ ] Redirect url in de call meenemen
-- [ ] Bedrag opnemen in redirect URL
-- [ ] Beter naming voor buckaroo db velden
-    - [ ] Fix model relations
-	- [ ] Voeg response van webhook to
-	- [ ] enum voor statussen
-	- [ ] service --> payment method
-- [ ] Tests toevoegen voor validatie
+- [x] Redirect url in de call meenemen
+- [x] Bedrag opnemen in redirect URL
+- [x] Beter naming voor buckaroo db velden
+    - [ ] Fix model relations (payment en subscriptions moeten ook een elkaar gelinkt kunnen worden)
+	- [x] Voeg response van webhook to
+	- [x] enum voor statussen
+	- [x] service --> payment method
+- [ ] Tests toevoegen voor validatie en andere nieuwe features
 - [ ] Update Documentatie
 - [ ] Deploy prod 
 - [ ] (Mark): Implement in wordpress
