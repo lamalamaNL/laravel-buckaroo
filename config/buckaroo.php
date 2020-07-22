@@ -36,50 +36,100 @@ return [
      * Make sure all option you add are also activated in Buckaroo Plaza
      */
     'paymentMethods' => [
-        'nl' => [
-            'mastercard',
-            'visa',
-            'amex',
-            'bancontactmrcash',
-            'ideal',
-            'paypal',
+        'single' => [
+            'nl' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'bancontactmrcash',
+                'ideal',
+                'paypal',
+            ],
+            'de' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'paypal',
+                'sofortueberweisung',
+            ],
+            'en' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'bancontactmrcash',
+                'sepa',
+                'ideal',
+                'paypal',
+                'sofortueberweisung',
+                'giropay'
+            ],
+            'default' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'paypal',
+            ]
         ],
-        'de' => [
-            'mastercard',
-            'visa',
-            'amex',
-            'paypal',
-            'sofortueberweisung',
-        ],
-        'en' => [
-            'mastercard',
-            'visa',
-            'amex',
-            'bancontactmrcash',
-            'sepa',
-            'ideal',
-            'paypal',
-            'sofortueberweisung',
-            'giropay'
+        'recurring' => [
+            'nl' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'ideal',
+                'paypal',
+            ],
+            'de' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'paypal',
+            ],
+            'en' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'ideal',
+                'paypal'
+            ],
+            'default' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'paypal',
+            ]
         ],
         'default' => [
             'mastercard',
             'visa',
             'amex',
             'paypal',
-        ],
+        ]
     ],
 
     /*
      * Subscriptions
      */
     'subscriptions' => [
-        [
+        'monthly_5' => [
             'key' => 'monthly_5', // Unique key to identity subscription
             'name' => 'Vijf euro per maand',
             'amount' => 5,
-            'ratePlanCode' => '', // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
-            'configurationCode' => '', // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_MONTHLY5', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+        ],
+        'monthly_25' => [
+            'key' => 'monthly_25', // Unique key to identity subscription
+            'name' => 'Vijfentwintig euro per maand',
+            'amount' => 25,
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_MONTHLY', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+        ],
+        'daily_25c' => [
+            'key' => 'daily_25c', // Unique key to identity subscription
+            'name' => 'Vijfentwintig euro cent per dag',
+            'amount' => 0.25,
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_CENT_DAILY', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
         ]
     ],
 

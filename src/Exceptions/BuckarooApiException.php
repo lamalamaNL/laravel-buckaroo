@@ -27,8 +27,8 @@ class BuckarooApiException extends \Exception
         $response = $exception->getResponse();
 
         $exception = new static();
-        $exception->statuscode = $response->getStatusCode();
-        $exception->apiResponseBody = (string) $response->getBody();
+        $exception->statuscode = $response ? $response->getStatusCode() : 500;
+        $exception->apiResponseBody = $response ? (string) $response->getBody() : 'no response found';
 
         return $exception;
     }

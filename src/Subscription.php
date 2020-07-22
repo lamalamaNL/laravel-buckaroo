@@ -22,7 +22,10 @@ class Subscription extends Model
      */
     public static function createByConfigKey(string $configKey, Customer $customer = null) : self
     {
-        $configSubs = config('buckaroo.subscriptions');
+        if (! isset(config('buckaroo.subscriptions')[$configKey])) {
+            throw ValidationException::withMessages(['key' => 'This key is not found in the config']);
+        }
+        $configSubs = config('buckaroo.subscriptions')[$configKey];
         $config = collect($configSubs)->first(function ($val) use ($configKey) {
             return $val['key'] === $configKey;
         });
