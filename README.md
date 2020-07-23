@@ -229,6 +229,27 @@ return [
 
 Make sure to setup the paymentMethods & subscriptions in the config file accordingly to your situation.
 
+## .env file
+Also shown in .env.example these env variables are required for the package to work:
+``` php
+
+BUCKAROO_API_ENDPOINT=
+BUCKAROO_RETURN_URL=
+BUCKAROO_CANCEL_URL=
+BUCKAROO_ERROR_URL=
+BUCKAROO_REJECT_URL=
+CLIENT_SUCCESS_URL=
+CLIENT_FAILURE_URL=
+BUCKAROO_INVOICE_TITLE=
+BUCKAROO_CONFIGURATION_CODE=
+```
+These depend on your config settings:
+``` php
+BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_CENT_DAILY=
+BUCKAROO_PRODUCT_CODE_FIVE_MONTHLY=
+BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_MONTHLY=
+```
+
 ## Usage
 Setup your pay/subscribe routes
 ``` php 
