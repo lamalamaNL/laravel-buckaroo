@@ -114,7 +114,7 @@ return [
             'key' => 'monthly_5', // Unique key to identity subscription
             'name' => 'Vijf euro per maand',
             'amount' => 5,
-            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_MONTHLY5', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_FIVE_MONTHLY', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
             'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', '') // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
         ],
         'monthly_25' => [
