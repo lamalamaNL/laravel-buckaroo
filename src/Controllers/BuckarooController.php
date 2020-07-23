@@ -15,9 +15,9 @@ class BuckarooController extends Controller
     public function getPaymentmethods(Request $request) : JsonResponse
     {
         $buckaroo = $this->setupBuckaroo();
-        $type = $request->get('type'); // [single, recurring]
+        $paymentType = $request->get('paymentType'); // [single, recurring]
         $locale = $request->get('locale');
-        $paymentMethod = $type && $locale ? "{$type}.{$locale}" : 'default';
+        $paymentMethod = $paymentType && $locale ? "{$paymentType}.{$locale}" : 'default';
         $paymentOptions = $buckaroo->fetchPaymentMethods($paymentMethod);
 
         return response()->json($paymentOptions->toArray());
