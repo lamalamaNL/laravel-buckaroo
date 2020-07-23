@@ -13,7 +13,7 @@ Next up!!
 	- [x] enum voor statussen
 	- [x] service --> payment method
 - [x] Tests toevoegen voor validatie en andere nieuwe features
-- [ ] Update Documentatie
+- [x] Update Documentatie
 - [x] Deploy prod 
 - [ ] (Mark): Implement in wordpress
 - [ ] Test test test!! 
