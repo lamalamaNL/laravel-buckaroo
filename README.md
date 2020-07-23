@@ -43,7 +43,9 @@ Todo: Add error example
 ``LamaLama\LaravelBuckaroo\Api\Action``: The result of an
 buckaroo API request. 
 
-``LamaLama\LaravelBuckaroo\Buckaroo``: Where the subscribeAndPay, oneTimePayment and fetchPaymentMethods functions reside.
+``LamaLama\LaravelBuckaroo\Buckaroo``: Where the subscribeAndPay, oneTimePayment and fetchPaymentMethods functions reside. 
+
+``LamaLama\LaravelBuckaroo\Controllers\BuckarooControllers``: The controller that provides the subscriptions and payment methods
 
 
 
@@ -79,14 +81,196 @@ This is the contents of the published config file:
 
 ```php
 return [
+
+    /*
+     * API andCredentials
+     */
+    'endpoint' =>  env('BUCKAROO_API_ENDPOINT', 'https://testcheckout.buckaroo.nl'),
+    'key' =>  env('BUCKAROO_API_KEY', ''),
+    'secret' =>  env('BUCKAROO_API_SECRET', ''),
+
+    /*
+     * This package inject multiple api routes into your application. Here you can configure
+     * the base url
+     */
+    'url_namespace' => '/api/buckaroo',
+
+    /*
+     * After successfull or unsuccessfull payments user gets redirect to a page.
+     * Here you can configure the urls to use
+     */
+    'redirects' => [
+        'clientSuccessUrl' =>  env('CLIENT_SUCCESS_URL', 'http://website.org/payment/success'),
+        'clientNoSuccessUrl' =>  env('CLIENT_FAILURE_URL', 'http://website.org/payment/failed'),
+    ],
+
+    /*
+     * Invoice configuration
+     */
+    'invoiceTitle' =>  env('BUCKAROO_INVOICE_TITLE', 'Default invoice title'),
+
+
+    /*
+     * Payment methods
+     * Use the keys from: https://dev.buckaroo.nl/PaymentMethods/Description/afterpay#top
+     * Make sure all option you add are also activated in Buckaroo Plaza
+     */
+    'paymentMethods' => [
+        'single' => [
+            'nl' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'bancontactmrcash',
+                'ideal',
+                'paypal',
+            ],
+            'de' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'paypal',
+                'sofortueberweisung',
+            ],
+            'en' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'bancontactmrcash',
+                'sepa',
+                'ideal',
+                'paypal',
+                'sofortueberweisung',
+                'giropay'
+            ],
+            'default' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'paypal',
+            ]
+        ],
+        'recurring' => [
+            'nl' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'ideal',
+                'paypal',
+            ],
+            'de' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'paypal',
+            ],
+            'en' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'ideal',
+                'paypal'
+            ],
+            'default' => [
+                'mastercard',
+                'visa',
+                'amex',
+                'paypal',
+            ]
+        ],
+        'default' => [
+            'mastercard',
+            'visa',
+            'amex',
+            'paypal',
+        ]
+    ],
+
+    /*
+     * Subscriptions
+     */
+    'subscriptions' => [
+        'monthly_5' => [
+            'key' => 'monthly_5', // Unique key to identity subscription
+            'name' => 'Vijf euro per maand',
+            'amount' => 5,
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_MONTHLY5', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+        ],
+        'monthly_25' => [
+            'key' => 'monthly_25', // Unique key to identity subscription
+            'name' => 'Vijfentwintig euro per maand',
+            'amount' => 25,
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_MONTHLY', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+        ],
+        'daily_25c' => [
+            'key' => 'daily_25c', // Unique key to identity subscription
+            'name' => 'Vijfentwintig euro cent per dag',
+            'amount' => 0.25,
+            'ratePlanCode' => env('BUCKAROO_PRODUCT_CODE_TWENTY_FIVE_CENT_DAILY', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
+            'configurationCode' => env('BUCKAROO_CONFIGURATION_CODE', ''), // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+        ]
+    ],
+
+    /*
+     * Cache settings
+     */
+    'cache' => [
+        /*
+         * The amount of time payment method information from buckaroo is cached in seconds
+         * We do this the reduce the number of API calls and speed up the API
+         */
+        'paymentOptionsCachePeriode' => 60 * 24
+    ]
 ];
+
 ```
 
-## Usage
+Make sure to setup the paymentMethods & subscriptions in the config file accordingly to your situation.
 
+## Usage
+Setup your pay/subscribe routes
+``` php 
+
+Route::post('pay', 'PaymentController@pay');
+Route::post('subscribe', 'PaymentController@subscribe');
+```
+
+Create a controller which handles the pay/subscribe routes, a quick example of a subscribe function is shown below:
 ``` php
-$skeleton = new LamaLama\LaravelBuckaroo();
-echo $skeleton->echoPhrase('Hello, Spatie!');
+public function subscribe(Buckaroo $buckaroo, Request $request)
+    {
+        $customerProps = $request->get('customer');
+        $customer = new Customer($customerProps);
+        $customer->ip = $request->ip();
+        $customer->save();
+
+        $sub = Subscription::createByConfigKey($request->get('subscription', null), $customer);
+
+        $payment = new Payment();
+        $payment->setAmount($sub->amount)
+            ->setPaymentmethod($request->get('method'), $request->get('issuer', null));
+        $payment->subscription_id = $sub->id;
+        $payment->setSuccessRedirectUrl($request->get('redirectSuccessUrl', null));
+        $payment->setNoSuccessRedirectUrl($request->get('redirectNoSuccessUrl', null));
+
+        $buckarooResponse = $buckaroo->subscribeAndPay($customer, $sub, $payment);
+        return response()->json([
+            'redirect' => $buckarooResponse->getRedirectUrl()
+        ]);
+    }
+```
+
+In the front-end you can call the following two endpoints:
+This call will give you all the paymentMethods that are setup in the config file (paramaters are optional):
+``` php
+api/buckaroo/paymentmethods?locale=en&paymentType=recurring
+```
+
+This call will give you all the subscription that are setup in the config file
+``` php
+api/buckaroo/subscriptions
 ```
 
 # Package development
