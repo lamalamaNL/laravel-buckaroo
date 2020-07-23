@@ -237,9 +237,43 @@ Route::post('pay', 'PaymentController@pay');
 Route::post('subscribe', 'PaymentController@subscribe');
 ```
 
-Create a controller which handles the pay/subscribe routes, a quick example of a subscribe function is shown below:
+Create a controller which handles the pay/subscribe routes, a quick example of the PaymentController class is shown below:
 ``` php
-public function subscribe(Buckaroo $buckaroo, Request $request)
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use LamaLama\LaravelBuckaroo\Buckaroo;
+use LamaLama\LaravelBuckaroo\Customer;
+use LamaLama\LaravelBuckaroo\Payment;
+use LamaLama\LaravelBuckaroo\Subscription;
+
+class PaymentController extends Controller
+{
+
+    public function pay(Buckaroo $buckaroo, Request $request)
+    {
+
+        $customer = new Customer();
+        $customer->email = 'test@test.com';
+        $customer->ip = $request->ip();
+        $customer->save();
+
+        $payment = new Payment();
+        $payment->setAmount($request->get('amount'))
+            ->setPaymentmethod($request->get('method'), $request->get('issuer', null));
+        $payment->setSuccessRedirectUrl($request->get('redirectSuccessUrl', null));
+        $payment->setNoSuccessRedirectUrl($request->get('redirectNoSuccessUrl', null));
+
+        $paymentInfo = $buckaroo->oneTimePayment($customer, $payment);
+        return response()->json([
+            'redirect' => $paymentInfo->getRedirectUrl()
+        ]);
+    }
+
+
+    public function subscribe(Buckaroo $buckaroo, Request $request)
     {
         $customerProps = $request->get('customer');
         $customer = new Customer($customerProps);
@@ -260,6 +294,8 @@ public function subscribe(Buckaroo $buckaroo, Request $request)
             'redirect' => $buckarooResponse->getRedirectUrl()
         ]);
     }
+}
+
 ```
 
 In the front-end you can call the following two endpoints:
