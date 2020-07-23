@@ -12,9 +12,9 @@ Next up!!
 	- [x] Voeg response van webhook to
 	- [x] enum voor statussen
 	- [x] service --> payment method
-- [ ] Tests toevoegen voor validatie en andere nieuwe features
+- [x] Tests toevoegen voor validatie en andere nieuwe features
 - [ ] Update Documentatie
-- [ ] Deploy prod 
+- [x] Deploy prod 
 - [ ] (Mark): Implement in wordpress
 - [ ] Test test test!! 
 
@@ -43,7 +43,7 @@ Todo: Add error example
 ``LamaLama\LaravelBuckaroo\Api\Action``: The result of an
 buckaroo API request. 
 
-
+``LamaLama\LaravelBuckaroo\Buckaroo``: Where the subscribeAndPay, oneTimePayment and fetchPaymentMethods functions reside.
 
 
 
@@ -99,6 +99,8 @@ and add the following:
 
 $buckaroo_api_key = '....';
 $buckaroo_api_secret = '....';
+$buckaroo_api_subscription_ratePlanCode = '....';
+$buckaroo_api_subscription_configurationCode = '....';
 
 ```
 

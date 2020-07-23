@@ -32,22 +32,22 @@ abstract class TestCase extends Orchestra
                 'name' => 'Vijf euro per maand',
                 'amount' => 5,
                 'ratePlanCode' => $buckaroo_api_subscription_ratePlanCode, // plaza.buckaroo.nl --> configuration --> Subscriptions --> products --> Rate plan -> Rate plan code
-                'configurationCode' => $buckaroo_api_subscription_configurationCode // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
+                'configurationCode' => $buckaroo_api_subscription_configurationCode, // plaza.buckaroo.nl --> configuration --> Subscriptions -> configurations -> Configuration code
             ],
             'monthly_25' => [
                 'key' => 'monthly_25', // Unique key to identity subscription
                 'name' => 'Vijfentwintig euro per maand',
                 'amount' => 25,
                 'ratePlanCode' => $buckaroo_api_subscription_ratePlanCode,
-                'configurationCode' => $buckaroo_api_subscription_configurationCode
+                'configurationCode' => $buckaroo_api_subscription_configurationCode,
             ],
             'daily_25c' => [
                 'key' => 'daily_25c', // Unique key to identity subscription
                 'name' => 'Vijfentwintig euro cent per dag',
                 'amount' => 0.25,
                 'ratePlanCode' => $buckaroo_api_subscription_ratePlanCode,
-                'configurationCode' => $buckaroo_api_subscription_configurationCode
-            ]
+                'configurationCode' => $buckaroo_api_subscription_configurationCode,
+            ],
         ]);
     }
 
