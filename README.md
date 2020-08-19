@@ -1,7 +1,9 @@
-## Still in development
+## Under development
 
 This package is still in development.
 
+
+<!---
 
 ## Todo
 
@@ -23,9 +25,13 @@ Next up!!
 - [ ] (Mark): Implement in wordpress
 - [ ] Test test test!! 
 
+-->
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-buckaroo-ed.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-buckaroo-ed)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-buckaroo-ed/run-tests?label=tests)](https://github.com/spatie/laravel-buckaroo-ed/actions?query=workflow%3Arun-tests+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-buckaroo-ed.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-buckaroo-ed)
+
+
 
 
 ## Running tests
