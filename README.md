@@ -3,28 +3,6 @@
 This package is still in development.
 
 
-
-
-[//]: # ## Todo
-
-[//]: #  Next up!!
-[//]: # - [x] Redirects goed in regelen
-[//]: # - [x] Webhook fixen event goed regelen
-[//]: # - [x] Verschillende payment methods per land
-[//]: # - [x] CORS open (use cors.php in application)
-[//]: # - [x] Redirect url in de call meenemen
-[//]: # - [x] Bedrag opnemen in redirect URL
-[//]: # - [x] Beter naming voor buckaroo db velden
-[//]: #     - [x] Fix model relations (payment en subscriptions moeten ook een elkaar gelinkt kunnen worden)
-[//]: # 	- [x] Voeg response van webhook to
-[//]: # 	- [x] enum voor statussen
-[//]: # 	- [x] service --> payment method
-[//]: # - [x] Tests toevoegen voor validatie en andere nieuwe features
-[//]: # - [x] Update Documentatie
-[//]: # - [x] Deploy prod 
-[//]: # - [ ] (Mark): Implement in wordpress
-[//]: # - [ ] Test test test!! 
-
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-buckaroo-ed.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-buckaroo-ed)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-buckaroo-ed/run-tests?label=tests)](https://github.com/spatie/laravel-buckaroo-ed/actions?query=workflow%3Arun-tests+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-buckaroo-ed.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-buckaroo-ed)
