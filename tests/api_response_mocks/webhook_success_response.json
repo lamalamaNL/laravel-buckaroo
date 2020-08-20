@@ -1,0 +1,63 @@
+{
+  "Transaction": {
+    "Key": "4E8BD922192746C3918BF4077CXXXXXX",
+    "Invoice": "testinvoice 123",
+    "ServiceCode": "ideal",
+    "Status": {
+      "Code": {
+        "Code": 190,
+        "Description": "Success"
+      },
+      "SubCode": {
+        "Code": "S001",
+        "Description": "Transaction successfully processed"
+      },
+      "DateTime": "2017-03-28T11:24:14"
+    },
+    "IsTest": true,
+    "Order": null,
+    "Currency": "EUR",
+    "AmountDebit": 10.0,
+    "TransactionType": "C021",
+    "Services": [
+      {
+        "Name": "ideal",
+        "Action": null,
+        "Parameters": [
+          {
+            "Name": "consumerIssuer",
+            "Value": "ABN AMRO"
+          },
+          {
+            "Name": "transactionId",
+            "Value": "0000000000000001"
+          },
+          {
+            "Name": "consumerName",
+            "Value": "J. de Tèster"
+          },
+          {
+            "Name": "consumerIBAN",
+            "Value": "NL44RABO0123456789"
+          },
+          {
+            "Name": "consumerBIC",
+            "Value": "RABONL2U"
+          }
+        ],
+        "VersionAsProperty": 2
+      }
+    ],
+    "CustomParameters": null,
+    "AdditionalParameters": null,
+    "MutationType": 1,
+    "RelatedTransactions": null,
+    "IsCancelable": false,
+    "IssuingCountry": null,
+    "StartRecurrent": false,
+    "Recurring": false,
+    "CustomerName": "J. de Tèster",
+    "PayerHash": "d2e447e9bd91d6e5b4507c2699f2dfa117c60e2e70a13854df4dad57aa54f26785f710b5c6022a9feaf8eace18125f5b1c6929a2ec9a4ff0e88182f9fe085ec3",
+    "PaymentKey": "644545E2409D4223AC09E880ADXXXXXX"
+  }
+}
